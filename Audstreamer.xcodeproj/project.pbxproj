@@ -150,8 +150,6 @@
 		C214700629243979004D4E85 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C2146F9529243979004D4E85 /* Lottie */; };
 		C214700829243979004D4E85 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 597FF5C6257ED29B0030EEC1 /* LaunchScreen.storyboard */; };
 		C214700929243979004D4E85 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B7084325826E6A00AA831D /* Localizable.strings */; };
-		C214700A29243979004D4E85 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C2DADF7D2917CB7F006C5D58 /* LoadingAnimation.json */; };
-		C214700B29243979004D4E85 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C2DADF7929171FAC006C5D58 /* DownloadAnimation.json */; };
 		C214700C29243979004D4E85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 597FF5C4257ED29B0030EEC1 /* Assets.xcassets */; };
 		C214700D29243979004D4E85 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B7085D25827BBA00AA831D /* InfoPlist.strings */; };
 		C214700F29243979004D4E85 /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -273,6 +271,10 @@
 		C26C4FA029296E1D0015DC94 /* PlayerSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26C4F9E29296E1D0015DC94 /* PlayerSectionHeaderView.swift */; };
 		C26C4FA229298E500015DC94 /* Calendar.Component+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26C4FA129298E500015DC94 /* Calendar.Component+Extensions.swift */; };
 		C26C4FA329298E500015DC94 /* Calendar.Component+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26C4FA129298E500015DC94 /* Calendar.Component+Extensions.swift */; };
+		C26CDD642C06036F00D186D3 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C26CDD632C06036F00D186D3 /* LoadingAnimation.json */; };
+		C26CDD652C06036F00D186D3 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C26CDD632C06036F00D186D3 /* LoadingAnimation.json */; };
+		C26CDD672C06044300D186D3 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C26CDD662C06044300D186D3 /* DownloadAnimation.json */; };
+		C26CDD682C06044300D186D3 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C26CDD662C06044300D186D3 /* DownloadAnimation.json */; };
 		C26DE7E42939551B00CA1A4F /* DownloadWidgetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26DE7E32939551B00CA1A4F /* DownloadWidgetState.swift */; };
 		C26DE7E52939551B00CA1A4F /* DownloadWidgetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26DE7E32939551B00CA1A4F /* DownloadWidgetState.swift */; };
 		C278B02629E33DD6004F8C41 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C278B02529E33DD6004F8C41 /* String+Extensions.swift */; };
@@ -355,8 +357,6 @@
 		C2D7EA2A2A39B31B00D51F40 /* WatchEpisodeService+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D7EA292A39B31B00D51F40 /* WatchEpisodeService+Helpers.swift */; };
 		C2DADF6B2916EBA4006C5D58 /* URLHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DADF6A2916EBA4006C5D58 /* URLHelper.swift */; };
 		C2DADF6E2917146C006C5D58 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C2DADF6D2917146C006C5D58 /* Lottie */; };
-		C2DADF7A29171FAD006C5D58 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C2DADF7929171FAC006C5D58 /* DownloadAnimation.json */; };
-		C2DADF7E2917CB7F006C5D58 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C2DADF7D2917CB7F006C5D58 /* LoadingAnimation.json */; };
 		C2DADF852917DA72006C5D58 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = C2DADF842917DA72006C5D58 /* Reachability */; };
 		C2DADF872917EE2B006C5D58 /* NumberFormatterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DADF862917EE2B006C5D58 /* NumberFormatterHelper.swift */; };
 		C2DD8152292441B800BBFCAA /* Asset+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DD8151292441B800BBFCAA /* Asset+Extensions.swift */; };
@@ -576,6 +576,8 @@
 		C26BF9A72A15824300598F6E /* DefaultWatchConnectivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultWatchConnectivityService.swift; sourceTree = "<group>"; };
 		C26C4F9E29296E1D0015DC94 /* PlayerSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSectionHeaderView.swift; sourceTree = "<group>"; };
 		C26C4FA129298E500015DC94 /* Calendar.Component+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar.Component+Extensions.swift"; sourceTree = "<group>"; };
+		C26CDD632C06036F00D186D3 /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
+		C26CDD662C06044300D186D3 /* DownloadAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DownloadAnimation.json; sourceTree = "<group>"; };
 		C26DE7E32939551B00CA1A4F /* DownloadWidgetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadWidgetState.swift; sourceTree = "<group>"; };
 		C278B02529E33DD6004F8C41 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		C279470229265E3300A7402F /* SettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFooterView.swift; sourceTree = "<group>"; };
@@ -631,8 +633,6 @@
 		C2D7EA272A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+DownloadService.swift"; sourceTree = "<group>"; };
 		C2D7EA292A39B31B00D51F40 /* WatchEpisodeService+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+Helpers.swift"; sourceTree = "<group>"; };
 		C2DADF6A2916EBA4006C5D58 /* URLHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHelper.swift; sourceTree = "<group>"; };
-		C2DADF7929171FAC006C5D58 /* DownloadAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DownloadAnimation.json; sourceTree = "<group>"; };
-		C2DADF7D2917CB7F006C5D58 /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
 		C2DADF862917EE2B006C5D58 /* NumberFormatterHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterHelper.swift; sourceTree = "<group>"; };
 		C2DD8151292441B800BBFCAA /* Asset+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Asset+Extensions.swift"; sourceTree = "<group>"; };
 		C2DFEEA4290726250032200E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -870,8 +870,8 @@
 		597FF5F0258002DE0030EEC1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C2DADF7D2917CB7F006C5D58 /* LoadingAnimation.json */,
-				C2DADF7929171FAC006C5D58 /* DownloadAnimation.json */,
+				C26CDD662C06044300D186D3 /* DownloadAnimation.json */,
+				C26CDD632C06036F00D186D3 /* LoadingAnimation.json */,
 				C2147018292439C2004D4E85 /* Audstreamer-macos.entitlements */,
 				59B7086A2582DFC700AA831D /* Audstreamer-ios.entitlements */,
 				597FF5C4257ED29B0030EEC1 /* Assets.xcassets */,
@@ -1552,11 +1552,11 @@
 			files = (
 				597FF5C8257ED29B0030EEC1 /* LaunchScreen.storyboard in Resources */,
 				59B7084125826E6A00AA831D /* Localizable.strings in Resources */,
-				C2DADF7E2917CB7F006C5D58 /* LoadingAnimation.json in Resources */,
-				C2DADF7A29171FAD006C5D58 /* DownloadAnimation.json in Resources */,
+				C26CDD672C06044300D186D3 /* DownloadAnimation.json in Resources */,
 				597FF5C5257ED29B0030EEC1 /* Assets.xcassets in Resources */,
 				59B7085B25827BBA00AA831D /* InfoPlist.strings in Resources */,
 				C20987A9293A4CF9005A160E /* Localizable.stringsdict in Resources */,
+				C26CDD642C06036F00D186D3 /* LoadingAnimation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1566,11 +1566,11 @@
 			files = (
 				C214700829243979004D4E85 /* LaunchScreen.storyboard in Resources */,
 				C214700929243979004D4E85 /* Localizable.strings in Resources */,
-				C214700A29243979004D4E85 /* LoadingAnimation.json in Resources */,
-				C214700B29243979004D4E85 /* DownloadAnimation.json in Resources */,
+				C26CDD682C06044300D186D3 /* DownloadAnimation.json in Resources */,
 				C214700C29243979004D4E85 /* Assets.xcassets in Resources */,
 				C214700D29243979004D4E85 /* InfoPlist.strings in Resources */,
 				C20987AA293A4CF9005A160E /* Localizable.stringsdict in Resources */,
+				C26CDD652C06036F00D186D3 /* LoadingAnimation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2265,11 +2265,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Primary;
 				CODE_SIGN_ENTITLEMENTS = "Audstreamer/Resources/Audstreamer-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 16.0;
@@ -2281,7 +2279,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2299,11 +2296,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Primary;
 				CODE_SIGN_ENTITLEMENTS = "Audstreamer/Resources/Audstreamer-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 16.0;
@@ -2315,7 +2310,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2415,7 +2409,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AudstreamerWatch/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Audstreamer";
+				INFOPLIST_KEY_CFBundleDisplayName = Audstreamer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = hu.barnanemeth.dev.Audstreamer;
@@ -2453,7 +2447,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AudstreamerWatch/Resources/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Audstreamer";
+				INFOPLIST_KEY_CFBundleDisplayName = Audstreamer;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = hu.barnanemeth.dev.Audstreamer;
