@@ -22,7 +22,7 @@ final class DefaultAPIClient {
     // MARK: Constants
 
     private enum Constant {
-        static let apiKey = "12b97dc7-34d8-41d2-8129-be06e58b1d72"
+        static let apiKey = "66d9b38b-2736-4035-b6c5-643ffb30615a"
         static let defaultQueue = DispatchQueue.main
         static let noContentHTTPStatus = 204
         static let emptyBodyString = "[]"
