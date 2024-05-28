@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>downloadingEpisodesCountPercentage</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Downloading %#@format@ (%d%%)</string>
+		<key>format</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d episode</string>
+			<key>other</key>
+			<string>%d episodes</string>
+		</dict>
+	</dict>
+	<key>downloadSize</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Size of the downloadable %#@format@ is %@.</string>
+		<key>format</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>episode</string>
+			<key>other</key>
+			<string>episodes</string>
+		</dict>
+	</dict>
+	<key>transferringEpisodesCountPercentage</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>Transferring %#@format@ (%d%%)</string>
+		<key>format</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d episode</string>
+			<key>other</key>
+			<string>%d episodes</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

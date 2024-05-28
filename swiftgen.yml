@@ -1,0 +1,28 @@
+strings:
+  - inputs:
+    - Audstreamer/Resources/en.lproj/Localizable.strings
+    - Audstreamer/Resources/en.lproj/Localizable.stringsdict
+    outputs:
+      - templateName: structured-swift5
+        output: Audstreamer/Generated/Strings+Generated.swift
+  - inputs:
+    - AudstreamerWatch/Resources/en.lproj/Localizable.strings
+    outputs:
+      - templateName: structured-swift5
+        output: AudstreamerWatch/Generated/Strings+Generated.swift
+
+xcassets:
+  - inputs:
+    - Audstreamer/Resources/Assets.xcassets
+    outputs:
+      - templateName: swift5
+        params:
+          forceProvidesNamespaces: true
+        output: Audstreamer/Generated/XCAssets+Generated.swift
+  - inputs:
+    - AudstreamerWatch/Resources/Assets.xcassets
+    outputs:
+      - templateName: swift5
+        params:
+          forceProvidesNamespaces: true
+        output: AudstreamerWatch/Generated/XCAssets+Generated.swift

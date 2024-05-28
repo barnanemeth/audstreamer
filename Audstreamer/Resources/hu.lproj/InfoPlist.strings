@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Audstreamer
+
+  Created by Németh Barna on 2020. 12. 10..
+  
+*/
+
+"CFBundleDisplayName" = "Audstreamer";

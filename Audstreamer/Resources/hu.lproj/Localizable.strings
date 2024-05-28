@@ -1,0 +1,65 @@
+/* 
+  Localizable.strings
+  Audstreamer
+
+  Created by Németh Barna on 2020. 12. 08..
+  
+*/
+
+"ok" = "OK";
+"error" = "Hiba";
+"badResponseFormat" = "Rossz válasz formátum";
+"unacceptableStatus" = "Rossz HTTP válasz (%d)";
+"badAPIStatus" = "Rossz API státusz";
+"duration" = "Hossz\n%@";
+"publishDate" = "Közzététel dátuma\n%@";
+"delete" = "Törlés";
+"download" = "Letöltés";
+"devices" = "Eszközök";
+"cancel" = "Mégse";
+"logout" = "Kijelentkezés";
+"logoutConfirm" = "Biztos ki akarsz jelentkezni?";
+"retry" = "Újra";
+"continue" = "Folytatás";
+"newEpisode" = "Új epizód";
+"newEpisodes" = "Új epizódok";
+"newEpisodesAreAvailable" = "Új epizódok jelentek meg";
+"play" = "Lejátszás";
+"download" = "Letöltés";
+"favorite" = "Kedvel";
+"share" = "Megosztás";
+"loading" = "Betöltés";
+"logIn" = "Bejelentkezés";
+"logInInfo" = "Ha bejelentkezel, használhatod a valós idejű handoff szolgáltatást.";
+"mainTitle" = "Audstreamer";
+"appleIDRequired" =  "Jelentkezz be az Apple ID-ba, ha használni szeretnéd az eszközök közötti szinkronizációt";
+"downloading" = "Letöltés";
+"listeningOn" = "Lejátszás ezen a készüléken: %@";
+"downloadCellularWarningMessage" = "Az adatok letöltése mobilhálózaton további költségekkel járhat.";
+"laterOnWifi" = "Később WiFi-n";
+"favorites" = "Kedvencek";
+"downloads" = "Letöltések";
+"settings" = "Beállítások";
+"account" = "Felhasználó";
+"socket" = "Socket";
+"connected" = "Csatlakoztatva";
+"pending" = "Föggőben";
+"disconnected" = "Nincs csatlakoztatva";
+"connect" = "Csatlakozás";
+"disconnect" = "Kapcsolat bontása";
+"storage" = "Tárhely";
+"downloadsSize" = "Letöltések: %@";
+"deleteDownloads" = "Letöltések törlése";
+"deleteDownloadsConfirm" = "Biztos szeretnéd törölni a letöltött epizódokat?";
+"version" = "Verzió %@ (%@)";
+"copyright" = "© %@ %@";
+"authorName" = "Barna Nemeth";
+"noResults" = "Nincs eredmény";
+"allDownloadsCompleted" = "Minden letöltés befejeződött";
+"downloadQueued" = "Sorban áll";
+"downloadInProgress" = "Folyamatban";
+"downloadFinished" = "Kész";
+"downloadError" = "Hiba: %@";
+"playLastPlayedEpisode" = "Legutoljára játszott lejátszása";
+"playNewestEpisode" = "Legújabb lejátszása";
+"transferring" = "Fájlok küldése";
