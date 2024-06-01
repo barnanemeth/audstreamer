@@ -31,7 +31,7 @@ final class SocketIOSocket {
     // MARK: Private properties
 
     private lazy var url: URL = {
-        guard let baseURL = URL(string: "https://audstreamer-backend.herokuapp.com") else {
+        guard let baseURL = URL(string: "https://audstreamer-backend-4cec188f37db.herokuapp.com/") else {
             preconditionFailure("Cannot init URL")
         }
         return baseURL
