@@ -17,7 +17,7 @@ final class EpisodeInfoCell: UITableViewCell {
     enum Constant {
         static let minimumHeight: CGFloat = 128
         static let iconSize: CGFloat = 20
-        static let thumbnailSize: CGFloat = 60
+        static let thumbnailSize = CGSize(width: 106, height: 60)
         static let playedThresholdSeconds = 10
         static let verticalPadding: CGFloat = 12
         static let horizontalPadding: CGFloat = 20
@@ -25,13 +25,12 @@ final class EpisodeInfoCell: UITableViewCell {
 
     // MARK: UI
 
-    private let titleLabel = UILabel()
     private let indicatorsStackView = UIStackView()
     private let favoriteIconImageView = UIImageView(image: UIImage(systemSymbol: .heartFill))
     private let downloadedIconImageView = UIImageView(image: UIImage(systemSymbol: .arrowDownCircleFill))
     private let watchIconImageView = UIImageView(image: UIImage(systemSymbol: .applewatch))
     private let thumbnailImageView = UIImageView()
-    private let descriptionLabel = UILabel()
+    private let titleLabel = UILabel()
     private let progressView = UIProgressView(progressViewStyle: .default)
 
     // MARK: Init
@@ -69,10 +68,9 @@ extension EpisodeInfoCell {
     private func setupView() {
         setupIndicatorsStackView()
         setupIndicatorIcons()
-        setupTitleLabel()
         setupThumbnailImageView()
         setupProgressView()
-        setupDescriptionLabel()
+        setupTitleLabel()
     }
 
     private func setupIndicatorsStackView() {
@@ -115,25 +113,6 @@ extension EpisodeInfoCell {
         ])
     }
 
-    private func setupTitleLabel() {
-        titleLabel.numberOfLines = .zero
-        titleLabel.textColor = Asset.Colors.label.color
-        titleLabel.font = UIFont.preferredFont(forTextStyle: .headline)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        contentView.addSubview(titleLabel)
-
-        NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(
-                equalTo: contentView.leadingAnchor,
-                constant: Constant.horizontalPadding
-            ),
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constant.verticalPadding),
-            titleLabel.trailingAnchor.constraint(equalTo: indicatorsStackView.leadingAnchor, constant: -8),
-            titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 24)
-        ])
-    }
-
     private func setupThumbnailImageView() {
         thumbnailImageView.clipsToBounds = true
         thumbnailImageView.contentMode = .scaleAspectFill
@@ -143,13 +122,13 @@ extension EpisodeInfoCell {
         contentView.addSubview(thumbnailImageView)
 
         NSLayoutConstraint.activate([
-            thumbnailImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            thumbnailImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constant.verticalPadding),
             thumbnailImageView.leadingAnchor.constraint(
                 equalTo: contentView.leadingAnchor,
                 constant: Constant.horizontalPadding
             ),
-            thumbnailImageView.widthAnchor.constraint(equalToConstant: Constant.thumbnailSize),
-            thumbnailImageView.heightAnchor.constraint(equalToConstant: Constant.thumbnailSize)
+            thumbnailImageView.widthAnchor.constraint(equalToConstant: Constant.thumbnailSize.width),
+            thumbnailImageView.heightAnchor.constraint(equalToConstant: Constant.thumbnailSize.height)
         ])
     }
 
@@ -173,23 +152,20 @@ extension EpisodeInfoCell {
         ])
     }
 
-    private func setupDescriptionLabel() {
-        descriptionLabel.numberOfLines = .zero
-        descriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
-        descriptionLabel.textColor = Asset.Colors.label.color
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+    private func setupTitleLabel() {
+        titleLabel.numberOfLines = .zero
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+        titleLabel.textColor = Asset.Colors.label.color
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 8),
-            descriptionLabel.trailingAnchor.constraint(
-                equalTo: contentView.trailingAnchor,
-                constant: -Constant.horizontalPadding
-            ),
-            descriptionLabel.bottomAnchor.constraint(equalTo: progressView.topAnchor, constant: -8),
-            descriptionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constant.thumbnailSize)
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constant.verticalPadding),
+            titleLabel.leadingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 8),
+            titleLabel.trailingAnchor.constraint(equalTo: indicatorsStackView.leadingAnchor, constant: -8),
+            titleLabel.bottomAnchor.constraint(equalTo: progressView.topAnchor, constant: -8),
+            titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constant.thumbnailSize.height)
         ])
     }
 }
@@ -199,7 +175,6 @@ extension EpisodeInfoCell {
 extension EpisodeInfoCell {
     func setup(with episode: EpisodeData) {
         titleLabel.text = episode.title
-        descriptionLabel.text = episode.descriptionText.trimmedHTMLTags
         favoriteIconImageView.isHidden = !episode.isFavourite
         downloadedIconImageView.isHidden = !episode.isDownloaded
         watchIconImageView.isHidden = !episode.isOnWatch
@@ -229,26 +204,6 @@ extension EpisodeInfoCell {
             progressView.isHidden = true
         }
     }
-
-//    private func getAttributedString(from htmlText: String?) -> NSAttributedString? {
-//        guard let htmlText else { return nil }
-//
-//        let font = UIFont.preferredFont(forTextStyle: .footnote)
-//        let fontSize = font.pointSize
-//        let lineHeight = font.lineHeight
-//        let spanString = "<span style=\"font-family: '%@'; font-size: %f; line-height: %fpt\">%@</span>"
-//        let modifiedHtml = String(
-//            format: spanString,
-//            arguments: ["-apple-system", fontSize, lineHeight, htmlText]
-//        )
-//        let data = Data(modifiedHtml.utf8)
-//        let attributedString = try? NSAttributedString(
-//            data: data,
-//            options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: NSUTF8StringEncoding],
-//            documentAttributes: nil
-//        )
-//        return attributedString
-//    }
 }
 
 // MARK: - Previewable
