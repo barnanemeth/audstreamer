@@ -300,8 +300,8 @@
 		C28AC3462943DDEF006E04BA /* ShortcutHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28AC3442943DDEF006E04BA /* ShortcutHandler.swift */; };
 		C28AC3492943DE67006E04BA /* DefaultShortcutHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28AC3482943DE67006E04BA /* DefaultShortcutHandler.swift */; };
 		C28AC34A2943DE67006E04BA /* DefaultShortcutHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28AC3482943DE67006E04BA /* DefaultShortcutHandler.swift */; };
-		C28B239D2C0A05A10012FA81 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C28B239C2C0A05A10012FA81 /* DownloadAnimation.json */; };
-		C28B239E2C0A05A10012FA81 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C28B239C2C0A05A10012FA81 /* DownloadAnimation.json */; };
+		C28B23A02C0B78860012FA81 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C28B239F2C0B78860012FA81 /* DownloadAnimation.json */; };
+		C28B23A12C0B78860012FA81 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C28B239F2C0B78860012FA81 /* DownloadAnimation.json */; };
 		C28B57652938009E005921B5 /* DownloadsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28B57642938009E005921B5 /* DownloadsScreen.swift */; };
 		C28B5767293800C2005921B5 /* DownloadsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28B5766293800C2005921B5 /* DownloadsScreenViewModel.swift */; };
 		C28DA0392913D37200037E4A /* JustVoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28DA0382913D37200037E4A /* JustVoid.swift */; };
@@ -597,7 +597,7 @@
 		C28AC329294381E9006E04BA /* UserRating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRating.swift; sourceTree = "<group>"; };
 		C28AC3442943DDEF006E04BA /* ShortcutHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutHandler.swift; sourceTree = "<group>"; };
 		C28AC3482943DE67006E04BA /* DefaultShortcutHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultShortcutHandler.swift; sourceTree = "<group>"; };
-		C28B239C2C0A05A10012FA81 /* DownloadAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DownloadAnimation.json; sourceTree = "<group>"; };
+		C28B239F2C0B78860012FA81 /* DownloadAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DownloadAnimation.json; sourceTree = "<group>"; };
 		C28B57642938009E005921B5 /* DownloadsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsScreen.swift; sourceTree = "<group>"; };
 		C28B5766293800C2005921B5 /* DownloadsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsScreenViewModel.swift; sourceTree = "<group>"; };
 		C28DA0382913D37200037E4A /* JustVoid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustVoid.swift; sourceTree = "<group>"; };
@@ -870,7 +870,7 @@
 		597FF5F0258002DE0030EEC1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C28B239C2C0A05A10012FA81 /* DownloadAnimation.json */,
+				C28B239F2C0B78860012FA81 /* DownloadAnimation.json */,
 				C26CDD632C06036F00D186D3 /* LoadingAnimation.json */,
 				C2147018292439C2004D4E85 /* Audstreamer-macos.entitlements */,
 				59B7086A2582DFC700AA831D /* Audstreamer-ios.entitlements */,
@@ -1550,13 +1550,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C28B23A02C0B78860012FA81 /* DownloadAnimation.json in Resources */,
 				597FF5C8257ED29B0030EEC1 /* LaunchScreen.storyboard in Resources */,
 				59B7084125826E6A00AA831D /* Localizable.strings in Resources */,
 				597FF5C5257ED29B0030EEC1 /* Assets.xcassets in Resources */,
 				59B7085B25827BBA00AA831D /* InfoPlist.strings in Resources */,
 				C20987A9293A4CF9005A160E /* Localizable.stringsdict in Resources */,
 				C26CDD642C06036F00D186D3 /* LoadingAnimation.json in Resources */,
-				C28B239D2C0A05A10012FA81 /* DownloadAnimation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1564,13 +1564,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C28B23A12C0B78860012FA81 /* DownloadAnimation.json in Resources */,
 				C214700829243979004D4E85 /* LaunchScreen.storyboard in Resources */,
 				C214700929243979004D4E85 /* Localizable.strings in Resources */,
 				C214700C29243979004D4E85 /* Assets.xcassets in Resources */,
 				C214700D29243979004D4E85 /* InfoPlist.strings in Resources */,
 				C20987AA293A4CF9005A160E /* Localizable.stringsdict in Resources */,
 				C26CDD652C06036F00D186D3 /* LoadingAnimation.json in Resources */,
-				C28B239E2C0A05A10012FA81 /* DownloadAnimation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2265,9 +2265,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Primary;
 				CODE_SIGN_ENTITLEMENTS = "Audstreamer/Resources/Audstreamer-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = 7JWB953S2M;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 16.0;
@@ -2279,6 +2281,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2296,9 +2299,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Primary;
 				CODE_SIGN_ENTITLEMENTS = "Audstreamer/Resources/Audstreamer-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = 7JWB953S2M;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 16.0;
@@ -2310,6 +2315,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2327,13 +2333,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Primary;
 				CODE_SIGN_ENTITLEMENTS = "Audstreamer/Resources/Audstreamer-macos.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 7JWB953S2M;
+				DEVELOPMENT_TEAM = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 15.0;
@@ -2345,8 +2347,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer)";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = audstreamer_macos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2400,10 +2400,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = 7JWB953S2M;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = 7JWB953S2M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AudstreamerWatch/Resources/Info.plist;
@@ -2419,6 +2421,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer.watchkitapp)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -2435,10 +2438,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = 7JWB953S2M;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = 7JWB953S2M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AudstreamerWatch/Resources/Info.plist;
@@ -2454,6 +2459,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer.watchkitapp)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -2469,9 +2475,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = 7JWB953S2M;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NotificationServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NotificationServiceExtension;
@@ -2486,6 +2494,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.NotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer.NotificationServiceExtension)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -2499,9 +2508,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = 7JWB953S2M;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NotificationServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NotificationServiceExtension;
@@ -2516,6 +2527,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.NotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer.NotificationServiceExtension)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
