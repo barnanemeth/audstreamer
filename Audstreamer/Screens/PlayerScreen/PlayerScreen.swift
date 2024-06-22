@@ -37,6 +37,12 @@ final class PlayerScreen: UIViewController, Screen {
     // MARK: UI
 
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    private lazy var refreshControl: UIRefreshControl = {
+        let action = UIAction { [weak self] _ in
+            self?.viewModel.refresh { self?.refreshControl.endRefreshing() }
+        }
+        return UIRefreshControl(frame: .zero, primaryAction: action)
+    }()
     private let emptyStateView = EmptyStateView(
         image: Asset.symbol(.exclamationmarkCircle, scale: .large),
         title: L10n.noResults
@@ -151,6 +157,7 @@ extension PlayerScreen {
         tableView.estimatedRowHeight = EpisodeInfoCell.Constant.minimumHeight
         tableView.sectionHeaderHeight = Constant.sectionHeaderHeight
         tableView.sectionFooterHeight = Constant.sectionFooterHeight
+        tableView.refreshControl = refreshControl
 
         tableView.register(EpisodeInfoCell.self, forCellReuseIdentifier: EpisodeInfoCell.reusdeIdentifier)
         tableView.register(EpisodeDetailCell.self, forCellReuseIdentifier: EpisodeDetailCell.reusdeIdentifier)

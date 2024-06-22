@@ -208,6 +208,12 @@ extension PlayerScreenViewModel {
             .sink()
             .store(in: &cancellables)
     }
+
+    func refresh(_ completion: @escaping () -> Void) {
+        FetchUtil.fetchData()
+            .sink(receiveCompletion: { _ in completion() }, receiveValue: { _ in })
+            .store(in: &cancellables)
+    }
 }
 
 // MARK: - Helpers

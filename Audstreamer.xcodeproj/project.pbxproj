@@ -153,6 +153,8 @@
 		C214700C29243979004D4E85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 597FF5C4257ED29B0030EEC1 /* Assets.xcassets */; };
 		C214700D29243979004D4E85 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B7085D25827BBA00AA831D /* InfoPlist.strings */; };
 		C214700F29243979004D4E85 /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2191E2C2C26CDA300812157 /* FetchUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2191E2B2C26CDA300812157 /* FetchUtil.swift */; };
+		C2191E2D2C26CDA300812157 /* FetchUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2191E2B2C26CDA300812157 /* FetchUtil.swift */; };
 		C21C5C742A2E2AB200306547 /* LastPlayedDateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C5C732A2E2AB200306547 /* LastPlayedDateMessage.swift */; };
 		C21C5C752A2E2AB200306547 /* LastPlayedDateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C5C732A2E2AB200306547 /* LastPlayedDateMessage.swift */; };
 		C21C5C762A2E2AB200306547 /* LastPlayedDateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C5C732A2E2AB200306547 /* LastPlayedDateMessage.swift */; };
@@ -502,6 +504,7 @@
 		C20F9C6C2AFAC920002F0F59 /* WatchEpisodeService+WCSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+WCSessionDelegate.swift"; sourceTree = "<group>"; };
 		C214701629243979004D4E85 /* Audstreamer-macos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Audstreamer-macos.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2147018292439C2004D4E85 /* Audstreamer-macos.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "Audstreamer-macos.entitlements"; sourceTree = "<group>"; };
+		C2191E2B2C26CDA300812157 /* FetchUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUtil.swift; sourceTree = "<group>"; };
 		C21C5C732A2E2AB200306547 /* LastPlayedDateMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPlayedDateMessage.swift; sourceTree = "<group>"; };
 		C21C5C772A2E2C2700306547 /* LastPositionMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPositionMessage.swift; sourceTree = "<group>"; };
 		C21C5C7B2A2E2C6700306547 /* WatchConnectivityMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityMessage.swift; sourceTree = "<group>"; };
@@ -863,6 +866,7 @@
 				C2A9A13C2AF2DA49002F0162 /* FileTransferOperation.swift */,
 				C23CBD722AF3E04A0024E0A1 /* WCSessionFileTransfer+Extensions.swift */,
 				C23CBD7C2AF407FC0024E0A1 /* Downloadable+Extensions.swift */,
+				C2191E2B2C26CDA300812157 /* FetchUtil.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1823,6 +1827,7 @@
 				C268CB5B29219A39001361B9 /* CellButton.swift in Sources */,
 				597FF5F6258003410030EEC1 /* Networking.swift in Sources */,
 				C237C4BB28FC1F7000D246D7 /* DevicesScreenViewModel.swift in Sources */,
+				C2191E2C2C26CDA300812157 /* FetchUtil.swift in Sources */,
 				C21F8D2E290EC84C00053070 /* UIView+Extensions.swift in Sources */,
 				C2E467022901E5AB0089DEDC /* BadgeButton.swift in Sources */,
 				70E9D24B25F7E79100D8D0AD /* DevicesScreen.swift in Sources */,
@@ -1977,6 +1982,7 @@
 				C28AC32B294382A2006E04BA /* UserRating.swift in Sources */,
 				C2146FE229243979004D4E85 /* Add.swift in Sources */,
 				C2146FE329243979004D4E85 /* SettingsScreen.swift in Sources */,
+				C2191E2D2C26CDA300812157 /* FetchUtil.swift in Sources */,
 				C2146FE429243979004D4E85 /* CellButton.swift in Sources */,
 				C2146FE529243979004D4E85 /* Networking.swift in Sources */,
 				C2146FE629243979004D4E85 /* DevicesScreenViewModel.swift in Sources */,
@@ -2364,13 +2370,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Primary;
 				CODE_SIGN_ENTITLEMENTS = "Audstreamer/Resources/Audstreamer-macos.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 7JWB953S2M;
+				DEVELOPMENT_TEAM = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 15.0;
@@ -2382,8 +2384,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer)";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = default_audstreamer_macos_dev;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
