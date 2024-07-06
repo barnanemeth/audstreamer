@@ -31,6 +31,9 @@ final class DefaultDownloadService {
         queue.maxConcurrentOperationCount = Constant.queueConcurrentOperationNumber
         return queue
     }()
+    private lazy var fileOperationQueue: DispatchQueue = {
+        DispatchQueue(label: "fileOperationQueue", qos: .background)
+    }()
     private lazy var itemsInQueue: AnyPublisher<[DownloadItem], Error> = {
         queue.publisher(for: \.operations)
             .setFailureType(to: Error.self)
@@ -103,16 +106,21 @@ extension DefaultDownloadService: DownloadService {
     }
 
     func deleteDownloads() -> AnyPublisher<Void, Error> {
-        guard let url = URLHelper.destinationDirectory else {
-            return Fail(error: DownloadServiceError.badDirectoryURL).eraseToAnyPublisher()
+        Promise<Void, Error> { [unowned self] promise in
+            self.fileOperationQueue.async {
+                guard let url = URLHelper.destinationDirectory else {
+                    return promise(.failure(DownloadServiceError.badDirectoryURL))
+                }
+                do {
+                    try self.fileManager.removeItem(at: url)
+                    self.refreshSize()
+                    promise(.success(()))
+                } catch {
+                    promise(.failure(error))
+                }
+            }
         }
-        do {
-            try fileManager.removeItem(at: url)
-            refreshSize()
-            return Just.void()
-        } catch {
-            return Fail(error: error).eraseToAnyPublisher()
-        }
+        .eraseToAnyPublisher()
     }
 
     func pause(_ item: Downloadable) -> AnyPublisher<Void, Error> {

@@ -65,7 +65,10 @@ extension SettingsScreenViewModel {
 
     func deleteDownloads() {
         downloadService.deleteDownloads()
+            .receive(on: DispatchQueue.main)
             .flatMap { [unowned self] in self.database.resetDownloadEpisodes() }
+            .handleEvents(receiveSubscription: { [unowned self] _ in self.isLoading = true },
+                          receiveCompletion: { [unowned self] _ in self.isLoading = false })
             .sink(receiveCompletion: { [unowned self] completion in
                 guard case let .failure(error) = completion else { return }
                 self.presentErrorAlertAction?.execute(error)
