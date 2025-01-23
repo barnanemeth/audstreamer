@@ -258,7 +258,7 @@ extension DefaultAudioPlayer {
     private func handleAudioPlayerFinishedPlaying() -> AnyPublisher<Void, Error> {
         currentPlayingAudioInfoSubject
             .first()
-            .map { [unowned self] audioInfo -> Void in
+            .map { [unowned self] audioInfo in
                 guard let audioInfo = audioInfo else { return }
 
                 self.playingFinishedAudioInfoSubject.send(audioInfo)

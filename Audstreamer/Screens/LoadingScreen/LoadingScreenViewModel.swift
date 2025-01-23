@@ -9,9 +9,9 @@ import Foundation
 import Combine
 
 final class LoadingScreenViewModel: ScreenViewModel {
-    
+
     // MARK: Constants
-    
+
     private enum Constant {
         static let navigationDelay: DispatchQueue.SchedulerTimeType.Stride = 1
     }
