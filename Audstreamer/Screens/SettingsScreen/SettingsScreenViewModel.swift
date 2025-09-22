@@ -78,8 +78,9 @@ extension SettingsScreenViewModel {
 
     func logout() {
         networking.deleteDevice()
-            .flatMap { [unowned self] in self.socket.disconnect() }
-            .flatMap { [unowned self] in self.account.logout() }
+            .catch { _ in Just(()) }
+            .flatMap { [unowned self] in self.socket.disconnect().catch { _ in Just(()) } }
+            .flatMap { [unowned self] in self.account.logout().catch { _ in Just(()) } }
             .flatMap { [unowned self] in self.account.refresh() }
             .handleEvents(receiveSubscription: { [unowned self] _ in self.isLoading = true },
                           receiveCompletion: { [unowned self] _ in self.isLoading = false })

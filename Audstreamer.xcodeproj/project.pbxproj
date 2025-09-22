@@ -144,7 +144,6 @@
 		C2146FFF29243979004D4E85 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = C2146F9729243979004D4E85 /* Reachability */; };
 		C214700129243979004D4E85 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = C2146F9B29243979004D4E85 /* SFSafeSymbols */; };
 		C214700229243979004D4E85 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = C2146F8F29243979004D4E85 /* SkeletonView */; };
-		C214700329243979004D4E85 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = C2146F9329243979004D4E85 /* CombineCocoa */; };
 		C214700429243979004D4E85 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = C2146F9129243979004D4E85 /* SocketIO */; };
 		C214700529243979004D4E85 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = C2146F9929243979004D4E85 /* OrderedCollections */; };
 		C214700629243979004D4E85 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C2146F9529243979004D4E85 /* Lottie */; };
@@ -187,7 +186,6 @@
 		C237C4A328FB1AD400D246D7 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = C237C4A228FB1AD400D246D7 /* SocketIO */; };
 		C237C4A628FB1BAF00D246D7 /* SYBadgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4A528FB1BAF00D246D7 /* SYBadgeButton.swift */; };
 		C237C4A928FB20FA00D246D7 /* Combine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4A828FB20FA00D246D7 /* Combine+Extensions.swift */; };
-		C237C4AC28FB467A00D246D7 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = C237C4AB28FB467A00D246D7 /* CombineCocoa */; };
 		C237C4AE28FB472200D246D7 /* ScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4AD28FB472200D246D7 /* ScreenViewModel.swift */; };
 		C237C4B028FB47E200D246D7 /* DefaultAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4AF28FB47E200D246D7 /* DefaultAPIClient.swift */; };
 		C237C4B428FB6C8100D246D7 /* Publishers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4B328FB6C8100D246D7 /* Publishers.swift */; };
@@ -341,6 +339,13 @@
 		C2A9A14A2AF2EE24002F0162 /* FileTransferWidgetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A9A1492AF2EE24002F0162 /* FileTransferWidgetState.swift */; };
 		C2A9A14B2AF2EE24002F0162 /* FileTransferWidgetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A9A1492AF2EE24002F0162 /* FileTransferWidgetState.swift */; };
 		C2AA611828FF5D5F003EB302 /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2AA611728FF5D5F003EB302 /* TapGestureRecognizer.swift */; };
+		C2AC28532E7206A60038FBFB /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = C237C49C28FB1A6400D246D7 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C2AC28552E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2AC28542E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift */; };
+		C2AC28562E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2AC28542E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift */; };
+		C2AC28592E72BD010038FBFB /* CombineControlTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2AC28582E72BD010038FBFB /* CombineControlTarget.swift */; };
+		C2AC285A2E72BD010038FBFB /* CombineControlTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2AC28582E72BD010038FBFB /* CombineControlTarget.swift */; };
+		C2AC285B2E72BD010038FBFB /* CombineControlTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2AC28582E72BD010038FBFB /* CombineControlTarget.swift */; };
+		C2AC285C2E72BD430038FBFB /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = C2146F8D29243979004D4E85 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C2BBCD4A29573B2100546903 /* ImagePreviewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BBCD4929573B2100546903 /* ImagePreviewScreen.swift */; };
 		C2BBCD4C29573F7200546903 /* CGSize+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BBCD4B29573F7200546903 /* CGSize+Extensions.swift */; };
 		C2BBCD4E2957640600546903 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BBCD4D2957640600546903 /* Promise.swift */; };
@@ -407,6 +412,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				C2AC28532E7206A60038FBFB /* RealmSwift in Embed Frameworks */,
 				59C269C9258E9C0F008576EA /* (null) in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -429,6 +435,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				C2AC285C2E72BD430038FBFB /* RealmSwift in Embed Frameworks */,
 				C214700F29243979004D4E85 /* (null) in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -629,6 +636,8 @@
 		C2A9A1462AF2EE19002F0162 /* FileTransferWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferWidgetViewModel.swift; sourceTree = "<group>"; };
 		C2A9A1492AF2EE24002F0162 /* FileTransferWidgetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferWidgetState.swift; sourceTree = "<group>"; };
 		C2AA611728FF5D5F003EB302 /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
+		C2AC28542E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Combine.swift"; sourceTree = "<group>"; };
+		C2AC28582E72BD010038FBFB /* CombineControlTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineControlTarget.swift; sourceTree = "<group>"; };
 		C2BBCD4929573B2100546903 /* ImagePreviewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewScreen.swift; sourceTree = "<group>"; };
 		C2BBCD4B29573F7200546903 /* CGSize+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extensions.swift"; sourceTree = "<group>"; };
 		C2BBCD4D2957640600546903 /* Promise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
@@ -662,7 +671,6 @@
 				C2DADF852917DA72006C5D58 /* Reachability in Frameworks */,
 				C268CB50292176E1001361B9 /* SFSafeSymbols in Frameworks */,
 				C237C4A028FB1A9700D246D7 /* SkeletonView in Frameworks */,
-				C237C4AC28FB467A00D246D7 /* CombineCocoa in Frameworks */,
 				C237C4A328FB1AD400D246D7 /* SocketIO in Frameworks */,
 				C2F53475291FABF30002452B /* OrderedCollections in Frameworks */,
 				C2DADF6E2917146C006C5D58 /* Lottie in Frameworks */,
@@ -678,7 +686,6 @@
 				C2146FFF29243979004D4E85 /* Reachability in Frameworks */,
 				C214700129243979004D4E85 /* SFSafeSymbols in Frameworks */,
 				C214700229243979004D4E85 /* SkeletonView in Frameworks */,
-				C214700329243979004D4E85 /* CombineCocoa in Frameworks */,
 				C214700429243979004D4E85 /* SocketIO in Frameworks */,
 				C214700529243979004D4E85 /* OrderedCollections in Frameworks */,
 				C214700629243979004D4E85 /* Lottie in Frameworks */,
@@ -1249,6 +1256,8 @@
 				C28DA0382913D37200037E4A /* JustVoid.swift */,
 				C294B12D2914150400A30403 /* MergeMany.swift */,
 				C2BBCD4D2957640600546903 /* Promise.swift */,
+				C2AC28542E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift */,
+				C2AC28582E72BD010038FBFB /* CombineControlTarget.swift */,
 			);
 			path = CombineExtensions;
 			sourceTree = "<group>";
@@ -1417,7 +1426,6 @@
 				C237C49C28FB1A6400D246D7 /* RealmSwift */,
 				C237C49F28FB1A9700D246D7 /* SkeletonView */,
 				C237C4A228FB1AD400D246D7 /* SocketIO */,
-				C237C4AB28FB467A00D246D7 /* CombineCocoa */,
 				C2DADF6D2917146C006C5D58 /* Lottie */,
 				C2DADF842917DA72006C5D58 /* Reachability */,
 				C2F53474291FABF30002452B /* OrderedCollections */,
@@ -1449,7 +1457,6 @@
 				C2146F8D29243979004D4E85 /* RealmSwift */,
 				C2146F8F29243979004D4E85 /* SkeletonView */,
 				C2146F9129243979004D4E85 /* SocketIO */,
-				C2146F9329243979004D4E85 /* CombineCocoa */,
 				C2146F9529243979004D4E85 /* Lottie */,
 				C2146F9729243979004D4E85 /* Reachability */,
 				C2146F9929243979004D4E85 /* OrderedCollections */,
@@ -1530,7 +1537,6 @@
 				C237C49B28FB1A6400D246D7 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				C237C49E28FB1A9700D246D7 /* XCRemoteSwiftPackageReference "SkeletonView" */,
 				C237C4A128FB1AD400D246D7 /* XCRemoteSwiftPackageReference "socket" */,
-				C237C4AA28FB467900D246D7 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				C2DADF6C2917146C006C5D58 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				C2DADF832917DA72006C5D58 /* XCRemoteSwiftPackageReference "Reachability" */,
 				C2F53473291FABF30002452B /* XCRemoteSwiftPackageReference "swift-collections" */,
@@ -1765,6 +1771,7 @@
 				C2A9A1402AF2DF60002F0162 /* FileTransferAggregatedProgress.swift in Sources */,
 				C21D64972A2CB1A700226AFF /* EpisodeCommon+Extensions.swift in Sources */,
 				C28658F52A45EEDF00974E97 /* DownloadItem+Extensions.swift in Sources */,
+				C2AC285A2E72BD010038FBFB /* CombineControlTarget.swift in Sources */,
 				C23CBD732AF3E04A0024E0A1 /* WCSessionFileTransfer+Extensions.swift in Sources */,
 				C268CB4D29217381001361B9 /* FilterAttribute+Extensions.swift in Sources */,
 				C2F534772920492F0002452B /* FloatingPoint+Extension.swift in Sources */,
@@ -1808,6 +1815,7 @@
 				C237C4D328FC981600D246D7 /* AppleAuthorizationButton.swift in Sources */,
 				C237C4BF28FC333600D246D7 /* AssignOwnership.swift in Sources */,
 				5936281E258AC3BB00CE32F9 /* Cloud.swift in Sources */,
+				C2AC28562E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift in Sources */,
 				70369AA725DDCB920094B3D7 /* Authorization.swift in Sources */,
 				C268CB55292184E9001361B9 /* SettingsScreenViewModel.swift in Sources */,
 				C237C4A628FB1BAF00D246D7 /* SYBadgeButton.swift in Sources */,
@@ -1920,6 +1928,7 @@
 				C2146FBB29243979004D4E85 /* SocketUpdater.swift in Sources */,
 				C2146FBC29243979004D4E85 /* DownloadWidget.swift in Sources */,
 				C2146FBD29243979004D4E85 /* EpisodeDetailCell.swift in Sources */,
+				C2AC285B2E72BD010038FBFB /* CombineControlTarget.swift in Sources */,
 				C2146FBE29243979004D4E85 /* FilterAttribute+Extensions.swift in Sources */,
 				C2146FBF29243979004D4E85 /* FloatingPoint+Extension.swift in Sources */,
 				C2146FC029243979004D4E85 /* MergeMany.swift in Sources */,
@@ -1963,6 +1972,7 @@
 				C2146FD429243979004D4E85 /* FlatMapLatest.swift in Sources */,
 				C2146FD529243979004D4E85 /* DownloadItem.swift in Sources */,
 				C2146FD629243979004D4E85 /* RealmDatabase.swift in Sources */,
+				C2AC28552E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift in Sources */,
 				C2A9A1482AF2EE19002F0162 /* FileTransferWidgetViewModel.swift in Sources */,
 				C2146FD729243979004D4E85 /* LoginScreenViewModel.swift in Sources */,
 				C2146FD829243979004D4E85 /* AppleAuthorizationButton.swift in Sources */,
@@ -2025,6 +2035,7 @@
 			files = (
 				C25ED57C2A2B844F00E6A4D5 /* Promise.swift in Sources */,
 				C2D7EA2A2A39B31B00D51F40 /* WatchEpisodeService+Helpers.swift in Sources */,
+				C2AC28592E72BD010038FBFB /* CombineControlTarget.swift in Sources */,
 				C263FD272A2A28DC00FF4715 /* ZipMany.swift in Sources */,
 				C2D7EA282A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift in Sources */,
 				C25ED56F2A2B649800E6A4D5 /* Combine+Extensions.swift in Sources */,
@@ -2610,14 +2621,6 @@
 				minimumVersion = 16.0.1;
 			};
 		};
-		C2146F9429243979004D4E85 /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.0;
-			};
-		};
 		C2146F9629243979004D4E85 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios";
@@ -2655,7 +2658,7 @@
 			repositoryURL = "https://github.com/realm/realm-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.43.1;
+				minimumVersion = 20.0.3;
 			};
 		};
 		C237C49E28FB1A9700D246D7 /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
@@ -2672,14 +2675,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 16.1.0;
-			};
-		};
-		C237C4AA28FB467900D246D7 /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.0;
 			};
 		};
 		C2449A4D293783580088C55D /* XCRemoteSwiftPackageReference "Nuke" */ = {
@@ -2740,11 +2735,6 @@
 			package = C2146F9229243979004D4E85 /* XCRemoteSwiftPackageReference "socket" */;
 			productName = SocketIO;
 		};
-		C2146F9329243979004D4E85 /* CombineCocoa */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C2146F9429243979004D4E85 /* XCRemoteSwiftPackageReference "CombineCocoa" */;
-			productName = CombineCocoa;
-		};
 		C2146F9529243979004D4E85 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C2146F9629243979004D4E85 /* XCRemoteSwiftPackageReference "lottie-ios" */;
@@ -2779,11 +2769,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C237C4A128FB1AD400D246D7 /* XCRemoteSwiftPackageReference "socket" */;
 			productName = SocketIO;
-		};
-		C237C4AB28FB467A00D246D7 /* CombineCocoa */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C237C4AA28FB467900D246D7 /* XCRemoteSwiftPackageReference "CombineCocoa" */;
-			productName = CombineCocoa;
 		};
 		C2449A4E293783580088C55D /* Nuke */ = {
 			isa = XCSwiftPackageProductDependency;

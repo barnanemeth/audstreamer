@@ -9,7 +9,6 @@ import UIKit
 import Combine
 
 import SkeletonView
-import CombineCocoa
 
 // swiftlint:disable file_length
 final class PlayerWidget: UIVisualEffectView {
@@ -313,7 +312,7 @@ extension PlayerWidget {
             }
             .store(in: &cancellables)
 
-        slider.valuePublisher
+        slider.publisher(for: \.value)
             .dropFirst()
             .assign(to: \.currentSliderValue, on: viewModel, ownership: .unowned)
             .store(in: &cancellables)
