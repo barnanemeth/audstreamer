@@ -40,9 +40,9 @@ extension FetchUtil {
 
                 return Publishers.Zip(remoteEpisodes, localEpisodesCount).eraseToAnyPublisher()
             }
-            .flatMap { remoteEpisodes, localEpisodesCount in
-                let isOverwriteNeeded = remoteEpisodes.count >= localEpisodesCount
-                return database.insertEpisodes(remoteEpisodes, overwrite: isOverwriteNeeded)
+            .flatMap { remoteEpisodes, _ in
+//                let isOverwriteNeeded = remoteEpisodes.count >= localEpisodesCount
+                return database.insertEpisodes(remoteEpisodes, overwrite: true)
             }
             .flatMap { synchronizeCloudDataToDatabase() }
             .eraseToAnyPublisher()

@@ -32,7 +32,7 @@ final class PlayerWidget: UIVisualEffectView {
     private let playPauseButton = BaseButton()
     private let skipBackwardButton = BaseButton()
     private let skipForwardButton = BaseButton()
-    private let slider = UISlider()
+    private let slider = Slider()
     private let elapsedTimeLabel = UILabel()
     private let remainingTimeLabel = UILabel()
 
@@ -312,7 +312,7 @@ extension PlayerWidget {
             }
             .store(in: &cancellables)
 
-        slider.publisher(for: \.value)
+        slider.valueChangedPublisher
             .dropFirst()
             .assign(to: \.currentSliderValue, on: viewModel, ownership: .unowned)
             .store(in: &cancellables)

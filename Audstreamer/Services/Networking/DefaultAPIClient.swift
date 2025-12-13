@@ -36,7 +36,8 @@ final class DefaultAPIClient {
 
     private let session = URLSession.shared
     private lazy var baseURL: URL = {
-        guard let baseURL = URL(string: "https://audstreamer-backend-4cec188f37db.herokuapp.com/") else {
+//        guard let baseURL = URL(string: "https://audstreamer-backend-4cec188f37db.herokuapp.com/") else {
+        guard let baseURL = URL(string: "http://localhost:4000") else {
             preconditionFailure("Cannot init URL")
         }
         return baseURL
@@ -57,7 +58,7 @@ final class DefaultAPIClient {
 
 extension DefaultAPIClient: Networking {
     func getEpisodes(from date: Date?) -> AnyPublisher<[EpisodeData], Error> {
-        var url = baseURL.appendingPathComponent("episodes")
+        var url = baseURL.appendingPathComponent("episodes").appendingPathComponent("rss")
         var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
         if let date = date {
             let value = Int(date.timeIntervalSince1970 * 1000.0).description

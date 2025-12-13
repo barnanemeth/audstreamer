@@ -185,7 +185,7 @@ extension EpisodeDetailCell {
         updateFavoriteButton(with: episode)
         updateWatchButton(with: episode)
         publishDateLabel.text = L10n.publishDate(datFormatter.string(from: episode.publishDate))
-        durationLabel.text = L10n.duration(Double(episode.duration).secondsToHoursMinutesSecondsString)
+        durationLabel.text = durationText(with: episode.duration)
         watchButton.isHidden = !isWatchAvailable
     }
 }
@@ -228,5 +228,14 @@ extension EpisodeDetailCell {
 
         durationLabel.text = nil
         publishDateLabel.text = nil
+    }
+    
+    private func durationText(with duration: Int) -> String {
+        let durationString = if duration > .zero {
+            Double(duration).secondsToHoursMinutesSecondsString
+        } else {
+            "--:--:--"
+        }
+        return L10n.duration(durationString)
     }
 }

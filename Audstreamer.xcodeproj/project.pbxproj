@@ -283,6 +283,8 @@
 		C27A239A292528E700B87FC3 /* SettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27A2399292528E700B87FC3 /* SettingsDataSource.swift */; };
 		C27A239C2925327A00B87FC3 /* SettingsSocketInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27A239B2925327A00B87FC3 /* SettingsSocketInfoCell.swift */; };
 		C27ED16A28FADA38003B0FC9 /* Resolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27ED16928FADA38003B0FC9 /* Resolver.swift */; };
+		C280C73C2EED624000352357 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C280C73B2EED624000352357 /* Slider.swift */; };
+		C280C73D2EED624000352357 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C280C73B2EED624000352357 /* Slider.swift */; };
 		C28429EF2915B8FA00BC1146 /* DownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28429EE2915B8FA00BC1146 /* DownloadService.swift */; };
 		C28429F12915BA2300BC1146 /* DefaultDownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28429F02915BA2300BC1146 /* DefaultDownloadService.swift */; };
 		C28429F32915BCA100BC1146 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28429F22915BCA100BC1146 /* AsyncOperation.swift */; };
@@ -595,6 +597,7 @@
 		C27A2399292528E700B87FC3 /* SettingsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataSource.swift; sourceTree = "<group>"; };
 		C27A239B2925327A00B87FC3 /* SettingsSocketInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSocketInfoCell.swift; sourceTree = "<group>"; };
 		C27ED16928FADA38003B0FC9 /* Resolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resolver.swift; sourceTree = "<group>"; };
+		C280C73B2EED624000352357 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		C28429EE2915B8FA00BC1146 /* DownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadService.swift; sourceTree = "<group>"; };
 		C28429F02915BA2300BC1146 /* DefaultDownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultDownloadService.swift; sourceTree = "<group>"; };
 		C28429F22915BCA100BC1146 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
@@ -903,6 +906,7 @@
 				C2367AEA293BDFBA009A1A71 /* Buttons */,
 				C28429FA2915D50B00BC1146 /* DownloadWidget */,
 				C29F6B4828FF3C7500666184 /* PlayerWidget */,
+				C280C73B2EED624000352357 /* Slider.swift */,
 			);
 			path = UIElements;
 			sourceTree = "<group>";
@@ -1833,6 +1837,7 @@
 				C28B57652938009E005921B5 /* DownloadsScreen.swift in Sources */,
 				C268CB53292184CD001361B9 /* SettingsScreen.swift in Sources */,
 				C268CB5B29219A39001361B9 /* CellButton.swift in Sources */,
+				C280C73D2EED624000352357 /* Slider.swift in Sources */,
 				597FF5F6258003410030EEC1 /* Networking.swift in Sources */,
 				C237C4BB28FC1F7000D246D7 /* DevicesScreenViewModel.swift in Sources */,
 				C2191E2C2C26CDA300812157 /* FetchUtil.swift in Sources */,
@@ -1990,6 +1995,7 @@
 				C2146FE129243979004D4E85 /* Resolver.swift in Sources */,
 				C21C5C7D2A2E2C6700306547 /* WatchConnectivityMessage.swift in Sources */,
 				C28AC32B294382A2006E04BA /* UserRating.swift in Sources */,
+				C280C73C2EED624000352357 /* Slider.swift in Sources */,
 				C2146FE229243979004D4E85 /* Add.swift in Sources */,
 				C2146FE329243979004D4E85 /* SettingsScreen.swift in Sources */,
 				C2191E2D2C26CDA300812157 /* FetchUtil.swift in Sources */,
@@ -2282,11 +2288,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Primary;
 				CODE_SIGN_ENTITLEMENTS = "Audstreamer/Resources/Audstreamer-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
+				DEVELOPMENT_TEAM = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 16.0;
@@ -2298,7 +2302,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2316,11 +2319,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = Primary;
 				CODE_SIGN_ENTITLEMENTS = "Audstreamer/Resources/Audstreamer-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
+				DEVELOPMENT_TEAM = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 16.0;
@@ -2332,7 +2333,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
