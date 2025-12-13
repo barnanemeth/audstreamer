@@ -36,8 +36,7 @@ final class DefaultAPIClient {
 
     private let session = URLSession.shared
     private lazy var baseURL: URL = {
-//        guard let baseURL = URL(string: "https://audstreamer-backend-4cec188f37db.herokuapp.com/") else {
-        guard let baseURL = URL(string: "http://localhost:4000") else {
+        guard let baseURL = URL(string: "https://audstreamer-backend-4cec188f37db.herokuapp.com/") else {
             preconditionFailure("Cannot init URL")
         }
         return baseURL
