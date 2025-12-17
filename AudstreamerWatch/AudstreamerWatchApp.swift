@@ -29,16 +29,16 @@ struct AudstreamerWatchApp: App {
 
 extension AudstreamerWatchApp {
     private func registerServices() {
-        Resolver.register { WatchEpisodeService() }
+        Resolver.register { MockWatchEpisodeService() }
             .implements(EpisodeService.self)
             .implements(DownloadService.self)
             .scope(.cached)
 
-        Resolver.register { DefaultAudioPlayer() }
+        Resolver.register { MockAudioPlayer() }
             .implements(AudioPlayer.self)
             .scope(.cached)
 
-        Resolver.register { WatchRemotePlayer() }
+        Resolver.register { MockRemotePlayer() }
             .implements(RemotePlayer.self)
             .scope(.cached)
 

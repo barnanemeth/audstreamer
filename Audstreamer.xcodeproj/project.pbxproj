@@ -216,6 +216,13 @@
 		C23CBD7B2AF405780024E0A1 /* WatchURLHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23CBD7A2AF405780024E0A1 /* WatchURLHelper.swift */; };
 		C23CBD7D2AF407FC0024E0A1 /* Downloadable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23CBD7C2AF407FC0024E0A1 /* Downloadable+Extensions.swift */; };
 		C23CBD7E2AF407FC0024E0A1 /* Downloadable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23CBD7C2AF407FC0024E0A1 /* Downloadable+Extensions.swift */; };
+		C23E80E12EF2D7900093ACA5 /* MockWatchEpisodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E02EF2D7900093ACA5 /* MockWatchEpisodeService.swift */; };
+		C23E80E32EF2D82F0093ACA5 /* MockAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E22EF2D82F0093ACA5 /* MockAudioPlayer.swift */; };
+		C23E80E42EF2D8500093ACA5 /* MockAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E22EF2D82F0093ACA5 /* MockAudioPlayer.swift */; };
+		C23E80E52EF2D8500093ACA5 /* MockAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E22EF2D82F0093ACA5 /* MockAudioPlayer.swift */; };
+		C23E80E72EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E62EF2D8D40093ACA5 /* MockRemotePlayer.swift */; };
+		C23E80E82EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E62EF2D8D40093ACA5 /* MockRemotePlayer.swift */; };
+		C23E80E92EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E62EF2D8D40093ACA5 /* MockRemotePlayer.swift */; };
 		C240AC63292EBBCE00263C5A /* RatingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C240AC62292EBBCE00263C5A /* RatingData.swift */; };
 		C240AC64292EBBCE00263C5A /* RatingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C240AC62292EBBCE00263C5A /* RatingData.swift */; };
 		C2449A4F293783580088C55D /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = C2449A4E293783580088C55D /* Nuke */; };
@@ -558,6 +565,9 @@
 		C23CBD782AF404C60024E0A1 /* EpisodeCommon+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EpisodeCommon+Extensions.swift"; sourceTree = "<group>"; };
 		C23CBD7A2AF405780024E0A1 /* WatchURLHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchURLHelper.swift; sourceTree = "<group>"; };
 		C23CBD7C2AF407FC0024E0A1 /* Downloadable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Downloadable+Extensions.swift"; sourceTree = "<group>"; };
+		C23E80E02EF2D7900093ACA5 /* MockWatchEpisodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWatchEpisodeService.swift; sourceTree = "<group>"; };
+		C23E80E22EF2D82F0093ACA5 /* MockAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAudioPlayer.swift; sourceTree = "<group>"; };
+		C23E80E62EF2D8D40093ACA5 /* MockRemotePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemotePlayer.swift; sourceTree = "<group>"; };
 		C240AC62292EBBCE00263C5A /* RatingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingData.swift; sourceTree = "<group>"; };
 		C24788C52902DAFD00667F1D /* SocketUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketUpdater.swift; sourceTree = "<group>"; };
 		C247DDDA2925772B002BE12C /* SettingsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItem.swift; sourceTree = "<group>"; };
@@ -968,6 +978,7 @@
 		C21D64A12A2D12DF00226AFF /* EpisodeService */ = {
 			isa = PBXGroup;
 			children = (
+				C23E80E02EF2D7900093ACA5 /* MockWatchEpisodeService.swift */,
 				C26BF9A12A157A3E00598F6E /* WatchEpisodeService.swift */,
 				C2D7EA252A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift */,
 				C2D7EA272A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift */,
@@ -1149,6 +1160,7 @@
 		C26743132932DAD000B08632 /* AudioPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				C23E80E22EF2D82F0093ACA5 /* MockAudioPlayer.swift */,
 				C237C4DF28FD686800D246D7 /* DefaultAudioPlayer.swift */,
 			);
 			path = AudioPlayer;
@@ -1158,6 +1170,7 @@
 			isa = PBXGroup;
 			children = (
 				C2E37BE2290037F900FAD613 /* DefaultRemotePlayer.swift */,
+				C23E80E62EF2D8D40093ACA5 /* MockRemotePlayer.swift */,
 			);
 			path = RemotePlayer;
 			sourceTree = "<group>";
@@ -1796,6 +1809,7 @@
 				70556A4525DC63D700ACDB4C /* LoginScreen.swift in Sources */,
 				C237C4CC28FC92C600D246D7 /* DemandBuffer.swift in Sources */,
 				C2DADF6B2916EBA4006C5D58 /* URLHelper.swift in Sources */,
+				C23E80E42EF2D8500093ACA5 /* MockAudioPlayer.swift in Sources */,
 				70369AA925DDCC6C0094B3D7 /* AppleIDAuthorization.swift in Sources */,
 				C29F6B5028FF414B00666184 /* PlayerWidgetViewModel.swift in Sources */,
 				C266BAB52905502A000B6097 /* DatabaseUpdater.swift in Sources */,
@@ -1811,6 +1825,7 @@
 				C2F1EB422A38A978001F8B9E /* EpisodeRequestMessage.swift in Sources */,
 				C2EBFBA429572E22001D650E /* Previewable.swift in Sources */,
 				59B707FD258032AA00AA831D /* RealmDatabase.swift in Sources */,
+				C23E80E82EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */,
 				C20C5C3E2A386B3B0075FCCD /* UserInfoKeys.swift in Sources */,
 				C28B5767293800C2005921B5 /* DownloadsScreenViewModel.swift in Sources */,
 				C28AC3492943DE67006E04BA /* DefaultShortcutHandler.swift in Sources */,
@@ -1954,6 +1969,7 @@
 				C2BBCD51295862E000546903 /* CGSize+Extensions.swift in Sources */,
 				C2146FCA29243979004D4E85 /* URLHelper.swift in Sources */,
 				C2146FCB29243979004D4E85 /* AppleIDAuthorization.swift in Sources */,
+				C23E80E52EF2D8500093ACA5 /* MockAudioPlayer.swift in Sources */,
 				C263F0A92943479B0076065C /* DownloadingCellItem.swift in Sources */,
 				C2146FCC29243979004D4E85 /* PlayerWidgetViewModel.swift in Sources */,
 				C2D471A229279E3C002AD543 /* SettingsStorageInfoCell.swift in Sources */,
@@ -1969,6 +1985,7 @@
 				C2146FD129243979004D4E85 /* AsyncOperation.swift in Sources */,
 				C2146FD329243979004D4E85 /* Socket.swift in Sources */,
 				C2F1EB472A38ABDF001F8B9E /* ReplyMessage.swift in Sources */,
+				C23E80E72EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */,
 				C2EBFBA529572E22001D650E /* Previewable.swift in Sources */,
 				C2D471A329279E3E002AD543 /* SettingsSocketInfoCell.swift in Sources */,
 				C290BADE2932B88300F0532A /* BackgroundTask.swift in Sources */,
@@ -2046,12 +2063,14 @@
 				C2D7EA282A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift in Sources */,
 				C25ED56F2A2B649800E6A4D5 /* Combine+Extensions.swift in Sources */,
 				C25ED57F2A2BA2D100E6A4D5 /* Resolver.swift in Sources */,
+				C23E80E12EF2D7900093ACA5 /* MockWatchEpisodeService.swift in Sources */,
 				C2F1EB442A38A978001F8B9E /* EpisodeRequestMessage.swift in Sources */,
 				C21C5C762A2E2AB200306547 /* LastPlayedDateMessage.swift in Sources */,
 				C25ED5842A2BA72500E6A4D5 /* RemotePlayer.swift in Sources */,
 				C23CBD7B2AF405780024E0A1 /* WatchURLHelper.swift in Sources */,
 				C263FD262A2A261D00FF4715 /* Unwrap.swift in Sources */,
 				C20F9C6D2AFAC920002F0F59 /* WatchEpisodeService+WCSessionDelegate.swift in Sources */,
+				C23E80E92EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */,
 				C263FD212A2A25E200FF4715 /* ShareReplay.swift in Sources */,
 				C21C5C7A2A2E2C2700306547 /* LastPositionMessage.swift in Sources */,
 				C21D649C2A2D107100226AFF /* DefaultAudioPlayer.swift in Sources */,
@@ -2072,6 +2091,7 @@
 				C21D64912A2CAE3200226AFF /* XCAssets+Generated.swift in Sources */,
 				C25ED5712A2B7A8E00E6A4D5 /* EpisodeHistory.swift in Sources */,
 				C23CBD792AF404C60024E0A1 /* EpisodeCommon+Extensions.swift in Sources */,
+				C23E80E32EF2D82F0093ACA5 /* MockAudioPlayer.swift in Sources */,
 				C21D648F2A2CADF000226AFF /* Strings+Generated.swift in Sources */,
 				C23CBD762AF404700024E0A1 /* EpisodeCommon.swift in Sources */,
 				C203729A2A28D643002A6E54 /* UserDefaults+Extensions.swift in Sources */,
@@ -2292,8 +2312,8 @@
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2323,8 +2343,8 @@
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2411,12 +2431,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=watchos*]" = 7JWB953S2M;
+				DEVELOPMENT_TEAM = 7JWB953S2M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AudstreamerWatch/Resources/Info.plist;
@@ -2432,13 +2450,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer.watchkitapp)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
 			};
 			name = Debug;
 		};
@@ -2449,12 +2466,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=watchos*]" = 7JWB953S2M;
+				DEVELOPMENT_TEAM = 7JWB953S2M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AudstreamerWatch/Resources/Info.plist;
@@ -2470,13 +2485,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer.watchkitapp)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
 			};
 			name = Release;
 		};
@@ -2486,11 +2500,9 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
+				DEVELOPMENT_TEAM = 7JWB953S2M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NotificationServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NotificationServiceExtension;
@@ -2505,7 +2517,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.NotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer.NotificationServiceExtension)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -2519,11 +2530,9 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7JWB953S2M;
+				DEVELOPMENT_TEAM = 7JWB953S2M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NotificationServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NotificationServiceExtension;
@@ -2538,7 +2547,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.NotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS development - (hu.barnanemeth.dev.Audstreamer.NotificationServiceExtension)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

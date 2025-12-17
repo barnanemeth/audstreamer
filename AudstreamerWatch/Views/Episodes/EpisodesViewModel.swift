@@ -17,7 +17,8 @@ final class EpisodesViewModel: ObservableObject {
 
     // MARK: Properties
 
-    @Published var episodes = [EpisodeCommon]()
+    @Published private(set) var title = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
+    @Published private(set) var episodes = [EpisodeCommon]()
 
     // MARK: Private properties
 

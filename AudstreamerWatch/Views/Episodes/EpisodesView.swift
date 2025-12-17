@@ -11,8 +11,7 @@ struct EpisodesView: View {
 
     // MARK: Private properties
 
-    @ObservedObject private var viewModel = EpisodesViewModel()
-    private let displayName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
+    @StateObject private var viewModel = EpisodesViewModel()
 
     // MARK: UI
 
@@ -21,16 +20,25 @@ struct EpisodesView: View {
             if viewModel.episodes.isEmpty {
                 Text(L10n.noEpisodes)
             } else {
-                List {
-                    ForEach(viewModel.episodes, id: \.id) { episode in
-                        NavigationLink(episode.title, destination: { PlayingView(episode: episode) })
-                            .foregroundColor(episode.isDownloaded ? .green : .red)
-                            .disabled(!episode.isDownloaded)
-                    }
-                }
-                .navigationTitle(displayName)
-                .navigationBarTitleDisplayMode(.inline)
+                list
             }
         }
+    }
+}
+
+// MARK: - Helpers
+extension EpisodesView {
+    var list: some View {
+        List {
+            ForEach(viewModel.episodes, id: \.id) { episode in
+                NavigationLink(episode.title) {
+                    PlayingView(episode: episode)
+                }
+                .foregroundColor(episode.isDownloaded ? .green : .red)
+                .disabled(!episode.isDownloaded)
+            }
+        }
+        .navigationTitle(viewModel.title)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

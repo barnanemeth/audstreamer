@@ -83,7 +83,7 @@ extension LoginScreenViewModel {
                     }
                     promise(.success(isGranted))
                 }
-                )
+            )
         }
         .eraseToAnyPublisher()
     }

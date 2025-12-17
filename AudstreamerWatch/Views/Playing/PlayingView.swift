@@ -12,20 +12,67 @@ struct PlayingView: View {
 
     // MARK: Private properties
 
-    @ObservedObject private var viewModel = PlayingViewModel()
+    let episode: EpisodeCommon
 
-    // MAR: Init
-
-    init(episode: EpisodeCommon) {
-        viewModel.setEpisode(episode)
-    }
+    @StateObject private var viewModel = PlayingViewModel()
 
     // MARK: UI
 
     var body: some View {
-        NowPlayingView()
-            .navigationTitle(viewModel.episode?.title ?? "")
-            .onAppear(perform: { viewModel.play() })
-            .toolbarBackground(.hidden, for: .navigationBar)
+        VStack {
+            if let episode = viewModel.currentlyPlayingEpisode {
+                episodeContent(with: episode)
+            } else {
+                loading
+            }
+        }
+        .onAppear { viewModel.setEpisode(episode) }
+        .toolbarBackground(.hidden, for: .navigationBar)
+    }
+}
+
+// MARK: - Helpers
+
+extension PlayingView {
+    var loading: some View {
+        ProgressView()
+            .progressViewStyle(.circular)
+    }
+
+    @ViewBuilder
+    func episodeContent(with episode: EpisodeCommon) -> some View {
+        Text(episode.title)
+            .font(.subheadline)
+
+        Spacer()
+
+        HStack {
+            Button("", systemImage: "backward.circle.fill") {
+                viewModel.seekBackward()
+            }
+            .buttonStyle(.bordered)
+
+            let systemImage = if viewModel.isPlaying {
+                "pause.circle.fill"
+            } else {
+                "play.circle.fill"
+            }
+            Button("", systemImage: systemImage) {
+                viewModel.playPause()
+            }
+            .buttonStyle(.bordered)
+
+            Button("", systemImage: "forward.circle.fill") {
+                viewModel.seekForward()
+            }
+            .buttonStyle(.bordered)
+        }
+
+        Spacer()
+
+        HStack {
+            ProgressView()
+                .progressViewStyle(.linear)
+        }
     }
 }

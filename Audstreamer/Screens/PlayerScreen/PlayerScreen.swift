@@ -157,7 +157,9 @@ extension PlayerScreen {
         tableView.estimatedRowHeight = EpisodeInfoCell.Constant.minimumHeight
         tableView.sectionHeaderHeight = Constant.sectionHeaderHeight
         tableView.sectionFooterHeight = Constant.sectionFooterHeight
+        #if !targetEnvironment(macCatalyst)
         tableView.refreshControl = refreshControl
+        #endif
 
         tableView.register(EpisodeInfoCell.self, forCellReuseIdentifier: EpisodeInfoCell.reusdeIdentifier)
         tableView.register(EpisodeDetailCell.self, forCellReuseIdentifier: EpisodeDetailCell.reusdeIdentifier)

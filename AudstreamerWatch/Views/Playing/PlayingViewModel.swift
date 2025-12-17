@@ -14,33 +14,85 @@ final class PlayingViewModel: ObservableObject {
     // MARK: Dependencies
 
     @Injected private var audioPlayer: AudioPlayer
+    @Injected private var episodeService: EpisodeService
 
     // MARK: Properties
 
-    @Published var episode: EpisodeCommon?
+    @Published private(set) var currentlyPlayingEpisode: EpisodeCommon?
+    @Published private(set) var isPlaying = false
 
     // MARK: Private properties
 
     private var cancellables = Set<AnyCancellable>()
+
+    // MARK: - Init
+
+    init() {
+        subscribeToCurrenEpisode()
+        subscribeToPlayingState()
+    }
 }
 
 // MARK: - Actions
 
 extension PlayingViewModel {
     func setEpisode(_ episode: EpisodeCommon) {
-        self.episode = episode
-    }
-
-    func play() {
-        let episode = $episode.setFailureType(to: Error.self).first()
-        let currentPlayingAudioInfo = audioPlayer.getCurrentPlayingAudioInfo().first()
-
-        Publishers.Zip(episode, currentPlayingAudioInfo)
-            .flatMap { [unowned self] episode, audioInfo -> AnyPublisher<Void, Error> in
-                guard let episode, episode.id != audioInfo?.id else { return Just.void() }
+        audioPlayer.getCurrentPlayingAudioInfo()
+            .first()
+            .flatMap { [unowned self] audioInfo -> AnyPublisher<Void, Error> in
+                guard episode.id != audioInfo?.id else { return Just.void() }
                 return self.audioPlayer.insert(episode, playImmediately: true)
             }
             .sink()
             .store(in: &cancellables)
+    }
+
+    func playPause() {
+        let publisher: AnyPublisher<Void, Error> = if isPlaying {
+            audioPlayer.pause()
+        } else {
+            audioPlayer.play()
+        }
+
+        publisher
+            .sink()
+            .store(in: &cancellables)
+    }
+
+    func seekBackward() {
+        audioPlayer.seekBackward()
+            .sink()
+            .store(in: &cancellables)
+    }
+
+    func seekForward() {
+        audioPlayer.seekForward()
+            .sink()
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: - Helpers
+
+extension PlayingViewModel {
+    private func subscribeToCurrenEpisode() {
+        let currentAudioID = audioPlayer.getCurrentPlayingAudioInfo().compactMap(\.?.id).removeDuplicates()
+        let episodes = episodeService.getEpisodes()
+
+        Publishers.CombineLatest(currentAudioID, episodes)
+            .map { currentAudioID, episodes in
+                episodes.first(where: { $0.id == currentAudioID })
+            }
+            .receive(on: DispatchQueue.main)
+            .replaceError(with: nil)
+            .assign(to: &$currentlyPlayingEpisode)
+    }
+
+    private func subscribeToPlayingState() {
+        audioPlayer.isPlaying()
+            .removeDuplicates()
+            .replaceError(with: false)
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$isPlaying)
     }
 }
