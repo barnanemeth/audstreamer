@@ -20,6 +20,9 @@ final class PlayingViewModel: ObservableObject {
 
     @Published private(set) var currentlyPlayingEpisode: EpisodeCommon?
     @Published private(set) var isPlaying = false
+    @Published private(set) var progress: Float = 0.0
+    @Published private(set) var elapsedTime = "00:00:00"
+    @Published private(set) var remainingTime = "-00:00:00"
 
     // MARK: Private properties
 
@@ -30,6 +33,7 @@ final class PlayingViewModel: ObservableObject {
     init() {
         subscribeToCurrenEpisode()
         subscribeToPlayingState()
+        subscribeToCurrentTime()
     }
 }
 
@@ -94,5 +98,19 @@ extension PlayingViewModel {
             .replaceError(with: false)
             .receive(on: DispatchQueue.main)
             .assign(to: &$isPlaying)
+    }
+
+    private func subscribeToCurrentTime() {
+        let duration = audioPlayer.getCurrentPlayingAudioInfo().compactMap(\.?.duration).removeDuplicates()
+        let elapsedTime = audioPlayer.getCurrentSeconds().removeDuplicates()
+
+        Publishers.CombineLatest(duration, elapsedTime)
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] duration, elapsedTime in
+                self.elapsedTime = elapsedTime.secondsToHoursMinutesSecondsString
+                self.remainingTime = "-\((Double(duration) - elapsedTime).secondsToHoursMinutesSecondsString)"
+                self.progress = Float(elapsedTime) / Float(duration)
+            }
+            .store(in: &cancellables)
     }
 }

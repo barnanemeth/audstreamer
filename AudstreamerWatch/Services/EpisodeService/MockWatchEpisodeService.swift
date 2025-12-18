@@ -18,7 +18,7 @@ extension MockWatchEpisodeService: EpisodeService {
             var episode = EpisodeCommon(
                 from: [
                     "id": "id\(offset)",
-                    "title": "Title\(offset)",
+                    "title": "Title\(offset) title title title title title title",
                     "duration": 60,
                     "lastPosition": 0
                 ]

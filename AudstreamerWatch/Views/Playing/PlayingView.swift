@@ -19,7 +19,7 @@ struct PlayingView: View {
     // MARK: UI
 
     var body: some View {
-        VStack {
+        Group {
             if let episode = viewModel.currentlyPlayingEpisode {
                 episodeContent(with: episode)
             } else {
@@ -34,45 +34,68 @@ struct PlayingView: View {
 // MARK: - Helpers
 
 extension PlayingView {
-    var loading: some View {
+    private var loading: some View {
         ProgressView()
             .progressViewStyle(.circular)
     }
 
     @ViewBuilder
-    func episodeContent(with episode: EpisodeCommon) -> some View {
+    private func episodeContent(with episode: EpisodeCommon) -> some View {
+        VStack {
+            title
+            Spacer()
+            buttons
+            Spacer()
+            progress
+        }
+    }
+
+    private var title: some View {
         Text(episode.title)
             .font(.subheadline)
+            .multilineTextAlignment(.center)
+    }
 
-        Spacer()
-
+    private var buttons: some View {
         HStack {
-            Button("", systemImage: "backward.circle.fill") {
+            Button {
                 viewModel.seekBackward()
+            } label: {
+                Image(systemName: "backward.circle.fill")
             }
-            .buttonStyle(.bordered)
 
-            let systemImage = if viewModel.isPlaying {
-                "pause.circle.fill"
-            } else {
-                "play.circle.fill"
-            }
-            Button("", systemImage: systemImage) {
+            Button {
                 viewModel.playPause()
+            } label: {
+                let systemImage = if viewModel.isPlaying {
+                    "pause.circle.fill"
+                } else {
+                    "play.circle.fill"
+                }
+                Image(systemName: systemImage)
             }
-            .buttonStyle(.bordered)
 
-            Button("", systemImage: "forward.circle.fill") {
+            Button {
                 viewModel.seekForward()
+            } label: {
+                Image(systemName: "forward.circle.fill")
             }
-            .buttonStyle(.bordered)
         }
+        .buttonStyle(.glass)
+    }
 
-        Spacer()
-
-        HStack {
-            ProgressView()
+    private var progress: some View {
+        VStack {
+            ProgressView(value: viewModel.progress)
                 .progressViewStyle(.linear)
+                .animation(.default, value: viewModel.progress)
+
+            HStack {
+                Text(viewModel.elapsedTime)
+                Spacer()
+                Text(viewModel.remainingTime)
+            }
+            .font(.caption2)
         }
     }
 }

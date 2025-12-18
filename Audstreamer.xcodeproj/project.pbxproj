@@ -223,6 +223,7 @@
 		C23E80E72EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E62EF2D8D40093ACA5 /* MockRemotePlayer.swift */; };
 		C23E80E82EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E62EF2D8D40093ACA5 /* MockRemotePlayer.swift */; };
 		C23E80E92EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E62EF2D8D40093ACA5 /* MockRemotePlayer.swift */; };
+		C23E80EA2EF43B5E0093ACA5 /* Double+ToHoursMinutesSeconds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B7082C258154DF00AA831D /* Double+ToHoursMinutesSeconds.swift */; };
 		C240AC63292EBBCE00263C5A /* RatingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C240AC62292EBBCE00263C5A /* RatingData.swift */; };
 		C240AC64292EBBCE00263C5A /* RatingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C240AC62292EBBCE00263C5A /* RatingData.swift */; };
 		C2449A4F293783580088C55D /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = C2449A4E293783580088C55D /* Nuke */; };
@@ -2062,6 +2063,7 @@
 				C263FD272A2A28DC00FF4715 /* ZipMany.swift in Sources */,
 				C2D7EA282A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift in Sources */,
 				C25ED56F2A2B649800E6A4D5 /* Combine+Extensions.swift in Sources */,
+				C23E80EA2EF43B5E0093ACA5 /* Double+ToHoursMinutesSeconds.swift in Sources */,
 				C25ED57F2A2BA2D100E6A4D5 /* Resolver.swift in Sources */,
 				C23E80E12EF2D7900093ACA5 /* MockWatchEpisodeService.swift in Sources */,
 				C2F1EB442A38A978001F8B9E /* EpisodeRequestMessage.swift in Sources */,
@@ -2455,7 +2457,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
 		};
@@ -2490,7 +2492,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};
