@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>YouTube</title>
+    <language>hu-hu</language>
+    <image>
+      <url>https://pub-a299584d7e264c9682f5bdaa6ce4971c.r2.dev/logo.jpg</url>
+    </image>
+    <item>
+      <title>A Fidesznek HR-problémái vannak, de továbbra sem szabad leírni őket ❌ Vétó #42 Ruff Bálinttal</title>
+      <link>https://www.youtube.com/watch?v=rBfPj3E2-Bc</link>
+      <author>Partizán</author>
+      <enclosure url="https://pub-a299584d7e264c9682f5bdaa6ce4971c.r2.dev/rBfPj3E2-Bc.mp3" length="79875260" type="audio/mpeg" />
+      <guid isPermaLink="false" />
+      <pubDate>Thu, 16 Jan 2025 17:01:02 GMT</pubDate>
+      <itunes:author>Partizán</itunes:author>
+      <itunes:image href="https://pub-a299584d7e264c9682f5bdaa6ce4971c.r2.dev/rBfPj3E2-Bc.webp" />
+      <itunes:duration>3817.0</itunes:duration>
+      <itunes:title>A Fidesznek HR-problémái vannak, de továbbra sem szabad leírni őket ❌ Vétó #42 Ruff Bálinttal</itunes:title>
+    </item>
+  </channel>
+</rss>

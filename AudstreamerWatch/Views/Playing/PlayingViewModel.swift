@@ -15,6 +15,7 @@ final class PlayingViewModel: ObservableObject {
 
     @Injected private var audioPlayer: AudioPlayer
     @Injected private var episodeService: EpisodeService
+    private let audioSession = AVAudioSession.sharedInstance()
 
     // MARK: Properties
 
@@ -23,6 +24,7 @@ final class PlayingViewModel: ObservableObject {
     @Published private(set) var progress: Float = 0.0
     @Published private(set) var elapsedTime = "00:00:00"
     @Published private(set) var remainingTime = "-00:00:00"
+    @Published private(set) var isVolumeOverlayVisible = false
 
     // MARK: Private properties
 
@@ -34,6 +36,7 @@ final class PlayingViewModel: ObservableObject {
         subscribeToCurrenEpisode()
         subscribeToPlayingState()
         subscribeToCurrentTime()
+        subscribeToVolumeChange()
     }
 }
 
@@ -110,6 +113,23 @@ extension PlayingViewModel {
                 self.elapsedTime = elapsedTime.secondsToHoursMinutesSecondsString
                 self.remainingTime = "-\((Double(duration) - elapsedTime).secondsToHoursMinutesSecondsString)"
                 self.progress = Float(elapsedTime) / Float(duration)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func subscribeToVolumeChange() {
+        audioSession.publisher(for: \.outputVolume)
+            .dropFirst()
+            .handleEvents(receiveOutput: { [unowned self] _ in
+                isVolumeOverlayVisible = true
+            })
+            .map { _ in
+                Just(()).delay(for: 1, scheduler: DispatchQueue.main)
+            }
+            .switchToLatest()
+            .print()
+            .sink { [unowned self] in
+                isVolumeOverlayVisible = false
             }
             .store(in: &cancellables)
     }

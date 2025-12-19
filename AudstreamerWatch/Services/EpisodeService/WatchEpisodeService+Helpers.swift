@@ -45,32 +45,28 @@ extension WatchEpisodeService {
             .map { [unowned self] in self.episodes.replaceError(with: []).removeDuplicates() }
             .switchToLatest()
             .scan(EpisodeHistory(), { $0.appending($1) })
-            .flatMap { [unowned self] in self.deleteOrDownload(episodeHistory: $0) }
+            .flatMap { [unowned self] in self.deleteEpisodes(by: $0) }
             .sink()
             .store(in: &cancellables)
     }
 
-    func deleteOrDownload(episodeHistory: EpisodeHistory) -> AnyPublisher<Void, Error> {
+    func deleteEpisodes(by episodeHistory: EpisodeHistory) -> AnyPublisher<Void, Error> {
         let currentEpisodes = episodeHistory.current ?? []
         let nextEpisodes = episodeHistory.next ?? []
 
         let difference = nextEpisodes.difference(from: currentEpisodes)
 
-        let (deletes, downloads) = difference.reduce(
-            into: ([AnyPublisher<Void, Error>](), [AnyPublisher<Void, Error>]()), { modifications, difference in
-                switch difference {
-                case let .insert(_, episode, _):
-                    modifications.0.append(downloadEpisodeIfNeeded(episode))
-                case let .remove(_, episode, _):
-                    modifications.1.append(deleteEpisodeIfNeeded(episode))
-                }
-            }
-        )
+        let publishers = difference.compactMap { difference -> AnyPublisher<Void, Error>? in
+            guard case let .remove(_, episode, _) = difference else { return nil }
+            return deleteEpisodeIfNeeded(episode)
+        }
 
-        let deletePublishers = !deletes.isEmpty ? deletes.zip().toVoid() : Just.void()
-        let downloadPublishers = !downloads.isEmpty ? downloads.zip().toVoid() : Just.void()
+        return if publishers.isEmpty {
+            Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
+        } else {
+            publishers.zip().toVoid().eraseToAnyPublisher()
+        }
 
-        return deletePublishers.flatMap { downloadPublishers }.eraseToAnyPublisher()
     }
 
     func deleteEpisodeIfNeeded(_ episode: EpisodeCommon) -> AnyPublisher<Void, Error> {
@@ -81,14 +77,14 @@ extension WatchEpisodeService {
             .eraseToAnyPublisher()
     }
 
-    func downloadEpisodeIfNeeded(_ episode: EpisodeCommon) -> AnyPublisher<Void, Error> {
-        isDownloaded(episode)
-            .flatMap { [unowned self] isDownloaded -> AnyPublisher<Void, Error> in
-                guard !isDownloaded else { return Just.void() }
-                return self.download(episode)
-            }
-            .eraseToAnyPublisher()
-    }
+//    func downloadEpisodeIfNeeded(_ episode: EpisodeCommon) -> AnyPublisher<Void, Error> {
+//        isDownloaded(episode)
+//            .flatMap { [unowned self] isDownloaded -> AnyPublisher<Void, Error> in
+//                guard !isDownloaded else { return Just.void() }
+//                return self.download(episode)
+//            }
+//            .eraseToAnyPublisher()
+//    }
 
     func cancelOutstandingLastPlayedDateTransfers<T: WatchConnectivityEpisodeBasedMessage>(
         for episodeID: String,
@@ -103,16 +99,15 @@ extension WatchEpisodeService {
     }
 
     func updateDownloadedState(of episodeID: String, isDownloaded: Bool) {
-        episodes
-            .first()
-            .map { episodes in
-                guard let episodeIndex = episodes.firstIndex(where: { $0.id == episodeID }) else { return episodes }
-                var episodes = episodes
-                episodes[episodeIndex].isDownloaded = isDownloaded
-                return episodes
-            }
-            .tryMap { [unowned self] in try self.encoder.encode($0) }
-            .sink { [unowned self] in self.userDefaults.episodesData = $0 }
-            .store(in: &cancellables)
+        do {
+            var episodes = try decodeEpisodes(from: userDefaults.episodesData)
+            guard let index = episodes.firstIndex(where: { $0.id == episodeID }) else { return }
+            episodes[index].isDownloaded = isDownloaded
+
+            let data = try encoder.encode(episodes)
+            userDefaults.episodesData = data
+        } catch {
+            print("Cannot update downloaded state for episode with ID: \(episodeID)")
+        }
     }
 }

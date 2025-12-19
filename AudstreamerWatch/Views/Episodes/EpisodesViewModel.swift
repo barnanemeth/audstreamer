@@ -7,13 +7,13 @@
 
 import Foundation
 import Combine
+import AVFoundation
 
 final class EpisodesViewModel: ObservableObject {
 
     // MARK: Dependencies
 
     @Injected private var episodeService: EpisodeService
-    @Injected private var updater: Updater
 
     // MARK: Properties
 
@@ -31,7 +31,6 @@ final class EpisodesViewModel: ObservableObject {
 
     init() {
         setupBindings()
-        updater.startUpdating()
     }
 }
 

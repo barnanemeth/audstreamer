@@ -28,6 +28,12 @@ struct PlayingView: View {
         }
         .onAppear { viewModel.setEpisode(episode) }
         .toolbarBackground(.hidden, for: .navigationBar)
+        .focusable(true)
+        .overlay {
+            SystemVolumeControl(origin: .local)
+                .opacity(viewModel.isVolumeOverlayVisible ? 1 : 0.001)
+                .allowsHitTesting(false)
+        }
     }
 }
 
@@ -54,6 +60,7 @@ extension PlayingView {
         Text(episode.title)
             .font(.subheadline)
             .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity, alignment: .center)
     }
 
     private var buttons: some View {

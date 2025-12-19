@@ -35,7 +35,7 @@ extension EpisodesView {
                     PlayingView(episode: episode)
                 }
                 .foregroundColor(episode.isDownloaded ? .green : .red)
-                .disabled(!episode.isDownloaded)
+//                .disabled(!episode.isDownloaded)
             }
         }
         .navigationTitle(viewModel.title)

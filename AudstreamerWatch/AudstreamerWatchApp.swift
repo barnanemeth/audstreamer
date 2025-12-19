@@ -6,15 +6,14 @@
 //
 
 import SwiftUI
+import WatchKit
 
 @main
 struct AudstreamerWatchApp: App {
 
-    // MARK: Init
+    // MARK: Private properties
 
-    init() {
-        registerServices()
-    }
+    @WKApplicationDelegateAdaptor var appDelegate: WatchAppDelegate
 
     // MARK: UI
 
@@ -22,27 +21,5 @@ struct AudstreamerWatchApp: App {
         WindowGroup {
             EpisodesView()
         }
-    }
-}
-
-// MARK: - Helpers
-
-extension AudstreamerWatchApp {
-    private func registerServices() {
-        Resolver.register { WatchEpisodeService() }
-            .implements(EpisodeService.self)
-            .implements(DownloadService.self)
-            .scope(.cached)
-
-        Resolver.register { DefaultAudioPlayer() }
-            .implements(AudioPlayer.self)
-            .scope(.cached)
-
-        Resolver.register { WatchRemotePlayer() }
-            .implements(RemotePlayer.self)
-            .scope(.cached)
-
-        Resolver.register { Updater() }
-            .scope(.cached)
     }
 }

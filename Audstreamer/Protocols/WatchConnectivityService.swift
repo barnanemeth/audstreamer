@@ -13,5 +13,6 @@ protocol WatchConnectivityService {
     func isAvailable() -> AnyPublisher<Bool, Error>
     func isConnected() -> AnyPublisher<Bool, Error>
     func getAggregatedFileTransferProgress() -> AnyPublisher<FileTransferAggregatedProgress, Error>
+    func transferEpisode(_ episodeID: String) -> AnyPublisher<Void, Error>
     func cancelFileTransferForEpisode(_ episodeID: String) -> AnyPublisher<Void, Error>
 }

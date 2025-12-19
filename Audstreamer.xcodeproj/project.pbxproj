@@ -224,6 +224,8 @@
 		C23E80E82EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E62EF2D8D40093ACA5 /* MockRemotePlayer.swift */; };
 		C23E80E92EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E62EF2D8D40093ACA5 /* MockRemotePlayer.swift */; };
 		C23E80EA2EF43B5E0093ACA5 /* Double+ToHoursMinutesSeconds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B7082C258154DF00AA831D /* Double+ToHoursMinutesSeconds.swift */; };
+		C23E81642EF560940093ACA5 /* WatchAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E81632EF560940093ACA5 /* WatchAppDelegate.swift */; };
+		C23E81672EF5881C0093ACA5 /* SystemVolumeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E81662EF5881C0093ACA5 /* SystemVolumeControl.swift */; };
 		C240AC63292EBBCE00263C5A /* RatingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C240AC62292EBBCE00263C5A /* RatingData.swift */; };
 		C240AC64292EBBCE00263C5A /* RatingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C240AC62292EBBCE00263C5A /* RatingData.swift */; };
 		C2449A4F293783580088C55D /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = C2449A4E293783580088C55D /* Nuke */; };
@@ -569,6 +571,8 @@
 		C23E80E02EF2D7900093ACA5 /* MockWatchEpisodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWatchEpisodeService.swift; sourceTree = "<group>"; };
 		C23E80E22EF2D82F0093ACA5 /* MockAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAudioPlayer.swift; sourceTree = "<group>"; };
 		C23E80E62EF2D8D40093ACA5 /* MockRemotePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemotePlayer.swift; sourceTree = "<group>"; };
+		C23E81632EF560940093ACA5 /* WatchAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchAppDelegate.swift; sourceTree = "<group>"; };
+		C23E81662EF5881C0093ACA5 /* SystemVolumeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemVolumeControl.swift; sourceTree = "<group>"; };
 		C240AC62292EBBCE00263C5A /* RatingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingData.swift; sourceTree = "<group>"; };
 		C24788C52902DAFD00667F1D /* SocketUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketUpdater.swift; sourceTree = "<group>"; };
 		C247DDDA2925772B002BE12C /* SettingsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItem.swift; sourceTree = "<group>"; };
@@ -1075,9 +1079,18 @@
 			path = PlayerScreen;
 			sourceTree = "<group>";
 		};
+		C23E81652EF588060093ACA5 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				C23E81662EF5881C0093ACA5 /* SystemVolumeControl.swift */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
 		C25ED5762A2B826500E6A4D5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C23E81652EF588060093ACA5 /* Elements */,
 				C25ED5772A2B826900E6A4D5 /* Episodes */,
 				C25ED5782A2B827100E6A4D5 /* Playing */,
 			);
@@ -1327,6 +1340,7 @@
 				C25ED5762A2B826500E6A4D5 /* Views */,
 				C21D64872A2CA4EC00226AFF /* Resources */,
 				C26BF98D2A1562E200598F6E /* AudstreamerWatchApp.swift */,
+				C23E81632EF560940093ACA5 /* WatchAppDelegate.swift */,
 			);
 			path = AudstreamerWatch;
 			sourceTree = "<group>";
@@ -2077,8 +2091,10 @@
 				C21C5C7A2A2E2C2700306547 /* LastPositionMessage.swift in Sources */,
 				C21D649C2A2D107100226AFF /* DefaultAudioPlayer.swift in Sources */,
 				C25ED5732A2B817A00E6A4D5 /* PlayingView.swift in Sources */,
+				C23E81642EF560940093ACA5 /* WatchAppDelegate.swift in Sources */,
 				C25ED57E2A2B96C100E6A4D5 /* AudioPlayer.swift in Sources */,
 				C263FD252A2A261200FF4715 /* JustVoid.swift in Sources */,
+				C23E81672EF5881C0093ACA5 /* SystemVolumeControl.swift in Sources */,
 				C2F1EB482A38ABDF001F8B9E /* ReplyMessage.swift in Sources */,
 				C22880F02AEEF1DE007A7059 /* EpisodeTransferMetadata.swift in Sources */,
 				C263FD242A2A260700FF4715 /* AsyncOperation.swift in Sources */,

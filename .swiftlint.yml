@@ -123,8 +123,8 @@ legacy_nsgeometry_functions:
   severity: error
 line_length:
   ignores_comments: true
-  warning: 120
-  error: 120
+  warning: 130
+  error: 130
 mark:
   severity: error
 opening_brace:

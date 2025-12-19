@@ -201,9 +201,13 @@ extension PlayerScreenViewModel {
 
     func toggleEpisodeIsOnWatch(_ episode: EpisodeData) {
         database.updateEpisode(episode, isOnWatch: !episode.isOnWatch)
+            .receive(on: DispatchQueue.main)
             .flatMap { [unowned self] _ -> AnyPublisher<Void, Error> in
-                guard !episode.isOnWatch else { return Just.void() }
-                return self.watchConnectivityService.cancelFileTransferForEpisode(episode.id)
+                if episode.isOnWatch {
+                    watchConnectivityService.transferEpisode(episode.id)
+                } else {
+                    watchConnectivityService.cancelFileTransferForEpisode(episode.id)
+                }
             }
             .sink()
             .store(in: &cancellables)

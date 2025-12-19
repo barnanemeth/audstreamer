@@ -110,7 +110,6 @@ extension CloudKitFetchSubscription: Subscription {
 
     func cancel() {
         currentOperation?.cancel()
-        cancellables.removeAll()
     }
 }
 
