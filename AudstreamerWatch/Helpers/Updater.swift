@@ -31,7 +31,6 @@ extension Updater {
         guard cancellables.isEmpty else { return }
         subscribeToCurrentPlayingAudioInfo()
         subscribeToCurrentSeconds()
-        subscribeToPlayingState()
         subscribeToRemotePlayerEvents()
     }
 
@@ -71,7 +70,7 @@ extension Updater {
         Publishers.CombineLatest(audioPlayer.getCurrentSeconds(), currentPlayingAudioInfo)
             .throttle(for: 30, scheduler: DispatchQueue.global(qos: .background), latest: true)
             .flatMap { [unowned self] seconds, audioInfo -> AnyPublisher<Void, Error> in
-                guard let audioInfo else { return Just.void() }
+                guard let audioInfo, !seconds.isNaN else { return Just.void() }
 
                 let updateNowPlaying = self.remotePlayer.updateElapsedTime(seconds)
                 let updateLastPosition = self.episodeService.updateLastPosition(Int(seconds), for: audioInfo.id)
@@ -83,13 +82,6 @@ extension Updater {
 
         audioPlayer.getCurrentSeconds()
             .flatMap { [unowned self] in self.remotePlayer.updateElapsedTime($0) }
-            .sink()
-            .store(in: &cancellables)
-    }
-
-    private func subscribeToPlayingState() {
-        audioPlayer.isPlaying()
-            .flatMap { [unowned self] in self.remotePlayer.updatePlaybackState(isPlaying: $0) }
             .sink()
             .store(in: &cancellables)
     }

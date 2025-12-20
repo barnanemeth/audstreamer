@@ -34,7 +34,6 @@ struct PlayingView: View {
                 .opacity(viewModel.isVolumeOverlayVisible ? 1 : 0.001)
                 .allowsHitTesting(false)
         }
-        .animation(.default, value: viewModel.isVolumeOverlayVisible)
     }
 }
 
@@ -89,13 +88,13 @@ extension PlayingView {
                 Image(systemName: "forward.circle.fill")
             }
         }
+        .font(.title)
         .buttonStyle(.glass)
     }
 
     private var progress: some View {
-        VStack {
-            ProgressView(value: viewModel.progress)
-                .progressViewStyle(.linear)
+        VStack(spacing: .zero) {
+            ProgressBar(progress: viewModel.progress)
                 .animation(.default, value: viewModel.progress)
 
             HStack {
@@ -105,5 +104,6 @@ extension PlayingView {
             }
             .font(.footnote)
         }
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
