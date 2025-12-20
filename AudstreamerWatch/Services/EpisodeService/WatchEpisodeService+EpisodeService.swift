@@ -32,4 +32,30 @@ extension WatchEpisodeService: EpisodeService {
             }
             .eraseToAnyPublisher()
     }
+
+    func deleteAbandonedEpisodes() -> AnyPublisher<Void, Error> {
+        Promise { promise in
+            DispatchQueue.global(qos: .background).async {
+                do {
+                    let episodes = try self.decodeEpisodes(from: self.userDefaults.episodesData)
+                    let downloadedEpisodes = self.urlsForDownloadedEpisodes()
+
+                    try downloadedEpisodes.forEach { episodeURL in
+                        let episodeID = episodeURL.deletingPathExtension().lastPathComponent
+                        guard !episodes.contains(where: { $0.id == episodeID }) else { return }
+                        try self.fileManager.removeItem(at: episodeURL)
+
+                        promise(.success(()))
+                    }
+                } catch {
+                    promise(.failure(error))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func sendUpdateTrigger() -> AnyPublisher<Void, Error> {
+        Just(updateTriggerSubject.send(())).setFailureType(to: Error.self).eraseToAnyPublisher()
+    }
 }

@@ -20,13 +20,6 @@ final class EpisodesViewModel: ObservableObject {
     @Published private(set) var title = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
     @Published private(set) var episodes = [EpisodeCommon]()
 
-    // MARK: Private properties
-
-    private var cancellables = Set<AnyCancellable>()
-    private lazy var sharedEpisodes: AnyPublisher<[EpisodeCommon], Error> = {
-        episodeService.getEpisodes().shareReplay()
-    }()
-
     // MARK: Init
 
     init() {
@@ -38,7 +31,7 @@ final class EpisodesViewModel: ObservableObject {
 
 extension EpisodesViewModel {
     private func setupBindings() {
-        sharedEpisodes
+        episodeService.getEpisodes()
             .replaceError(with: [])
             .receive(on: DispatchQueue.main)
             .assign(to: &$episodes)

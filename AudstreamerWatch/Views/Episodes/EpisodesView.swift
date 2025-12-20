@@ -30,12 +30,12 @@ struct EpisodesView: View {
 extension EpisodesView {
     var list: some View {
         List {
-            ForEach(viewModel.episodes, id: \.id) { episode in
+            ForEach(viewModel.episodes, id: \.self) { episode in
                 NavigationLink(episode.title) {
                     PlayingView(episode: episode)
                 }
                 .foregroundColor(episode.isDownloaded ? .green : .red)
-//                .disabled(!episode.isDownloaded)
+                .disabled(!episode.isDownloaded)
             }
         }
         .navigationTitle(viewModel.title)

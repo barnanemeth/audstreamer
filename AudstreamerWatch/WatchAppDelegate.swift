@@ -6,11 +6,34 @@
 //
 
 import WatchKit
+import Combine
 
-final class WatchAppDelegate: NSObject, WKApplicationDelegate {
+final class WatchAppDelegate: NSObject {
+
+    // MARK: Dependencies
+
+    @LazyInjected private var episodeService: EpisodeService
+    @LazyInjected private var updater: Updater
+
+    // MARK: Private properties
+
+    private var cancellables = Set<AnyCancellable>()
+}
+
+// MARK: - WKApplicationDelegate
+extension WatchAppDelegate: WKApplicationDelegate {
     func applicationDidFinishLaunching() {
         registerServices()
         startUpdating()
+    }
+
+    func applicationDidEnterBackground() {
+        deleteAbandonedEpisodes()
+    }
+
+    func applicationDidBecomeActive() {
+        sendUpdateTrigger()
+        deleteAbandonedEpisodes()
     }
 }
 
@@ -36,7 +59,19 @@ extension WatchAppDelegate {
     }
 
     private func startUpdating() {
-        @Injected var updater: Updater
         updater.startUpdating()
+    }
+
+    private func deleteAbandonedEpisodes() {
+        episodeService.deleteAbandonedEpisodes()
+            .replaceError(with: ())
+            .sink()
+            .store(in: &cancellables)
+    }
+
+    private func sendUpdateTrigger() {
+        episodeService.sendUpdateTrigger()
+            .sink()
+            .store(in: &cancellables)
     }
 }

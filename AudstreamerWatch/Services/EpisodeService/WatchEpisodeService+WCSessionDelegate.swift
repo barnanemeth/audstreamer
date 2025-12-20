@@ -22,12 +22,14 @@ extension WatchEpisodeService: WCSessionDelegate {
     }
 
     func session(_ session: WCSession, didReceive file: WCSessionFile) {
-        let filename = file.fileURL.lastPathComponent
-        guard let episodeID = filename.components(separatedBy: ".").first,
-              let targetURL = WatchURLHelper.getURLForEpisode(episodeID) else { return }
+        guard let dictionary = file.metadata,
+              let metadata = EpisodeTransferMetadata(from: dictionary),
+              let targetURL = WatchURLHelper.getURLForEpisode(metadata.episodeID)
+        else { return }
+
         do {
             try fileManager.moveItem(at: file.fileURL, to: targetURL)
-            updateDownloadedState(of: episodeID, isDownloaded: true)
+            updateTriggerSubject.send(())
         } catch {
             print(error)
         }

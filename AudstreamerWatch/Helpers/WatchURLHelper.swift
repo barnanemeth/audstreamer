@@ -8,11 +8,15 @@
 import Foundation
 
 enum WatchURLHelper {
-    static func getURLForEpisode(_ episodeID: String) -> URL? {
+    static var episodeDirectory: URL? {
         FileManager
             .default
             .urls(for: .documentDirectory, in: .userDomainMask)
             .first?
-            .appendingPathComponent(episodeID, conformingTo: .mp3)
+            .appending(path: "episodes", directoryHint: .isDirectory)
+    }
+
+    static func getURLForEpisode(_ episodeID: String) -> URL? {
+        episodeDirectory?.appendingPathComponent(episodeID, conformingTo: .mp3)
     }
 }

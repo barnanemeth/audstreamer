@@ -37,6 +37,14 @@ extension MockWatchEpisodeService: EpisodeService {
     func updateLastPosition(_ lastPosition: Int, for episodeID: String) -> AnyPublisher<Void, any Error> {
         Empty(completeImmediately: false).eraseToAnyPublisher()
     }
+
+    func deleteAbandonedEpisodes() -> AnyPublisher<Void, any Error> {
+        Empty(completeImmediately: false).eraseToAnyPublisher()
+    }
+
+    func sendUpdateTrigger() -> AnyPublisher<Void, any Error> {
+        Empty(completeImmediately: false).eraseToAnyPublisher()
+    }
 }
 
 // MARK: - DownloadService

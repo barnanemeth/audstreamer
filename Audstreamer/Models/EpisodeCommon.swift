@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct EpisodeCommon: Codable {
+struct EpisodeCommon: Codable, Hashable, Equatable {
 
     // MARK: Constants
 
@@ -48,17 +48,5 @@ struct EpisodeCommon: Codable {
         self.title = title
         self.duration = duration
         self.lastPosition = lastPosition
-    }
-}
-
-// MARK: - Hashable & Equatable
-
-extension EpisodeCommon: Hashable, Equatable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
-    static func == (_ lhs: EpisodeCommon, _ rhs: EpisodeCommon) -> Bool {
-        lhs.id == rhs.id
     }
 }

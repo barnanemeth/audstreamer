@@ -19,7 +19,7 @@ struct PlayingView: View {
     // MARK: UI
 
     var body: some View {
-        Group {
+        ZStack {
             if let episode = viewModel.currentlyPlayingEpisode {
                 episodeContent(with: episode)
             } else {
@@ -34,6 +34,7 @@ struct PlayingView: View {
                 .opacity(viewModel.isVolumeOverlayVisible ? 1 : 0.001)
                 .allowsHitTesting(false)
         }
+        .animation(.default, value: viewModel.isVolumeOverlayVisible)
     }
 }
 
@@ -58,7 +59,7 @@ extension PlayingView {
 
     private var title: some View {
         Text(episode.title)
-            .font(.subheadline)
+            .font(.footnote)
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity, alignment: .center)
     }
@@ -102,7 +103,7 @@ extension PlayingView {
                 Spacer()
                 Text(viewModel.remainingTime)
             }
-            .font(.caption2)
+            .font(.footnote)
         }
     }
 }

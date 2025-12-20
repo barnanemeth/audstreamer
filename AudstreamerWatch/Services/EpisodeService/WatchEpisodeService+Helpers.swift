@@ -36,39 +36,6 @@ extension WatchEpisodeService {
         return try decoder.decode([EpisodeCommon].self, from: data)
     }
 
-    func setupDeleteOrDownloadSubscription() {
-        let activtionStatePublisher = session.publisher(for: \.activationState).toVoid()
-        let isReachablePublisher = session.publisher(for: \.isReachable).toVoid()
-
-        Publishers.Merge(activtionStatePublisher, isReachablePublisher)
-            .throttle(for: 0.5, scheduler: DispatchQueue.global(qos: .background), latest: true)
-            .map { [unowned self] in self.episodes.replaceError(with: []).removeDuplicates() }
-            .switchToLatest()
-            .scan(EpisodeHistory(), { $0.appending($1) })
-            .flatMap { [unowned self] in self.deleteEpisodes(by: $0) }
-            .sink()
-            .store(in: &cancellables)
-    }
-
-    func deleteEpisodes(by episodeHistory: EpisodeHistory) -> AnyPublisher<Void, Error> {
-        let currentEpisodes = episodeHistory.current ?? []
-        let nextEpisodes = episodeHistory.next ?? []
-
-        let difference = nextEpisodes.difference(from: currentEpisodes)
-
-        let publishers = difference.compactMap { difference -> AnyPublisher<Void, Error>? in
-            guard case let .remove(_, episode, _) = difference else { return nil }
-            return deleteEpisodeIfNeeded(episode)
-        }
-
-        return if publishers.isEmpty {
-            Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
-        } else {
-            publishers.zip().toVoid().eraseToAnyPublisher()
-        }
-
-    }
-
     func deleteEpisodeIfNeeded(_ episode: EpisodeCommon) -> AnyPublisher<Void, Error> {
         isDownloaded(episode)
             .flatMap { [unowned self] _ in self.delete(episode) }
@@ -76,15 +43,6 @@ extension WatchEpisodeService {
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
-
-//    func downloadEpisodeIfNeeded(_ episode: EpisodeCommon) -> AnyPublisher<Void, Error> {
-//        isDownloaded(episode)
-//            .flatMap { [unowned self] isDownloaded -> AnyPublisher<Void, Error> in
-//                guard !isDownloaded else { return Just.void() }
-//                return self.download(episode)
-//            }
-//            .eraseToAnyPublisher()
-//    }
 
     func cancelOutstandingLastPlayedDateTransfers<T: WatchConnectivityEpisodeBasedMessage>(
         for episodeID: String,
@@ -98,16 +56,23 @@ extension WatchEpisodeService {
         return Just.void()
     }
 
-    func updateDownloadedState(of episodeID: String, isDownloaded: Bool) {
+    func urlsForDownloadedEpisodes() -> [URL] {
+        guard let directoryURL = WatchURLHelper.episodeDirectory else { return [] }
         do {
-            var episodes = try decodeEpisodes(from: userDefaults.episodesData)
-            guard let index = episodes.firstIndex(where: { $0.id == episodeID }) else { return }
-            episodes[index].isDownloaded = isDownloaded
-
-            let data = try encoder.encode(episodes)
-            userDefaults.episodesData = data
+            let files = try FileManager.default.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: nil)
+            return files.filter { $0.pathExtension.lowercased() == "mp3" }
         } catch {
-            print("Cannot update downloaded state for episode with ID: \(episodeID)")
+            return []
+        }
+    }
+
+    func createEpisodesFolderIfNeeded() {
+        guard let directoryURL = WatchURLHelper.episodeDirectory else { return }
+
+        var isDirectory = ObjCBool(true)
+        let exists = fileManager.fileExists(atPath: directoryURL.path, isDirectory: &isDirectory)
+        if !exists || !isDirectory.boolValue {
+            try? fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: true)
         }
     }
 }

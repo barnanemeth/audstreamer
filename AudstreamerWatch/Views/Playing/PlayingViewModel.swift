@@ -120,6 +120,7 @@ extension PlayingViewModel {
     private func subscribeToVolumeChange() {
         audioSession.publisher(for: \.outputVolume)
             .dropFirst()
+            .receive(on: DispatchQueue.main)
             .handleEvents(receiveOutput: { [unowned self] _ in
                 isVolumeOverlayVisible = true
             })
@@ -127,7 +128,6 @@ extension PlayingViewModel {
                 Just(()).delay(for: 1, scheduler: DispatchQueue.main)
             }
             .switchToLatest()
-            .print()
             .sink { [unowned self] in
                 isVolumeOverlayVisible = false
             }
