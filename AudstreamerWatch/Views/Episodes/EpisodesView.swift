@@ -16,29 +16,33 @@ struct EpisodesView: View {
     // MARK: UI
 
     var body: some View {
-        NavigationStack {
-            if viewModel.episodes.isEmpty {
-                Text(L10n.noEpisodes)
-            } else {
-                list
+        List {
+            ForEach(viewModel.episodes, id: \.self) { data in
+                NavigationLink {
+                    PlayingView(episode: data.episode)
+                } label: {
+                    EpisodeRow(data: data)
+                }
+                .disabled(!data.episode.isDownloaded)
             }
         }
+        .navigationTitle(viewModel.title)
+        .navigationBarTitleDisplayMode(.inline)
+        .overlay { emptyOverlay }
     }
 }
 
 // MARK: - Helpers
 extension EpisodesView {
-    var list: some View {
-        List {
-            ForEach(viewModel.episodes, id: \.self) { episode in
-                NavigationLink(episode.title) {
-                    PlayingView(episode: episode)
-                }
-                .foregroundColor(episode.isDownloaded ? .green : .red)
-                .disabled(!episode.isDownloaded)
+    @ViewBuilder
+    private var emptyOverlay: some View {
+        if viewModel.episodes.isEmpty {
+            VStack(spacing: 16) {
+                Image(systemName: "square.stack")
+                    .font(.largeTitle)
+                
+                Text(L10n.noEpisodes)
             }
         }
-        .navigationTitle(viewModel.title)
-        .navigationBarTitleDisplayMode(.inline)
     }
 }

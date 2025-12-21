@@ -19,7 +19,9 @@ struct AudstreamerWatchApp: App {
 
     var body: some Scene {
         WindowGroup {
-            EpisodesView()
+            NavigationStack {
+                EpisodesView()
+            }
         }
     }
 }

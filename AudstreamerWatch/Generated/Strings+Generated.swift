@@ -15,6 +15,10 @@ internal enum L10n {
   /// 
   ///   Created by Barna Nemeth on 2023. 06. 04..
   internal static let noEpisodes = L10n.tr("Localizable", "noEpisodes", fallback: "No episodes")
+  /// Transferred
+  internal static let transferred = L10n.tr("Localizable", "transferred", fallback: "Transferred")
+  /// Transferring...
+  internal static let transferring = L10n.tr("Localizable", "transferring", fallback: "Transferring...")
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces

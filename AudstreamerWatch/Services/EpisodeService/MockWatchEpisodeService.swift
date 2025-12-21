@@ -23,7 +23,7 @@ extension MockWatchEpisodeService: EpisodeService {
                     "lastPosition": 0
                 ]
             )
-            episode?.isDownloaded = true
+            episode?.isDownloaded = false
             return episode
         }
 

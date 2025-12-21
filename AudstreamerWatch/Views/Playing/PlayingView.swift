@@ -28,6 +28,7 @@ struct PlayingView: View {
         }
         .onAppear { viewModel.setEpisode(episode) }
         .toolbarBackground(.hidden, for: .navigationBar)
+        .navigationBarTitleDisplayMode(.inline)
         .focusable(true)
         .overlay {
             SystemVolumeControl(origin: .local)
