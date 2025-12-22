@@ -10,7 +10,7 @@ import Combine
 import AuthenticationServices
 import UserNotifications
 
-final class LoginScreen: UIViewController, ScreenConvertible {
+final class LoginScreen: UIViewController, Screen {
 
     // MARK: Constants
 
@@ -20,7 +20,7 @@ final class LoginScreen: UIViewController, ScreenConvertible {
 
     // MARK: Screen
 
-    @Injected var viewModel: LoginScreenViewModel
+    let viewModel: LoginScreenViewModel
 
     // MARK: UI
 
@@ -61,6 +61,18 @@ final class LoginScreen: UIViewController, ScreenConvertible {
             }
         }
     }
+
+    // MARK: Init
+
+    init(viewModel: LoginScreenViewModel) {
+        self.viewModel = viewModel
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 // MARK: - Lifecycle
@@ -71,15 +83,6 @@ extension LoginScreen {
 
         setupUI()
         setupBindings()
-    }
-}
-
-// MARK: - ScreenConvertible
-
-extension LoginScreen {
-    func setNavigationParameter(_ parameter: any NavigationParameterizable) {
-        guard let loginScreenParam = parameter as? LoginScreenParam else { return }
-        viewModel.setParameter(loginScreenParam)
     }
 }
 

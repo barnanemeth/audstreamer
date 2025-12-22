@@ -9,11 +9,7 @@ import UIKit
 import Combine
 import UserNotifications
 
-enum LoginScreenParam: NavigationParameterizable {
-    case shouldShowPlayerAtDismiss(Bool)
-}
-
-final class LoginScreenViewModel: ScreenViewModelWithParam {
+final class LoginScreenViewModel: ScreenViewModel {
 
     // MARK: Dependencies
 
@@ -30,16 +26,13 @@ final class LoginScreenViewModel: ScreenViewModelWithParam {
 
     // MARK: Private properties
 
-    private var shouldShowPlayerAtDismiss = false
+    private let shouldShowPlayerAtDismiss: Bool
     private var cancellables = Set<AnyCancellable>()
-}
 
-// MARK: - ScreenViewModelWithParam
+    // MARK: Init
 
-extension LoginScreenViewModel {
-    func setParameter(_ parameter: LoginScreenParam) {
-        guard case let .shouldShowPlayerAtDismiss(shouldShowPlayer) = parameter else { return }
-        shouldShowPlayerAtDismiss = shouldShowPlayer
+    init(shouldShowPlayerAtDismiss: Bool = false) {
+        self.shouldShowPlayerAtDismiss = shouldShowPlayerAtDismiss
     }
 }
 

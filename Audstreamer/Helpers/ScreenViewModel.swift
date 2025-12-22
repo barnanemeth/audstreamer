@@ -26,7 +26,7 @@ protocol ParameterReceivable {
 
 protocol Screen where Self: UIViewController {
     associatedtype ViewModelType: ScreenViewModelable
-    var viewModel: ViewModelType { get set }
+    var viewModel: ViewModelType { get }
 }
 
 protocol ScreenConvertible {

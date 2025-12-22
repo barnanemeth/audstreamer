@@ -1,3 +1,5 @@
+// swiftlint:disable all
+
 //
 // Resolver.swift
 //
@@ -904,3 +906,5 @@ public extension UIViewController {
 }
 #endif
 #endif
+
+// swiftlint:enable all

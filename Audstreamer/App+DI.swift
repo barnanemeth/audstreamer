@@ -187,11 +187,10 @@ extension Resolver {
     }
 
     private static func registerLoginScreen() {
-        register { LoginScreenViewModel() }
-            .scope(.unique)
-
-        register { LoginScreen() }
-            .scope(.unique)
+        register(LoginScreen.self) { (_, args: Resolver.Args) in
+            LoginScreen(viewModel: LoginScreenViewModel(shouldShowPlayerAtDismiss: args.get()))
+        }
+        .scope(.unique)
     }
 
     private static func registerDevicesScreen() {

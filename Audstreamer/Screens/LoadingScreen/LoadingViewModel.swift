@@ -77,8 +77,7 @@ extension LoadingViewModel {
     }
 
     private func navigateToLoginScreen() {
-        let loginScreen: LoginScreen = Resolver.resolve()
-        loginScreen.setNavigationParameter(LoginScreenParam.shouldShowPlayerAtDismiss(true))
+        let loginScreen: LoginScreen = Resolver.resolve(args: true)
         navigator.present(loginScreen, interactiveSheetDismissHandler: { [unowned self] in
             navigateToPlayerScreen()
         })

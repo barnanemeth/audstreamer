@@ -388,6 +388,8 @@
 		C2C2D3922EF9B06D008AFF00 /* SettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3902EF9B06D008AFF00 /* SettingsFooterView.swift */; };
 		C2C2D3942EF9BBF8008AFF00 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3932EF9BBF8008AFF00 /* LoadingView.swift */; };
 		C2C2D3952EF9BBF8008AFF00 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3932EF9BBF8008AFF00 /* LoadingView.swift */; };
+		C2C2D3972EF9CB25008AFF00 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3962EF9CB25008AFF00 /* LoginView.swift */; };
+		C2C2D3982EF9CB25008AFF00 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3962EF9CB25008AFF00 /* LoginView.swift */; };
 		C2D471A529279E53002AD543 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27947042926662300A7402F /* About.swift */; };
 		C2D7EA262A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D7EA252A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift */; };
 		C2D7EA282A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D7EA272A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift */; };
@@ -687,6 +689,7 @@
 		C2C2D38D2EF999E9008AFF00 /* DialogModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogModifier.swift; sourceTree = "<group>"; };
 		C2C2D3902EF9B06D008AFF00 /* SettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFooterView.swift; sourceTree = "<group>"; };
 		C2C2D3932EF9BBF8008AFF00 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		C2C2D3962EF9CB25008AFF00 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C2D7EA252A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+EpisodeService.swift"; sourceTree = "<group>"; };
 		C2D7EA272A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+DownloadService.swift"; sourceTree = "<group>"; };
 		C2D7EA292A39B31B00D51F40 /* WatchEpisodeService+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+Helpers.swift"; sourceTree = "<group>"; };
@@ -1087,6 +1090,7 @@
 			children = (
 				70556A4425DC63D700ACDB4C /* LoginScreen.swift */,
 				C237C4CE28FC946900D246D7 /* LoginScreenViewModel.swift */,
+				C2C2D3962EF9CB25008AFF00 /* LoginView.swift */,
 			);
 			path = LoginScreen;
 			sourceTree = "<group>";
@@ -1847,6 +1851,7 @@
 				C28429FC2915D51A00BC1146 /* DownloadWidget.swift in Sources */,
 				C22880EE2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift in Sources */,
 				59B707EF2580288000AA831D /* EpisodeDetailCell.swift in Sources */,
+				C2C2D3982EF9CB25008AFF00 /* LoginView.swift in Sources */,
 				C2A9A1402AF2DF60002F0162 /* FileTransferAggregatedProgress.swift in Sources */,
 				C21D64972A2CB1A700226AFF /* EpisodeCommon+Extensions.swift in Sources */,
 				C28658F52A45EEDF00974E97 /* DownloadItem+Extensions.swift in Sources */,
@@ -2014,6 +2019,7 @@
 				C2146FB829243979004D4E85 /* SocketIOSocket.swift in Sources */,
 				C2146FB929243979004D4E85 /* DefaultFilterService.swift in Sources */,
 				C2146FBA29243979004D4E85 /* DefaultAccount.swift in Sources */,
+				C2C2D3972EF9CB25008AFF00 /* LoginView.swift in Sources */,
 				C2146FBB29243979004D4E85 /* SocketUpdater.swift in Sources */,
 				C2146FBC29243979004D4E85 /* DownloadWidget.swift in Sources */,
 				C2146FBD29243979004D4E85 /* EpisodeDetailCell.swift in Sources */,

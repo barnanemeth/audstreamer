@@ -188,8 +188,7 @@ extension SettingsViewModel {
     }
 
     private func navigateToLoginScreen() {
-        let loginScreen: LoginScreen = Resolver.resolve()
-        loginScreen.setNavigationParameter(LoginScreenParam.shouldShowPlayerAtDismiss(false))
+        let loginScreen: LoginScreen = Resolver.resolve(args: false)
         navigator.present(loginScreen)
     }
 
