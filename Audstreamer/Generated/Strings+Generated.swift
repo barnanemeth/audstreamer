@@ -139,6 +139,8 @@ internal enum L10n {
   internal static let settings = L10n.tr("Localizable", "settings", fallback: "Settings")
   /// Share
   internal static let share = L10n.tr("Localizable", "share", fallback: "Share")
+  /// Sign in with Apple
+  internal static let signInWithApple = L10n.tr("Localizable", "signInWithApple", fallback: "Sign in with Apple")
   /// Socket
   internal static let socket = L10n.tr("Localizable", "socket", fallback: "Socket")
   /// Storage
