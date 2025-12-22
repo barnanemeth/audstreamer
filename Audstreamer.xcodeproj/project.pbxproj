@@ -122,7 +122,7 @@
 		C2146FE929243979004D4E85 /* DevicesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E9D24925F7E79100D8D0AD /* DevicesScreen.swift */; };
 		C2146FEA29243979004D4E85 /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F8D33290F05DD00053070 /* XCAssets+Generated.swift */; };
 		C2146FEB29243979004D4E85 /* DeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C1211125F82400008AB06B /* DeviceCell.swift */; };
-		C2146FEC29243979004D4E85 /* LoadingScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4C328FC391A00D246D7 /* LoadingScreenViewModel.swift */; };
+		C2146FEC29243979004D4E85 /* LoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4C328FC391A00D246D7 /* LoadingViewModel.swift */; };
 		C2146FED29243979004D4E85 /* LoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597FF601258004A50030EEC1 /* LoadingScreen.swift */; };
 		C2146FEE29243979004D4E85 /* PlaybackCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EA651625EA78D90021F2F6 /* PlaybackCommand.swift */; };
 		C2146FEF29243979004D4E85 /* DefaultNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C294B1272913FEC400A30403 /* DefaultNotificationHandler.swift */; };
@@ -191,7 +191,7 @@
 		C237C4BB28FC1F7000D246D7 /* DevicesScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4BA28FC1F7000D246D7 /* DevicesScreenViewModel.swift */; };
 		C237C4BF28FC333600D246D7 /* AssignOwnership.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4BE28FC333600D246D7 /* AssignOwnership.swift */; };
 		C237C4C128FC338A00D246D7 /* ObjectOwnership.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4C028FC338A00D246D7 /* ObjectOwnership.swift */; };
-		C237C4C428FC391A00D246D7 /* LoadingScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4C328FC391A00D246D7 /* LoadingScreenViewModel.swift */; };
+		C237C4C428FC391A00D246D7 /* LoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4C328FC391A00D246D7 /* LoadingViewModel.swift */; };
 		C237C4C628FC3ED700D246D7 /* ZipMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4C528FC3ED700D246D7 /* ZipMany.swift */; };
 		C237C4C828FC918B00D246D7 /* CombineAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4C728FC918B00D246D7 /* CombineAction.swift */; };
 		C237C4CA28FC920200D246D7 /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4C928FC920200D246D7 /* ReplaySubject.swift */; };
@@ -386,6 +386,8 @@
 		C2C2D38F2EF999E9008AFF00 /* DialogModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D38D2EF999E9008AFF00 /* DialogModifier.swift */; };
 		C2C2D3912EF9B06D008AFF00 /* SettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3902EF9B06D008AFF00 /* SettingsFooterView.swift */; };
 		C2C2D3922EF9B06D008AFF00 /* SettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3902EF9B06D008AFF00 /* SettingsFooterView.swift */; };
+		C2C2D3942EF9BBF8008AFF00 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3932EF9BBF8008AFF00 /* LoadingView.swift */; };
+		C2C2D3952EF9BBF8008AFF00 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3932EF9BBF8008AFF00 /* LoadingView.swift */; };
 		C2D471A529279E53002AD543 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27947042926662300A7402F /* About.swift */; };
 		C2D7EA262A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D7EA252A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift */; };
 		C2D7EA282A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D7EA272A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift */; };
@@ -565,7 +567,7 @@
 		C237C4BA28FC1F7000D246D7 /* DevicesScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesScreenViewModel.swift; sourceTree = "<group>"; };
 		C237C4BE28FC333600D246D7 /* AssignOwnership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignOwnership.swift; sourceTree = "<group>"; };
 		C237C4C028FC338A00D246D7 /* ObjectOwnership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectOwnership.swift; sourceTree = "<group>"; };
-		C237C4C328FC391A00D246D7 /* LoadingScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingScreenViewModel.swift; sourceTree = "<group>"; };
+		C237C4C328FC391A00D246D7 /* LoadingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewModel.swift; sourceTree = "<group>"; };
 		C237C4C528FC3ED700D246D7 /* ZipMany.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipMany.swift; sourceTree = "<group>"; };
 		C237C4C728FC918B00D246D7 /* CombineAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineAction.swift; sourceTree = "<group>"; };
 		C237C4C928FC920200D246D7 /* ReplaySubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplaySubject.swift; sourceTree = "<group>"; };
@@ -684,6 +686,7 @@
 		C2C2D38A2EF999D1008AFF00 /* DialogDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogDescriptor.swift; sourceTree = "<group>"; };
 		C2C2D38D2EF999E9008AFF00 /* DialogModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogModifier.swift; sourceTree = "<group>"; };
 		C2C2D3902EF9B06D008AFF00 /* SettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFooterView.swift; sourceTree = "<group>"; };
+		C2C2D3932EF9BBF8008AFF00 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		C2D7EA252A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+EpisodeService.swift"; sourceTree = "<group>"; };
 		C2D7EA272A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+DownloadService.swift"; sourceTree = "<group>"; };
 		C2D7EA292A39B31B00D51F40 /* WatchEpisodeService+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+Helpers.swift"; sourceTree = "<group>"; };
@@ -1073,7 +1076,8 @@
 			isa = PBXGroup;
 			children = (
 				597FF601258004A50030EEC1 /* LoadingScreen.swift */,
-				C237C4C328FC391A00D246D7 /* LoadingScreenViewModel.swift */,
+				C2C2D3932EF9BBF8008AFF00 /* LoadingView.swift */,
+				C237C4C328FC391A00D246D7 /* LoadingViewModel.swift */,
 			);
 			path = LoadingScreen;
 			sourceTree = "<group>";
@@ -1924,8 +1928,9 @@
 				C20987B6293AAD79005A160E /* DownloadingCell.swift in Sources */,
 				C21F8D34290F05DD00053070 /* XCAssets+Generated.swift in Sources */,
 				70C1211325F82400008AB06B /* DeviceCell.swift in Sources */,
-				C237C4C428FC391A00D246D7 /* LoadingScreenViewModel.swift in Sources */,
+				C237C4C428FC391A00D246D7 /* LoadingViewModel.swift in Sources */,
 				597FF602258004A50030EEC1 /* LoadingScreen.swift in Sources */,
+				C2C2D3952EF9BBF8008AFF00 /* LoadingView.swift in Sources */,
 				C2C2D3822EF98B91008AFF00 /* Environment+FeedbackEnabled.swift in Sources */,
 				C2C2D3842EF98BA8008AFF00 /* Environment+Loading.swift in Sources */,
 				C2A9A13D2AF2DA49002F0162 /* FileTransferOperation.swift in Sources */,
@@ -2092,10 +2097,11 @@
 				C2146FE929243979004D4E85 /* DevicesScreen.swift in Sources */,
 				C263F0A82943478C0076065C /* DownloadingCell.swift in Sources */,
 				C2C2D3812EF98B91008AFF00 /* Environment+FeedbackEnabled.swift in Sources */,
+				C2C2D3942EF9BBF8008AFF00 /* LoadingView.swift in Sources */,
 				C2C2D3852EF98BA8008AFF00 /* Environment+Loading.swift in Sources */,
 				C2146FEA29243979004D4E85 /* XCAssets+Generated.swift in Sources */,
 				C2146FEB29243979004D4E85 /* DeviceCell.swift in Sources */,
-				C2146FEC29243979004D4E85 /* LoadingScreenViewModel.swift in Sources */,
+				C2146FEC29243979004D4E85 /* LoadingViewModel.swift in Sources */,
 				C2146FED29243979004D4E85 /* LoadingScreen.swift in Sources */,
 				C2146FEE29243979004D4E85 /* PlaybackCommand.swift in Sources */,
 				C2146FEF29243979004D4E85 /* DefaultNotificationHandler.swift in Sources */,

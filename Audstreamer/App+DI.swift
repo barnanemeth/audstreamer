@@ -174,9 +174,6 @@ extension Resolver {
     }
 
     private static func registerLoadingScreen() {
-        register { LoadingScreenViewModel() }
-            .scope(.unique)
-
         register { LoadingScreen() }
             .scope(.unique)
     }

@@ -80,13 +80,14 @@ extension RealmDatabase: Database {
 
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 
-        let emitter = realm
-            .objects(EpisodeData.self)
-            .filter(combinedPredicate)
-            .sorted(byKeyPath: "publishDate", ascending: false)
-
-        return RealmPublishers.array(from: emitter, keyPaths: Constant.observedKeyPaths)
-            .receive(on: Constant.defaultQueue)
+        return makeInstanceOnRightThread()
+            .flatMap { realm in
+                let emitter = realm
+                    .objects(EpisodeData.self)
+                    .filter(combinedPredicate)
+                    .sorted(byKeyPath: "publishDate", ascending: false)
+                return RealmPublishers.array(from: emitter, keyPaths: Constant.observedKeyPaths)
+            }
             .eraseToAnyPublisher()
     }
 
@@ -127,12 +128,13 @@ extension RealmDatabase: Database {
     }
 
     func getLastPlayedEpisode() -> AnyPublisher<EpisodeData?, Error> {
-        let emitter = realm.objects(EpisodeData.self)
-            .filter("lastPlayed != nil")
-            .sorted(byKeyPath: "lastPlayed", ascending: false)
-        return RealmPublishers.array(from: emitter)
-            .receive(on: Constant.defaultQueue)
-            .map { $0.first }
+        makeInstanceOnRightThread()
+            .flatMap { realm in
+                let emitter = realm.objects(EpisodeData.self)
+                    .filter("lastPlayed != nil")
+                    .sorted(byKeyPath: "lastPlayed", ascending: false)
+                return RealmPublishers.array(from: emitter).map { $0.first }
+            }
             .eraseToAnyPublisher()
     }
 
@@ -167,10 +169,11 @@ extension RealmDatabase: Database {
     }
 
     func getEpisode(id: String) -> AnyPublisher<EpisodeData?, Error> {
-        let emitter = realm.objects(EpisodeData.self).filter("id == %@", id)
-        return RealmPublishers.array(from: emitter)
-            .receive(on: Constant.defaultQueue)
-            .map { $0.first }
+        makeInstanceOnRightThread()
+            .flatMap { realm in
+                let emitter = realm.objects(EpisodeData.self).filter("id == %@", id)
+                return RealmPublishers.array(from: emitter).map { $0.first }
+            }
             .eraseToAnyPublisher()
     }
 
@@ -181,10 +184,11 @@ extension RealmDatabase: Database {
     }
 
     func getLastEpisodePublishDate() -> AnyPublisher<Date?, Error> {
-        let emitter = realm.objects(EpisodeData.self).sorted(byKeyPath: "publishDate", ascending: false)
-        return RealmPublishers.array(from: emitter)
-            .receive(on: Constant.defaultQueue)
-            .map { $0.first?.publishDate }
+        makeInstanceOnRightThread()
+            .flatMap { realm in
+                let emitter = realm.objects(EpisodeData.self).sorted(byKeyPath: "publishDate", ascending: false)
+                return RealmPublishers.array(from: emitter).map { $0.first?.publishDate }
+            }
             .eraseToAnyPublisher()
     }
 
@@ -232,5 +236,12 @@ extension RealmDatabase {
 
     private func getAllEpisodes() -> [EpisodeData] {
         return Array(realm.objects(EpisodeData.self).sorted(byKeyPath: "publishDate", ascending: false))
+    }
+
+    private func makeInstanceOnRightThread() -> AnyPublisher<Realm, Error> {
+        Just(realm)
+            .setFailureType(to: Error.self)
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
 }
