@@ -10,7 +10,7 @@ import Combine
 import AuthenticationServices
 import UserNotifications
 
-final class LoginScreen: UIViewController, Screen {
+final class LoginScreen: UIViewController, ScreenConvertible {
 
     // MARK: Constants
 
@@ -71,6 +71,15 @@ extension LoginScreen {
 
         setupUI()
         setupBindings()
+    }
+}
+
+// MARK: - ScreenConvertible
+
+extension LoginScreen {
+    func setNavigationParameter(_ parameter: any NavigationParameterizable) {
+        guard let loginScreenParam = parameter as? LoginScreenParam else { return }
+        viewModel.setParameter(loginScreenParam)
     }
 }
 
@@ -181,22 +190,7 @@ extension LoginScreen {
             .assign(to: \.isLoading, on: self, ownership: .unowned)
             .store(in: &cancellables)
 
-        authorizationAppleIDButton.action = viewModel.authorizeAction
-        cancelButton.action = CocoaAction { [unowned self] in self.dismiss() }
-        viewModel.dismissAction = CocoaAction { [unowned self] in self.dismiss() }
-        viewModel.showErrorlAlertAction = Action<Error, Never> { [unowned self] error in
-            guard let error = try? error.get() else { return }
-            self.showAlert(for: error)
-        }
-    }
-}
-
-// MARK: - Helpers
-
-extension LoginScreen {
-    private func dismiss() {
-        guard let presentationController = presentationController else { return }
-        presentationController.delegate?.presentationControllerWillDismiss?(presentationController)
-        dismiss(animated: true, completion: nil)
+        authorizationAppleIDButton.action = CocoaAction { [unowned self] in viewModel.authorize() }
+        cancelButton.action = CocoaAction { [unowned self] in viewModel.finishedOrCancelled() }
     }
 }

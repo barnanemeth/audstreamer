@@ -7,6 +7,8 @@
 
 import Foundation
 import Combine
+import UIKit
+import SafariServices
 
 import Reachability
 import OrderedCollections
@@ -35,6 +37,7 @@ final class PlayerScreenViewModel: ScreenViewModel {
     @Injected private var filterService: FilterService
     @Injected private var shortcutHandler: ShortcutHandler
     @Injected private var watchConnectivityService: WatchConnectivityService
+    @Injected private var navigator: Navigator
 
     // MARK: Properties
 
@@ -43,8 +46,6 @@ final class PlayerScreenViewModel: ScreenViewModel {
     @Published var isLoading = false
     @Published var isPlayerLoading = false
     @Published var shouldShowButtonInSectionHeaders = true
-    var presentErrorAlertAction: Action<Error, Never>?
-    var presentCellularWarningAlertAction: Action<([EpisodeData], Int?), Never>?
     var sections: AnyPublisher<[EpisodeSection], Never> {
         Publishers.CombineLatest3(episodes, $openedEpisodeID, isWatchAvailable)
             .map { [unowned self] in self.transformEpisodes(from: $0, openedEpisodeID: $1, isWatchAvailable: $2) }
@@ -218,6 +219,31 @@ extension PlayerScreenViewModel {
             .sink(receiveCompletion: { _ in completion() }, receiveValue: { _ in })
             .store(in: &cancellables)
     }
+
+    func navigateToSettings() {
+        let settingsScreen: SettingsScreen = Resolver.resolve()
+        let navigationController = UINavigationController(rootViewController: settingsScreen)
+        navigator.present(navigationController)
+    }
+
+    func navigateToDownloads() {
+        let settingsScreen: DownloadsScreen = Resolver.resolve()
+        let navigationController = UINavigationController(rootViewController: settingsScreen)
+        navigator.present(navigationController)
+    }
+
+    func showDevices(sourceView: UIView) {
+        let devicesViewController: DevicesScreen = Resolver.resolve()
+        navigator.presentPopover(devicesViewController, sourceView: sourceView)
+    }
+
+    func navigateToWebView(for episode: EpisodeData) {
+        guard let linkString = episode.link, let linkURL = URL(string: linkString) else { return }
+        let webViewViewController = SFSafariViewController(url: linkURL)
+        webViewViewController.preferredControlTintColor = Asset.Colors.primary.color
+        webViewViewController.modalPresentationStyle = .overFullScreen
+        navigator.present(webViewViewController)
+    }
 }
 
 // MARK: - Helpers
@@ -327,7 +353,7 @@ extension PlayerScreenViewModel {
         episodeSizes
             .map { $0.reduce(.zero, +) }
             .replaceError(with: nil)
-            .sink { [unowned self] in self.presentCellularWarningAlertAction?.execute((episodes, $0)) }
+            .sink { [unowned self] in presentCellularWarningAlert(for: episodes, contentLength: $0) }
             .store(in: &cancellables)
     }
 
@@ -400,5 +426,40 @@ extension PlayerScreenViewModel {
         }
         .zip()
         .toVoid()
+    }
+
+    private func presentCellularWarningAlert(for episodes: [EpisodeData], contentLength: Int?) {
+        let alertController = UIAlertController(
+            title: L10n.download,
+            message: getCellularWarningMessage(episodesCount: episodes.count, contentLength: contentLength),
+            preferredStyle: .alert
+        )
+
+        let laterAction = UIAlertAction(title: L10n.laterOnWifi, style: .default)
+        let downloadAction = UIAlertAction(
+            title: L10n.download,
+            style: .default,
+            handler: { [unowned self] _ in downloadEpisodes(episodes) }
+        )
+
+        alertController.addAction(laterAction)
+        alertController.addAction(downloadAction)
+
+        alertController.preferredAction = downloadAction
+
+        navigator.presentAlertController(alertController)
+    }
+
+    private func getCellularWarningMessage(episodesCount: Int, contentLength: Int?) -> String {
+        var message = ""
+        if let contentLength = contentLength {
+            message += L10n.downloadSize(
+                episodesCount,
+                NumberFormatterHelper.getFormattedContentSize(from: contentLength)
+            )
+            message += " "
+        }
+        message += L10n.downloadCellularWarningMessage
+        return message
     }
 }

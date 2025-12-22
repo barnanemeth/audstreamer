@@ -128,74 +128,17 @@ extension LoadingScreen {
                 }
             }
             .store(in: &cancellables)
-
-        viewModel.navigateToPlayerScreenAction = CocoaAction { [unowned self] in self.presentPlayerScreen() }
-        viewModel.navigateToLoginScreenAction = CocoaAction { [unowned self] in self.presentLoginScreen() }
-        viewModel.presentErrorAlertAction = Action<Error, Never> { [unowned self] error in
-            guard let error = try? error.get() else { return }
-            self.presentErrorAlert(for: error)
-        }
     }
 }
 
 // MARK: - Helpers
 
 extension LoadingScreen {
-    private func presentPlayerScreen() {
-        let playerScreen: PlayerScreen = Resolver.resolve()
-        let navigationController = UINavigationController(rootViewController: playerScreen)
-        navigationController.modalPresentationStyle = .overCurrentContext
-        navigationController.definesPresentationContext = true
-        present(navigationController, animated: true, completion: nil)
-    }
-
-    private func presentLoginScreen() {
-        let loginScreen: LoginScreen = Resolver.resolve()
-        loginScreen.presentationController?.delegate = self
-        present(loginScreen, animated: true, completion: nil)
-    }
-
-    private func presentErrorAlert(for error: Error) {
-        let alertController = UIAlertController(
-            title: L10n.error,
-            message: error.localizedDescription,
-            preferredStyle: .alert
-        )
-
-        let retryAction = UIAlertAction(
-            title: L10n.retry,
-            style: .default,
-            handler: { [unowned self] _ in self.viewModel.fetchData() }
-        )
-        let continueAction = UIAlertAction(
-            title: L10n.continue,
-            style: .default,
-            handler: { [unowned self] _ in self.presentPlayerScreen() }
-        )
-
-        alertController.addAction(retryAction)
-        alertController.addAction(continueAction)
-
-        alertController.preferredAction = continueAction
-
-        present(alertController, animated: true, completion: nil)
-    }
-
     private func startLoadingAnimation() {
         loadingAnimationView.play(fromProgress: loadingAnimationView.currentProgress, toProgress: 1, loopMode: .loop)
     }
 
     private func stopLoadingAnimation() {
         loadingAnimationView.pause()
-    }
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate methods
-
-extension LoadingScreen: UIAdaptivePresentationControllerDelegate {
-    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-            self.presentPlayerScreen()
-        })
     }
 }

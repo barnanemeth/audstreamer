@@ -245,16 +245,11 @@ extension PlayerScreen {
         }
 
         settingsButton.tapPublisher
-            .sink { [unowned self] in self.presentSettingsScreen() }
+            .sink { [unowned self] in viewModel.navigateToSettings() }
             .store(in: &cancellables)
 
-        downloadWidget.tapAction = CocoaAction { [unowned self] in self.presentDownloadsScreen() }
-
-        playerWidget.remotePlayButtonTap = CocoaAction { [unowned self] in self.presentDevicesScreen() }
-        viewModel.presentCellularWarningAlertAction = Action<([EpisodeData], Int?), Never> { [unowned self] item in
-            guard let item = try? item.get() else { return }
-            self.presentCellularWarningAlert(for: item.0, contentLength: item.1)
-        }
+        downloadWidget.tapAction = CocoaAction { [unowned self] in viewModel.navigateToDownloads() }
+        playerWidget.remotePlayButtonTap = CocoaAction { [unowned self] in viewModel.showDevices(sourceView: playerWidget.remotePlaySourceView) }
     }
 
     private func setupViewModelBindings() {
@@ -276,11 +271,6 @@ extension PlayerScreen {
         viewModel.$isLoading
             .assign(to: \.isLoading, on: playerWidget.viewModel, ownership: .unowned)
             .store(in: &cancellables)
-
-        viewModel.presentErrorAlertAction = Action<Error, Never> { [unowned self] error in
-            guard let error = try? error.get() else { return }
-            self.showAlert(for: error)
-        }
 
         viewModel.filterAttributes
             .sink { [unowned self] in self.updateFilterMenu(with: $0) }
@@ -348,11 +338,11 @@ extension PlayerScreen {
             for: indexPath
         ) as? EpisodeDetailCell else { return nil }
         cell.setup(with: episode, isWatchAvailable: isWatchAvailable)
-        cell.playAction = actionTrigger { [unowned self] in self.viewModel.playEpisode(episode) }
-        cell.linkAction = actionTrigger { [unowned self] in self.presentWebView(for: episode) }
-        cell.downloadDeleteAction = actionTrigger { [unowned self] in self.viewModel.downloadDeleteEpisode(episode) }
-        cell.favoriteAction = actionTrigger { [unowned self] in self.viewModel.toggleEpisodeFavorite(episode) }
-        cell.watchAction = actionTrigger { [unowned self] in self.viewModel.toggleEpisodeIsOnWatch(episode) }
+        cell.playAction = actionTrigger { [unowned self] in viewModel.playEpisode(episode) }
+        cell.linkAction = actionTrigger { [unowned self] in viewModel.navigateToWebView(for: episode) }
+        cell.downloadDeleteAction = actionTrigger { [unowned self] in viewModel.downloadDeleteEpisode(episode) }
+        cell.favoriteAction = actionTrigger { [unowned self] in viewModel.toggleEpisodeFavorite(episode) }
+        cell.watchAction = actionTrigger { [unowned self] in viewModel.toggleEpisodeIsOnWatch(episode) }
         return cell
     }
 
@@ -360,50 +350,6 @@ extension PlayerScreen {
         guard let episodeID = episodeID,
               let sectionIndex = self.sections.firstIndex(where: { $0.episodeID == episodeID }) else { return }
         tableView.scrollToRow(at: IndexPath(row: .zero, section: sectionIndex), at: .top, animated: isAnimated)
-    }
-
-    private func presentDevicesScreen() {
-        let devicesViewController: DevicesScreen = Resolver.resolve()
-        devicesViewController.modalPresentationStyle = .popover
-        devicesViewController.modalTransitionStyle = .crossDissolve
-        devicesViewController.popoverPresentationController?.sourceView = playerWidget.remotePlaySourceView
-        devicesViewController.presentationController?.delegate = self
-        present(devicesViewController, animated: true, completion: nil)
-    }
-
-    private func presentCellularWarningAlert(for episodes: [EpisodeData], contentLength: Int?) {
-        let alertController = UIAlertController(
-            title: L10n.download,
-            message: getCellularWarningMessage(episodesCount: episodes.count, contentLength: contentLength),
-            preferredStyle: .alert
-        )
-
-        let laterAction = UIAlertAction(title: L10n.laterOnWifi, style: .default)
-        let downloadAction = UIAlertAction(
-            title: L10n.download,
-            style: .default,
-            handler: { [unowned self] _ in self.viewModel.downloadEpisodes(episodes) }
-        )
-
-        alertController.addAction(laterAction)
-        alertController.addAction(downloadAction)
-
-        alertController.preferredAction = downloadAction
-
-        present(alertController, animated: true, completion: nil)
-    }
-
-    private func getCellularWarningMessage(episodesCount: Int, contentLength: Int?) -> String {
-        var message = ""
-        if let contentLength = contentLength {
-            message += L10n.downloadSize(
-                episodesCount,
-                NumberFormatterHelper.getFormattedContentSize(from: contentLength)
-            )
-            message += " "
-        }
-        message += L10n.downloadCellularWarningMessage
-        return message
     }
 
     private func triggerFeedback() {
@@ -448,12 +394,6 @@ extension PlayerScreen {
         #endif
     }
 
-    private func presentSettingsScreen() {
-        let settingsScreen: SettingsScreen = Resolver.resolve()
-        let navigationController = UINavigationController(rootViewController: settingsScreen)
-        present(navigationController, animated: true)
-    }
-
     private func canSelectCell(at indexPath: IndexPath) -> Bool {
         guard indexPath.row == .zero else { return false }
         return sections[indexPath.section].items.count == 1
@@ -478,20 +418,6 @@ extension PlayerScreen {
     private func updateEmptyState(isEmpty: Bool) {
         tableView.isHidden = isEmpty
         emptyStateView.isHidden = !isEmpty
-    }
-
-    private func presentDownloadsScreen() {
-        let settingsScreen: DownloadsScreen = Resolver.resolve()
-        let navigationController = UINavigationController(rootViewController: settingsScreen)
-        present(navigationController, animated: true)
-    }
-
-    private func presentWebView(for episode: EpisodeData) {
-        guard let linkString = episode.link, let linkURL = URL(string: linkString) else { return }
-        let webViewViewController = SFSafariViewController(url: linkURL)
-        webViewViewController.preferredControlTintColor = Asset.Colors.primary.color
-        webViewViewController.modalPresentationStyle = .overFullScreen
-        present(webViewViewController, animated: true)
     }
 
     private func contextMenuConfiguration(for indexPath: IndexPath) -> UIContextMenuConfiguration? {

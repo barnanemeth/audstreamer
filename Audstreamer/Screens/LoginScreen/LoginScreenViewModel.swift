@@ -9,7 +9,11 @@ import UIKit
 import Combine
 import UserNotifications
 
-final class LoginScreenViewModel: ScreenViewModel {
+enum LoginScreenParam: NavigationParameterizable {
+    case shouldShowPlayerAtDismiss(Bool)
+}
+
+final class LoginScreenViewModel: ScreenViewModelWithParam {
 
     // MARK: Dependencies
 
@@ -18,23 +22,31 @@ final class LoginScreenViewModel: ScreenViewModel {
     @Injected private var networking: Networking
     @Injected private var account: Account
     @Injected private var socket: Socket
+    @Injected private var navigator: Navigator
 
     // MARK: Properties
 
-    @Published var isLoading = false
-    lazy var authorizeAction = CocoaAction(LoginScreenViewModel.authorize, in: self)
-    var dismissAction: CocoaAction?
-    var showErrorlAlertAction: Action<Error, Never>?
+    @Published private(set) var isLoading = false
 
     // MARK: Private properties
 
+    private var shouldShowPlayerAtDismiss = false
     private var cancellables = Set<AnyCancellable>()
+}
+
+// MARK: - ScreenViewModelWithParam
+
+extension LoginScreenViewModel {
+    func setParameter(_ parameter: LoginScreenParam) {
+        guard case let .shouldShowPlayerAtDismiss(shouldShowPlayer) = parameter else { return }
+        shouldShowPlayerAtDismiss = shouldShowPlayer
+    }
 }
 
 // MARK: - Actions
 
 extension LoginScreenViewModel {
-    private func authorize() {
+    func authorize() {
         authorization.authorize()
             .first()
             .tryMap { [unowned self] in try self.secureStore.storeToken($0) }
@@ -56,16 +68,29 @@ extension LoginScreenViewModel {
                 case let .failure(authorizationError as AuthorizationError):
                     switch authorizationError {
                     case .userCanceled: return
-                    default: self.showErrorlAlertAction?.execute(authorizationError)
+                    default: navigator.presentAlert(for: authorizationError)
                     }
                 case let .failure(error):
-                    try? self.secureStore.deleteToken()
-                    self.showErrorlAlertAction?.execute(error)
+                    try? secureStore.deleteToken()
+                    navigator.presentAlert(for: error)
                 case .finished:
-                    self.dismissAction?.execute()
+                    finishedOrCancelled()
                 }
             }, receiveValue: { })
             .store(in: &cancellables)
+    }
+
+    func finishedOrCancelled() {
+        if shouldShowPlayerAtDismiss {
+            let playerScreen: PlayerScreen = Resolver.resolve()
+            let navigationController = UINavigationController(rootViewController: playerScreen) // Note: with SwiftUI this is not necessary
+            navigationController.modalPresentationStyle = .overCurrentContext
+            navigationController.definesPresentationContext = true
+
+            navigator.dismissAndPresent(navigationController)
+        } else {
+            navigator.dismiss()
+        }
     }
 }
 

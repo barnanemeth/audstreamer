@@ -1,5 +1,5 @@
 //
-//  SettingsScreenViewModel.swift
+//  SettingsViewModel.swift
 //  Audstreamer
 //
 //  Created by Barna Nemeth on 2022. 11. 13..
@@ -7,8 +7,9 @@
 
 import Foundation
 import Combine
+import UIKit
 
-final class SettingsScreenViewModel: ScreenViewModel {
+final class SettingsViewModel: ObservableObject {
 
     // MARK: Dependencies
 
@@ -17,13 +18,14 @@ final class SettingsScreenViewModel: ScreenViewModel {
     @Injected private var networking: Networking
     @Injected private var socket: Socket
     @Injected private var database: Database
+    @Injected private var navigator: Navigator
 
     // MARK: Properties
 
-    var navigateToLoginScreenAction: CocoaAction?
-    var presentDeleteDownloadActionSheetAction: CocoaAction?
-    var presentLogoutActionSheetAction: CocoaAction?
-    var presentErrorAlertAction: Action<Error, Never>?
+//    var navigateToLoginScreenAction: CocoaAction?
+//    var presentDeleteDownloadActionSheetAction: CocoaAction?
+//    var presentLogoutActionSheetAction: CocoaAction?
+//    var presentErrorAlertAction: Action<Error, Never>?
     @Published var isLoading = false
     var sections: AnyPublisher<[SettingsSection], Never> {
         Publishers.CombineLatest3(downloadSize, socketStatus, isLoggedIn)
@@ -53,10 +55,10 @@ final class SettingsScreenViewModel: ScreenViewModel {
 
 // MARK: - Actions
 
-extension SettingsScreenViewModel {
+extension SettingsViewModel {
     func handleTap(for item: SettingsItem) {
         switch item {
-        case .storageAction: presentDeleteDownloadActionSheetAction?.execute()
+        case .storageAction: showDeleteDownloadActionSheet()
         case let .accountAction(type): handleAccountAction(type: type)
         case let .socketAction(type): handleSocketAction(type: type)
         default: return
@@ -71,7 +73,7 @@ extension SettingsScreenViewModel {
                           receiveCompletion: { [unowned self] _ in self.isLoading = false })
             .sink(receiveCompletion: { [unowned self] completion in
                 guard case let .failure(error) = completion else { return }
-                self.presentErrorAlertAction?.execute(error)
+                navigator.presentAlert(for: error)
             }, receiveValue: { _ in })
             .store(in: &cancellables)
     }
@@ -84,17 +86,41 @@ extension SettingsScreenViewModel {
             .flatMap { [unowned self] in self.account.refresh() }
             .handleEvents(receiveSubscription: { [unowned self] _ in self.isLoading = true },
                           receiveCompletion: { [unowned self] _ in self.isLoading = false })
-            .sink(receiveCompletion: { completion in
+            .sink(receiveCompletion: { [unowned self] completion in
                 guard case let .failure(error) = completion else { return }
-                self.presentErrorAlertAction?.execute(error)
+                navigator.presentAlert(for: error)
             }, receiveValue: { })
             .store(in: &cancellables)
+    }
+
+    func navigateToLoginScreen() {
+        let loginScreen: LoginScreen = Resolver.resolve()
+        loginScreen.setNavigationParameter(LoginScreenParam.shouldShowPlayerAtDismiss(false))
+        navigator.present(loginScreen)
+    }
+
+    func showDeleteDownloadActionSheet() {
+        showActionSheet(
+            title: L10n.deleteDownloads,
+            message: L10n.deleteDownloadsConfirm,
+            confirm: L10n.deleteDownloads,
+            action: { [unowned self] in deleteDownloads() }
+        )
+    }
+
+    func showLogoutActionSheet() {
+        showActionSheet(
+            title: L10n.logout,
+            message: L10n.logoutConfirm,
+            confirm: L10n.logout,
+            action: { [unowned self] in logout() }
+        )
     }
 }
 
 // MARK: - Helpers
 
-extension SettingsScreenViewModel {
+extension SettingsViewModel {
     private func buildSections(downloadSize: Int, socketStatus: SocketStatus, isLoggedIn: Bool) -> [SettingsSection] {
         [
             getStorageSection(downloadSize: downloadSize),
@@ -150,15 +176,44 @@ extension SettingsScreenViewModel {
         socketAction
             .sink(receiveCompletion: { [unowned self] completion in
                 guard case let .failure(error) = completion else { return }
-                self.presentErrorAlertAction?.execute(error)
+                navigator.presentAlert(for: error)
             }, receiveValue: { _ in })
             .store(in: &cancellables)
     }
 
     private func handleAccountAction(type: SettingsItem.AccountActionType) {
         switch type {
-        case .login: navigateToLoginScreenAction?.execute()
-        case .logout: presentLogoutActionSheetAction?.execute()
+        case .login: navigateToLoginScreen()
+        case .logout: showLogoutActionSheet()
         }
+    }
+
+    private func showActionSheet(title: String, message: String, confirm: String, action: @escaping (() -> Void)) {
+        #if targetEnvironment(macCatalyst)
+        let actionSheet = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        #else
+        let actionSheet = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .actionSheet
+        )
+        #endif
+        let confirmAction = UIAlertAction(
+            title: confirm,
+            style: .destructive,
+            handler: { _ in action() }
+        )
+        let cancelAction = UIAlertAction(title: L10n.cancel, style: .cancel, handler: nil)
+
+        actionSheet.addAction(cancelAction)
+        actionSheet.addAction(confirmAction)
+
+        actionSheet.preferredAction = confirmAction
+
+        navigator.presentAlertController(actionSheet)
     }
 }

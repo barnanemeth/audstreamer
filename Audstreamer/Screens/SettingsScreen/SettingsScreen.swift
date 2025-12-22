@@ -7,8 +7,11 @@
 
 import UIKit
 import Combine
+import SwiftUI
 
-final class SettingsScreen: UIViewController, Screen {
+//final class SettingsScreen: UIHostingController<SettingsView> { }
+
+final class SettingsScreen: UIViewController {
 
     // MARK: Typealiases
 
@@ -17,7 +20,7 @@ final class SettingsScreen: UIViewController, Screen {
 
     // MARK: Screen
 
-    @Injected var viewModel: SettingsScreenViewModel
+    @Injected var viewModel: SettingsViewModel
 
     // MARK: UI
 
@@ -126,29 +129,6 @@ extension SettingsScreen {
                 }
             }
             .store(in: &cancellables)
-
-        viewModel.presentErrorAlertAction = Action<Error, Never> { [unowned self] error in
-            guard let error = try? error.get() else { return }
-            self.showAlert(for: error)
-        }
-
-        viewModel.navigateToLoginScreenAction = CocoaAction { [unowned self] in self.navigateToLoginScreen() }
-        viewModel.presentDeleteDownloadActionSheetAction = CocoaAction { [unowned self] in
-            self.presentActionSheet(
-                title: L10n.deleteDownloads,
-                message: L10n.deleteDownloadsConfirm,
-                confirm: L10n.deleteDownloads,
-                action: { self.viewModel.deleteDownloads() }
-            )
-        }
-        viewModel.presentLogoutActionSheetAction = CocoaAction { [unowned self] in
-            self.presentActionSheet(
-                title: L10n.logout,
-                message: L10n.logoutConfirm,
-                confirm: L10n.logout,
-                action: { self.viewModel.logout() }
-            )
-        }
     }
 }
 
@@ -227,40 +207,6 @@ extension SettingsScreen {
         case .login: return (L10n.logIn, false)
         case .logout: return (L10n.logout, true)
         }
-    }
-
-    private func navigateToLoginScreen() {
-           let loginScreen: LoginScreen = Resolver.resolve()
-           present(loginScreen, animated: true, completion: nil)
-       }
-
-    private func presentActionSheet(title: String, message: String, confirm: String, action: @escaping (() -> Void)) {
-        #if targetEnvironment(macCatalyst)
-        let actionSheet = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .alert
-        )
-        #else
-        let actionSheet = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .actionSheet
-        )
-        #endif
-        let confirmAction = UIAlertAction(
-            title: confirm,
-            style: .destructive,
-            handler: { _ in action() }
-        )
-        let cancelAction = UIAlertAction(title: L10n.cancel, style: .cancel, handler: nil)
-
-        actionSheet.addAction(cancelAction)
-        actionSheet.addAction(confirmAction)
-
-        actionSheet.preferredAction = confirmAction
-
-        present(actionSheet, animated: true, completion: nil)
     }
 
     private func canSelectCell(at indexPath: IndexPath) -> Bool {

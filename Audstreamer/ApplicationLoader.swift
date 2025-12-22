@@ -28,6 +28,7 @@ final class ApplicationLoader: NSObject {
     @LazyInjected private var notificationHandler: NotificationHandler
     @LazyInjected private var cloud: Cloud
     @LazyInjected private var shortcutHandler: ShortcutHandler
+    @LazyInjected private var navigator: Navigator
 
     // MARK: Private properties
 
@@ -66,10 +67,10 @@ extension ApplicationLoader {
 
 extension ApplicationLoader {
     private func setupWindow(_ window: UIWindow?) {
-        let loadingViewController: LoadingScreen = Resolver.resolve()
-        window?.rootViewController = loadingViewController
-        window?.tintColor = Asset.Colors.primary.color
-        window?.makeKeyAndVisible()
+        navigator.setup(with: window)
+
+        let loadingScreen: LoadingScreen = Resolver.resolve()
+        navigator.start(with: loadingScreen)
     }
 
     private func setupBackgroundRefresh() {

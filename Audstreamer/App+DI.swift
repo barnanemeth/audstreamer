@@ -15,6 +15,7 @@ extension Resolver {
     static func setupDI() {
         registerKeyWindow()
         registerAppServices()
+        registerNavigator()
         registerScreens()
     }
 }
@@ -42,6 +43,11 @@ extension Resolver {
         registerFilterService()
         registerShortcutHandler()
         registerWatchConnectivityService()
+    }
+
+    private static func registerNavigator() {
+        register { Navigator() }
+            .scope(.cached)
     }
 
     private static func registerScreens() {
@@ -200,7 +206,7 @@ extension Resolver {
     }
 
     private static func registerSettingsScreen() {
-        register { SettingsScreenViewModel() }
+        register { SettingsViewModel() }
             .scope(.unique)
 
         register { SettingsScreen() }
