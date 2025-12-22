@@ -48,7 +48,7 @@
 "connect" = "Connect";
 "disconnect" = "Disconnect";
 "storage" = "Storage";
-"downloadsSize" = "Downloads: %@";
+"downloadsSize" = "Downloads: **%@**";
 "deleteDownloads" = "Delete downloads";
 "deleteDownloadsConfirm" = "Are you sure to delete downloaded episodes?";
 "version" = "Version %@ (%@)";

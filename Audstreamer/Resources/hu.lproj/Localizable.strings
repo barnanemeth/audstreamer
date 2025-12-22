@@ -48,7 +48,7 @@
 "connect" = "Csatlakozás";
 "disconnect" = "Kapcsolat bontása";
 "storage" = "Tárhely";
-"downloadsSize" = "Letöltések: %@";
+"downloadsSize" = "Letöltések: **%@**";
 "deleteDownloads" = "Letöltések törlése";
 "deleteDownloadsConfirm" = "Biztos szeretnéd törölni a letöltött epizódokat?";
 "version" = "Verzió %@ (%@)";

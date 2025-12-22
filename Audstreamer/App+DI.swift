@@ -206,9 +206,6 @@ extension Resolver {
     }
 
     private static func registerSettingsScreen() {
-        register { SettingsViewModel() }
-            .scope(.unique)
-
         register { SettingsScreen() }
             .scope(.unique)
     }

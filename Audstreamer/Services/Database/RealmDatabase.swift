@@ -208,6 +208,8 @@ extension RealmDatabase: Database {
             let episodes = realm.objects(EpisodeData.self).filter("isDownloaded == TRUE")
             episodes.forEach { $0.isDownloaded = false }
         }
+        .subscribe(on: Constant.defaultQueue)
+        .eraseToAnyPublisher()
     }
 }
 

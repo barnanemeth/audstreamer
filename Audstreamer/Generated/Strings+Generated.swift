@@ -72,9 +72,9 @@ internal enum L10n {
   internal static func downloadSize(_ p1: Int, _ p2: Any) -> String {
     return L10n.tr("Localizable", "downloadSize", p1, String(describing: p2), fallback: "Plural format key: \"Size of the downloadable %#@format@ is %@.\"")
   }
-  /// Downloads: %@
+  /// Downloads: **%@**
   internal static func downloadsSize(_ p1: Any) -> String {
-    return L10n.tr("Localizable", "downloadsSize", String(describing: p1), fallback: "Downloads: %@")
+    return L10n.tr("Localizable", "downloadsSize", String(describing: p1), fallback: "Downloads: **%@**")
   }
   /// Duration
   /// %@
