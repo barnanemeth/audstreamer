@@ -8,8 +8,8 @@
 import SwiftUI
 
 class BaseHostingScreen<Screen: ScreenView>: UIHostingController<Screen> {
-    init() {
-        super.init(rootView: Screen())
+    init(viewModel: Screen.ViewModelType) {
+        super.init(rootView: Screen(viewModel: viewModel))
     }
 
     @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {

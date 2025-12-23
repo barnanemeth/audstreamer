@@ -11,5 +11,5 @@ protocol ScreenView: View {
     associatedtype ViewModelType: AnyObject
 
     var viewModel: ViewModelType { get }
-    init()
+    init(viewModel: ViewModelType)
 }

@@ -13,7 +13,7 @@ struct SettingsView: ScreenView {
 
     // MARK: Dependencies
 
-    @State var viewModel = SettingsViewModel()
+    @State var viewModel: SettingsViewModel
 
     // MARK: UI
 

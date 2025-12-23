@@ -174,8 +174,13 @@ extension Resolver {
     }
 
     private static func registerLoadingScreen() {
-        register { LoadingScreen() }
+        register { LoadingViewModel() }
             .scope(.unique)
+
+        register { resolver in
+            LoadingScreen(viewModel: resolver.resolve())
+        }
+        .scope(.unique)
     }
 
     private static func registerPlayerScreen() {
@@ -187,8 +192,13 @@ extension Resolver {
     }
 
     private static func registerLoginScreen() {
-        register(LoginScreen.self) { (_, args: Resolver.Args) in
-            LoginScreen(viewModel: LoginViewModel(shouldShowPlayerAtDismiss: args.get()))
+        register { (_, args: Resolver.Args) in
+            LoginViewModel(shouldShowPlayerAtDismiss: args.get())
+        }
+        .scope(.unique)
+
+        register { (resolver, args: Resolver.Args) in
+            LoginScreen(viewModel: resolver.resolve(args: args.get()))
         }
         .scope(.unique)
     }
@@ -202,8 +212,13 @@ extension Resolver {
     }
 
     private static func registerSettingsScreen() {
-        register { SettingsScreen() }
+        register { SettingsViewModel() }
             .scope(.unique)
+
+        register { resolver in
+            SettingsScreen(viewModel: resolver.resolve())
+        }
+        .scope(.unique)
     }
 
     private static func registerDownloadsScreen() {
