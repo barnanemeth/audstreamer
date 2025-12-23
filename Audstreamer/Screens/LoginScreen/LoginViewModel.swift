@@ -50,23 +50,16 @@ extension LoginViewModel {
             try await registerDevice()
 
             finishedOrCancelled()
+        } catch let authorizationError as AuthorizationError where authorizationError == .userCanceled {
+            return
         } catch {
             try? secureStore.deleteToken()
             showErrorAlert(for: error)
         }
     }
 
-    func finishedOrCancelled() {
-        if shouldShowPlayerAtDismiss {
-            let playerScreen: PlayerScreen = Resolver.resolve()
-            let navigationController = UINavigationController(rootViewController: playerScreen) // Note: with SwiftUI this is not necessary
-            navigationController.modalPresentationStyle = .overCurrentContext
-            navigationController.definesPresentationContext = true
-
-            navigator.dismissAndPresent(navigationController)
-        } else {
-            navigator.dismiss()
-        }
+    func handleCancel() {
+        navigator.dismiss()
     }
 }
 
@@ -93,6 +86,19 @@ extension LoginViewModel {
             }
         } catch {
             NSLog("Cancellation error")
+        }
+    }
+
+    private func finishedOrCancelled() {
+        if shouldShowPlayerAtDismiss {
+            let playerScreen: PlayerScreen = Resolver.resolve()
+            let navigationController = UINavigationController(rootViewController: playerScreen) // Note: with SwiftUI this is not necessary
+            navigationController.modalPresentationStyle = .overCurrentContext
+            navigationController.definesPresentationContext = true
+
+            navigator.dismissAndPresent(navigationController)
+        } else {
+            navigator.dismiss()
         }
     }
 

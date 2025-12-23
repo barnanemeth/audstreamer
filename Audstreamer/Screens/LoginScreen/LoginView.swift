@@ -66,6 +66,7 @@ extension LoginView {
             signInWithAppleButton
 
             Button(L10n.cancel) {
+                viewModel.handleCancel()
             }
             .font(.headline)
             .foregroundStyle(Asset.Colors.primary.swiftUIColor)
