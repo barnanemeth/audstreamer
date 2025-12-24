@@ -60,6 +60,7 @@
 "downloadInProgress" = "Folyamatban";
 "downloadFinished" = "Kész";
 "downloadError" = "Hiba: %@";
+"downloadPaused" = "Szüneteltetve";
 "playLastPlayedEpisode" = "Legutoljára játszott lejátszása";
 "playNewestEpisode" = "Legújabb lejátszása";
 "transferring" = "Fájlok küldése";

@@ -60,6 +60,7 @@
 "downloadInProgress" = "In progress";
 "downloadFinished" = "Finished";
 "downloadError" = "Error: %@";
+"downloadPaused" = "Paused";
 "playLastPlayedEpisode" = "Play last played episode";
 "playNewestEpisode" = "Play newest episode";
 "onWatch" = "On Watch";

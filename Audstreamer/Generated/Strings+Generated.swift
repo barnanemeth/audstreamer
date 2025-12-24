@@ -64,6 +64,8 @@ internal enum L10n {
   }
   /// In progress
   internal static let downloadInProgress = L10n.tr("Localizable", "downloadInProgress", fallback: "In progress")
+  /// Paused
+  internal static let downloadPaused = L10n.tr("Localizable", "downloadPaused", fallback: "Paused")
   /// Queued
   internal static let downloadQueued = L10n.tr("Localizable", "downloadQueued", fallback: "Queued")
   /// Downloads

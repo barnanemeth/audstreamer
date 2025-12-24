@@ -222,10 +222,12 @@ extension Resolver {
     }
 
     private static func registerDownloadsScreen() {
-        register { DownloadsScreenViewModel() }
+        register { DownloadsViewModel() }
             .scope(.unique)
 
-        register { DownloadsScreen() }
-            .scope(.unique)
+        register { resolver in
+            DownloadsScreen(viewModel: resolver.resolve())
+        }
+        .scope(.unique)
     }
 }

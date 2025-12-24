@@ -236,7 +236,7 @@
 		C25ED57F2A2BA2D100E6A4D5 /* Resolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27ED16928FADA38003B0FC9 /* Resolver.swift */; };
 		C25ED5842A2BA72500E6A4D5 /* RemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E37BE02900359500FAD613 /* RemotePlayer.swift */; };
 		C263F0A52943474E0076065C /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = C263F0A42943474E0076065C /* Nuke */; };
-		C263F0A6294347880076065C /* DownloadsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28B5766293800C2005921B5 /* DownloadsScreenViewModel.swift */; };
+		C263F0A6294347880076065C /* DownloadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28B5766293800C2005921B5 /* DownloadsViewModel.swift */; };
 		C263F0A72943478A0076065C /* DownloadsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28B57642938009E005921B5 /* DownloadsScreen.swift */; };
 		C263F0A82943478C0076065C /* DownloadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20987B5293AAD79005A160E /* DownloadingCell.swift */; };
 		C263F0A92943479B0076065C /* DownloadingCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20987B2293A8B7B005A160E /* DownloadingCellItem.swift */; };
@@ -320,7 +320,7 @@
 		C28B23A02C0B78860012FA81 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C28B239F2C0B78860012FA81 /* DownloadAnimation.json */; };
 		C28B23A12C0B78860012FA81 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C28B239F2C0B78860012FA81 /* DownloadAnimation.json */; };
 		C28B57652938009E005921B5 /* DownloadsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28B57642938009E005921B5 /* DownloadsScreen.swift */; };
-		C28B5767293800C2005921B5 /* DownloadsScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28B5766293800C2005921B5 /* DownloadsScreenViewModel.swift */; };
+		C28B5767293800C2005921B5 /* DownloadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28B5766293800C2005921B5 /* DownloadsViewModel.swift */; };
 		C28DA0392913D37200037E4A /* JustVoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28DA0382913D37200037E4A /* JustVoid.swift */; };
 		C290BAD12932844B00F0532A /* RatingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C290BAD02932844B00F0532A /* RatingHelper.swift */; };
 		C290BAD22932844B00F0532A /* RatingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C290BAD02932844B00F0532A /* RatingHelper.swift */; };
@@ -392,6 +392,10 @@
 		C2C2D3982EF9CB25008AFF00 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3962EF9CB25008AFF00 /* LoginView.swift */; };
 		C2C2D6B32EF9DB76008AFF00 /* FillWidthModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D6B22EF9DB76008AFF00 /* FillWidthModifier.swift */; };
 		C2C2D6B42EF9DB76008AFF00 /* FillWidthModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D6B22EF9DB76008AFF00 /* FillWidthModifier.swift */; };
+		C2C2D6B62EFAC101008AFF00 /* DownloadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D6B52EFAC101008AFF00 /* DownloadsView.swift */; };
+		C2C2D6B72EFAC101008AFF00 /* DownloadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D6B52EFAC101008AFF00 /* DownloadsView.swift */; };
+		C2C2D6B92EFAC209008AFF00 /* DownloadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D6B82EFAC209008AFF00 /* DownloadingView.swift */; };
+		C2C2D6BA2EFAC209008AFF00 /* DownloadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D6B82EFAC209008AFF00 /* DownloadingView.swift */; };
 		C2D471A529279E53002AD543 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27947042926662300A7402F /* About.swift */; };
 		C2D7EA262A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D7EA252A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift */; };
 		C2D7EA282A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D7EA272A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift */; };
@@ -650,7 +654,7 @@
 		C28AC3482943DE67006E04BA /* DefaultShortcutHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultShortcutHandler.swift; sourceTree = "<group>"; };
 		C28B239F2C0B78860012FA81 /* DownloadAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DownloadAnimation.json; sourceTree = "<group>"; };
 		C28B57642938009E005921B5 /* DownloadsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsScreen.swift; sourceTree = "<group>"; };
-		C28B5766293800C2005921B5 /* DownloadsScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsScreenViewModel.swift; sourceTree = "<group>"; };
+		C28B5766293800C2005921B5 /* DownloadsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsViewModel.swift; sourceTree = "<group>"; };
 		C28DA0382913D37200037E4A /* JustVoid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustVoid.swift; sourceTree = "<group>"; };
 		C290BAD02932844B00F0532A /* RatingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingHelper.swift; sourceTree = "<group>"; };
 		C290BAD329328E3800F0532A /* CloudKitFetchPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitFetchPublisher.swift; sourceTree = "<group>"; };
@@ -693,6 +697,8 @@
 		C2C2D3932EF9BBF8008AFF00 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		C2C2D3962EF9CB25008AFF00 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C2C2D6B22EF9DB76008AFF00 /* FillWidthModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillWidthModifier.swift; sourceTree = "<group>"; };
+		C2C2D6B52EFAC101008AFF00 /* DownloadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsView.swift; sourceTree = "<group>"; };
+		C2C2D6B82EFAC209008AFF00 /* DownloadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadingView.swift; sourceTree = "<group>"; };
 		C2D7EA252A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+EpisodeService.swift"; sourceTree = "<group>"; };
 		C2D7EA272A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+DownloadService.swift"; sourceTree = "<group>"; };
 		C2D7EA292A39B31B00D51F40 /* WatchEpisodeService+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+Helpers.swift"; sourceTree = "<group>"; };
@@ -994,6 +1000,7 @@
 			isa = PBXGroup;
 			children = (
 				C20987B5293AAD79005A160E /* DownloadingCell.swift */,
+				C2C2D6B82EFAC209008AFF00 /* DownloadingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1433,7 +1440,8 @@
 				C20987B4293AAD6D005A160E /* Views */,
 				C20987B1293A8B6D005A160E /* Helpers */,
 				C28B57642938009E005921B5 /* DownloadsScreen.swift */,
-				C28B5766293800C2005921B5 /* DownloadsScreenViewModel.swift */,
+				C28B5766293800C2005921B5 /* DownloadsViewModel.swift */,
+				C2C2D6B52EFAC101008AFF00 /* DownloadsView.swift */,
 			);
 			path = DownloadsScreen;
 			sourceTree = "<group>";
@@ -1870,6 +1878,7 @@
 				C28658F52A45EEDF00974E97 /* DownloadItem+Extensions.swift in Sources */,
 				C2AC285A2E72BD010038FBFB /* CombineControlTarget.swift in Sources */,
 				C23CBD732AF3E04A0024E0A1 /* WCSessionFileTransfer+Extensions.swift in Sources */,
+				C2C2D6B92EFAC209008AFF00 /* DownloadingView.swift in Sources */,
 				C268CB4D29217381001361B9 /* FilterAttribute+Extensions.swift in Sources */,
 				C2F534772920492F0002452B /* FloatingPoint+Extension.swift in Sources */,
 				C294B12E2914150400A30403 /* MergeMany.swift in Sources */,
@@ -1908,7 +1917,7 @@
 				59B707FD258032AA00AA831D /* RealmDatabase.swift in Sources */,
 				C23E80E82EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */,
 				C20C5C3E2A386B3B0075FCCD /* UserInfoKeys.swift in Sources */,
-				C28B5767293800C2005921B5 /* DownloadsScreenViewModel.swift in Sources */,
+				C28B5767293800C2005921B5 /* DownloadsViewModel.swift in Sources */,
 				C28AC3492943DE67006E04BA /* DefaultShortcutHandler.swift in Sources */,
 				C237C4CF28FC946900D246D7 /* LoginViewModel.swift in Sources */,
 				C28658F22A45EDE200974E97 /* DownloadAggregatedEvent+Extensions.swift in Sources */,
@@ -1968,6 +1977,7 @@
 				C28DA0392913D37200037E4A /* JustVoid.swift in Sources */,
 				C294B1262913FDE300A30403 /* NotificationHandler.swift in Sources */,
 				C21C5C742A2E2AB200306547 /* LastPlayedDateMessage.swift in Sources */,
+				C2C2D6B62EFAC101008AFF00 /* DownloadsView.swift in Sources */,
 				C26C4FA229298E500015DC94 /* Calendar.Component+Extensions.swift in Sources */,
 				C237C4D828FCA9C200D246D7 /* PlayerScreenViewModel.swift in Sources */,
 				59B707FA2580328C00AA831D /* Database.swift in Sources */,
@@ -2039,6 +2049,7 @@
 				C2146FBD29243979004D4E85 /* EpisodeDetailCell.swift in Sources */,
 				C2AC285B2E72BD010038FBFB /* CombineControlTarget.swift in Sources */,
 				C2146FBE29243979004D4E85 /* FilterAttribute+Extensions.swift in Sources */,
+				C2C2D6BA2EFAC209008AFF00 /* DownloadingView.swift in Sources */,
 				C2146FBF29243979004D4E85 /* FloatingPoint+Extension.swift in Sources */,
 				C2146FC029243979004D4E85 /* MergeMany.swift in Sources */,
 				C2146FC129243979004D4E85 /* PlayerScreen.swift in Sources */,
@@ -2078,7 +2089,7 @@
 				C2EBFBA529572E22001D650E /* Previewable.swift in Sources */,
 				C290BADE2932B88300F0532A /* BackgroundTask.swift in Sources */,
 				C28AC34A2943DE67006E04BA /* DefaultShortcutHandler.swift in Sources */,
-				C263F0A6294347880076065C /* DownloadsScreenViewModel.swift in Sources */,
+				C263F0A6294347880076065C /* DownloadsViewModel.swift in Sources */,
 				C2146FD429243979004D4E85 /* FlatMapLatest.swift in Sources */,
 				C2146FD529243979004D4E85 /* DownloadItem.swift in Sources */,
 				C2146FD629243979004D4E85 /* RealmDatabase.swift in Sources */,
@@ -2137,6 +2148,7 @@
 				C2146FF529243979004D4E85 /* JustVoid.swift in Sources */,
 				C2146FF629243979004D4E85 /* NotificationHandler.swift in Sources */,
 				C26C4FA329298E500015DC94 /* Calendar.Component+Extensions.swift in Sources */,
+				C2C2D6B72EFAC101008AFF00 /* DownloadsView.swift in Sources */,
 				C2146FF729243979004D4E85 /* PlayerScreenViewModel.swift in Sources */,
 				C21C5C752A2E2AB200306547 /* LastPlayedDateMessage.swift in Sources */,
 				C2146FF829243979004D4E85 /* Database.swift in Sources */,
