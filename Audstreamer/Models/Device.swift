@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Device {
+struct Device: Identifiable {
 
     // MARK: Enums
 
