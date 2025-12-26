@@ -8,11 +8,11 @@
 import Foundation
 
 extension EpisodeCommon {
-    init?(from episodeData: EpisodeData) {
+    init?(from episodeData: Episode) {
         self.id = episodeData.id
         self.title = episodeData.title
         self.duration = episodeData.duration
-        self.lastPosition = episodeData.lastPosition
+        self.lastPosition = episodeData.lastPosition ?? -1
     }
 }
 

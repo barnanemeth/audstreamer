@@ -113,7 +113,7 @@ final class PlayerScreenViewModel: ScreenViewModel {
     // MARK: Private properties
 
     private var cancellables = Set<AnyCancellable>()
-    private var episodes: AnyPublisher<[EpisodeData], Never> {
+    private var episodes: AnyPublisher<[Episode], Never> {
         Publishers.CombineLatest(filterAttributes, $searchKeyword)
             .flatMapLatest { [unowned self] in self.getEpisodes(by: $0, keyword: $1) }
             .eraseToAnyPublisher()
@@ -142,7 +142,7 @@ final class PlayerScreenViewModel: ScreenViewModel {
 // MARK: - Actions
 
 extension PlayerScreenViewModel {
-    func playEpisode(_ episode: EpisodeData) {
+    func playEpisode(_ episode: Episode) {
         let play = audioPlayer.getCurrentPlayingAudioInfo()
             .map { $0?.id }
             .first()
@@ -156,7 +156,7 @@ extension PlayerScreenViewModel {
         Publishers.Zip(play, send).sink().store(in: &cancellables)
     }
 
-    func downloadDeleteEpisode(_ episode: EpisodeData) {
+    func downloadDeleteEpisode(_ episode: Episode) {
         if episode.isDownloaded {
             deleteEpisode(episode).sink().store(in: &cancellables)
         } else {
@@ -164,7 +164,7 @@ extension PlayerScreenViewModel {
         }
     }
 
-    func toggleEpisodeFavorite(_ episode: EpisodeData) {
+    func toggleEpisodeFavorite(_ episode: Episode) {
         let isFavorite = !episode.isFavourite
 
         let databaseUpdate = database.updateEpisode(episode, isFavorite: isFavorite)
@@ -196,15 +196,16 @@ extension PlayerScreenViewModel {
             .store(in: &cancellables)
     }
 
-    func downloadEpisodes(_ episodes: [EpisodeData]) {
+    func downloadEpisodes(_ episodes: [Episode]) {
         episodes.map { downloadService.download($0) }.zip().sink().store(in: &cancellables)
     }
 
-    func toggleEpisodeIsOnWatch(_ episode: EpisodeData) {
-        database.updateEpisode(episode, isOnWatch: !episode.isOnWatch)
+    func toggleEpisodeIsOnWatch(_ episode: Episode) {
+        let isOnWatch = !episode.isOnWatch
+        database.updateEpisode(episode, isOnWatch: isOnWatch)
             .receive(on: DispatchQueue.main)
             .flatMap { [unowned self] _ -> AnyPublisher<Void, Error> in
-                if episode.isOnWatch {
+                if isOnWatch {
                     watchConnectivityService.transferEpisode(episode.id)
                 } else {
                     watchConnectivityService.cancelFileTransferForEpisode(episode.id)
@@ -237,8 +238,8 @@ extension PlayerScreenViewModel {
         navigator.presentPopover(devicesViewController, sourceView: sourceView)
     }
 
-    func navigateToWebView(for episode: EpisodeData) {
-        guard let linkString = episode.link, let linkURL = URL(string: linkString) else { return }
+    func navigateToWebView(for episode: Episode) {
+        guard let linkURL = episode.link else { return }
         let webViewViewController = SFSafariViewController(url: linkURL)
         webViewViewController.preferredControlTintColor = Asset.Colors.primary.color
         webViewViewController.modalPresentationStyle = .overFullScreen
@@ -249,10 +250,10 @@ extension PlayerScreenViewModel {
 // MARK: - Helpers
 
 extension PlayerScreenViewModel {
-    private func transformEpisodes(from episodes: [EpisodeData],
+    private func transformEpisodes(from episodes: [Episode],
                                    openedEpisodeID: String?,
                                    isWatchAvailable: Bool) -> [EpisodeSection] {
-        let dict = episodes.reduce(into: OrderedDictionary<DateComponents, [EpisodeData]>(), { dictionary, episode in
+        let dict = episodes.reduce(into: OrderedDictionary<DateComponents, [Episode]>(), { dictionary, episode in
             let components = Calendar.current.dateComponents(
                 Set(Constant.splitterDateComponents),
                 from: episode.publishDate
@@ -315,7 +316,7 @@ extension PlayerScreenViewModel {
             .store(in: &cancellables)
     }
 
-    private func insertEpisode(_ episode: EpisodeData, playImmediately: Bool) -> AnyPublisher<Void, Error> {
+    private func insertEpisode(_ episode: Episode, playImmediately: Bool) -> AnyPublisher<Void, Error> {
         audioPlayer.insert(episode, playImmediately: playImmediately)
             .receive(on: DispatchQueue.main)
             .handleEvents(receiveSubscription: { [weak self] _ in self?.isLoading = true },
@@ -336,7 +337,7 @@ extension PlayerScreenViewModel {
         databaseUpdater.startUpdating().sink().store(in: &cancellables)
     }
 
-    private func deleteEpisode(_ episode: EpisodeData) -> AnyPublisher<Void, Error> {
+    private func deleteEpisode(_ episode: Episode) -> AnyPublisher<Void, Error> {
         downloadService.delete(episode)
             .flatMap { [unowned self] in self.database.updateEpisode(episode, isDownloaded: false) }
             .eraseToAnyPublisher()
@@ -347,7 +348,7 @@ extension PlayerScreenViewModel {
         return reachability?.connection == .cellular
     }
 
-    private func presentCellularWarningAlert(for episodes: [EpisodeData]) {
+    private func presentCellularWarningAlert(for episodes: [Episode]) {
         let episodeSizes = episodes.map { URLHelper.contentLength(of: $0.url) }.zip()
 
         episodeSizes
@@ -358,7 +359,7 @@ extension PlayerScreenViewModel {
     }
 
     private func getEpisodes(by filterAttributes: [FilterAttribute],
-                             keyword: String?) -> AnyPublisher<[EpisodeData], Never> {
+                             keyword: String?) -> AnyPublisher<[Episode], Never> {
         let filterFavorites = filterAttributes.contains { $0.type == .favorites && $0.isActive }
         let filterDownloads = filterAttributes.contains { $0.type == .downloads && $0.isActive }
         let filterWatch = filterAttributes.contains { $0.type == .watch && $0.isActive }
@@ -385,7 +386,7 @@ extension PlayerScreenViewModel {
             .store(in: &cancellables)
     }
 
-    private func downloadEpisodesIfPossible(_ episodes: [EpisodeData]) {
+    private func downloadEpisodesIfPossible(_ episodes: [Episode]) {
         if self.isOnlyCellularAvailable() {
             self.presentCellularWarningAlert(for: episodes)
         } else {
@@ -402,11 +403,11 @@ extension PlayerScreenViewModel {
             .store(in: &cancellables)
     }
 
-    private func episodes(for section: EpisodeSection, isDownloaded: Bool) -> AnyPublisher<[EpisodeData], Error> {
+    private func episodes(for section: EpisodeSection, isDownloaded: Bool) -> AnyPublisher<[Episode], Error> {
         let componentsToDownload = dateComponents(from: section)
         return database.getEpisodes()
             .first()
-            .map { episodes -> [EpisodeData] in
+            .map { episodes -> [Episode] in
                 episodes.filter { episode in
                     let components = Calendar.current.dateComponents(
                         Set(Constant.splitterDateComponents),
@@ -418,7 +419,7 @@ extension PlayerScreenViewModel {
             .eraseToAnyPublisher()
     }
 
-    private func deleteEpisodes(_ episodes: [EpisodeData]) -> AnyPublisher<Void, Error> {
+    private func deleteEpisodes(_ episodes: [Episode]) -> AnyPublisher<Void, Error> {
         guard !episodes.isEmpty else { return Just.void() }
         return episodes.map { episode in
             downloadService.delete(episode)
@@ -428,7 +429,7 @@ extension PlayerScreenViewModel {
         .toVoid()
     }
 
-    private func presentCellularWarningAlert(for episodes: [EpisodeData], contentLength: Int?) {
+    private func presentCellularWarningAlert(for episodes: [Episode], contentLength: Int?) {
         let alertController = UIAlertController(
             title: L10n.download,
             message: getCellularWarningMessage(episodesCount: episodes.count, contentLength: contentLength),

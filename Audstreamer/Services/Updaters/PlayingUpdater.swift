@@ -54,7 +54,7 @@ extension PlayingUpdater {
         audioPlayer.getCurrentPlayingAudioInfo()
             .unwrap()
             .removeDuplicates()
-            .flatMap { [unowned self] audioInfo -> AnyPublisher<(EpisodeData, Int), Error> in
+            .flatMap { [unowned self] audioInfo -> AnyPublisher<(Episode, Int), Error> in
                 let episode = self.database.getEpisode(id: audioInfo.id).first().unwrap()
                 let durationPublisher = Just(audioInfo.duration).setFailureType(to: Error.self)
 
@@ -116,7 +116,7 @@ extension PlayingUpdater {
             guard item.id == currentAudioID else { return Just.void() }
             return database.getEpisode(id: currentAudioID)
                 .first()
-                .flatMap { [unowned self] episode -> AnyPublisher<EpisodeData, Error> in
+                .flatMap { [unowned self] episode -> AnyPublisher<Episode, Error> in
                     guard let episode = episode else { return Empty(completeImmediately: true).eraseToAnyPublisher() }
 
                     let episodePublisher = Just(episode).setFailureType(to: Error.self)

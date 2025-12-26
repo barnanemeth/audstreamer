@@ -34,7 +34,7 @@ extension FetchUtil {
         return isApplicationActivePublisher
             .first { $0 }
             .flatMap { _ in database.getLastEpisodePublishDate().first() }
-            .flatMap { lastPublishDate -> AnyPublisher<([EpisodeData], Int), Error> in
+            .flatMap { lastPublishDate -> AnyPublisher<([Episode], Int), Error> in
                 let remoteEpisodes = networking.getEpisodes(from: lastPublishDate)
                 let localEpisodesCount = getEpisodesCount()
 

@@ -134,7 +134,7 @@ extension DefaultWatchConnectivityService: WatchConnectivityService {
                 }
                 return episode
             }
-            .flatMap { [unowned self] episode -> AnyPublisher<EpisodeData, Error> in
+            .flatMap { [unowned self] episode -> AnyPublisher<Episode, Error> in
                 if episode.isDownloaded {
                     return Just(episode).setFailureType(to: Error.self).eraseToAnyPublisher()
                 } else {
@@ -181,7 +181,7 @@ extension DefaultWatchConnectivityService {
         }
     }
 
-    private func mapEpisodes(_ episodes: [EpisodeData]) -> [String: Any] {
+    private func mapEpisodes(_ episodes: [Episode]) -> [String: Any] {
         let array = episodes.compactMap { EpisodeCommon(from: $0)?.asDictionary }
         return [Constant.episodesMessageKey: array]
     }
@@ -195,41 +195,7 @@ extension DefaultWatchConnectivityService {
         return watchConnectivityMessage
     }
 
-//    private func handleEpisodeRequestMessage(_ message: EpisodeRequestMessage,
-//                                             replyHandler: @escaping ([String: Any]) -> Void) {
-//        database.getEpisode(id: message.episodeID)
-//            .first()
-//            .tryMap { episode in
-//                guard let episode else {
-//                    throw DefaultWatchConnectivityServiceError.resourceNotFound
-//                }
-//                return episode
-//            }
-//            .flatMap { [unowned self] episode -> AnyPublisher<EpisodeData, Error> in
-//                if episode.isDownloaded {
-//                    return Just(episode).setFailureType(to: Error.self).eraseToAnyPublisher()
-//                } else {
-//                    return self.downloadEpisodeAndWaitForFinish(episode)
-//                }
-//            }
-//            .sink(receiveCompletion: { completion in
-//                guard case .failure = completion else { return }
-//                replyHandler(ReplyMessage(status: .failed).asUserInfo)
-//            }, receiveValue: { [unowned self] episode in
-//                guard let localURL = episode.possibleLocalURL else {
-//                    return replyHandler(ReplyMessage(status: .failed).asUserInfo)
-//                }
-//                let episodeMetadata = EpisodeTransferMetadata(episodeID: episode.id)
-//                let fileTransfer = self.session.transferFile(localURL, metadata: episodeMetadata.asUserInfo)
-//                let operation = FileTransferOperation(fileTransfer: fileTransfer)
-//                self.fileTransferQueue.addOperation(operation)
-//
-//                replyHandler(ReplyMessage(status: .success).asUserInfo)
-//            })
-//            .store(in: &cancellables)
-//    }
-
-    private func downloadEpisodeAndWaitForFinish(_ episode: EpisodeData) -> AnyPublisher<EpisodeData, Error> {
+    private func downloadEpisodeAndWaitForFinish(_ episode: Episode) -> AnyPublisher<Episode, Error> {
         downloadService.download(episode)
             .flatMap { [unowned self] in self.downloadService.getEvent() }
             .first { event in
@@ -268,7 +234,7 @@ extension DefaultWatchConnectivityService {
         }
     }
 
-    private func getEpisode(for episodeBasedMessage: WatchConnectivityEpisodeBasedMessage) -> AnyPublisher<EpisodeData?, Error> {
+    private func getEpisode(for episodeBasedMessage: WatchConnectivityEpisodeBasedMessage) -> AnyPublisher<Episode?, Error> {
         database.getEpisode(id: episodeBasedMessage.episodeID)
             .first()
             .eraseToAnyPublisher()

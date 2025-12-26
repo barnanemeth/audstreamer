@@ -39,8 +39,9 @@ final class RealmDatabase {
 // MARK: - Database
 
 extension RealmDatabase: Database {
-    func insertEpisodes(_ episodes: [EpisodeData], overwrite: Bool) -> AnyPublisher<Void, Error> {
-        write { realm in
+    func insertEpisodes(_ episodes: [Episode], overwrite: Bool) -> AnyPublisher<Void, Error> {
+        let episodes = mapEpisodes(episodes)
+        return write { realm in
             let insert = overwrite ? episodes : episodes.filter { !self.getAllEpisodes().map(\.id).contains($0.id) }
             realm.add(insert, update: .all)
         }
@@ -51,7 +52,7 @@ extension RealmDatabase: Database {
     func getEpisodes(filterFavorites: Bool,
                      filterDownloads: Bool,
                      filterWatch: Bool,
-                     keyword: String?) -> AnyPublisher<[EpisodeData], Error> {
+                     keyword: String?) -> AnyPublisher<[Episode], Error> {
         var predicates = [NSPredicate]()
 
         if let keyword = keyword {
@@ -88,52 +89,85 @@ extension RealmDatabase: Database {
                     .sorted(byKeyPath: "publishDate", ascending: false)
                 return RealmPublishers.array(from: emitter, keyPaths: Constant.observedKeyPaths)
             }
+            .map { [unowned self] in mapEpisodes($0) }
             .eraseToAnyPublisher()
     }
 
-    func updateEpisode(_ episode: EpisodeData, isFavorite: Bool) -> AnyPublisher<Void, Error> {
-        write { _ in episode.isFavourite = isFavorite }
+    func updateEpisode(_ episode: Episode, isFavorite: Bool) -> AnyPublisher<Void, Error> {
+        getEpisodeData(id: episode.id)
+            .first()
+            .flatMap { [unowned self] episode in
+                write { _ in episode?.isFavourite = isFavorite }
+            }
             .subscribe(on: Constant.defaultQueue)
             .eraseToAnyPublisher()
     }
 
-    func updateEpisode(_ episode: EpisodeData, isOnWatch: Bool) -> AnyPublisher<Void, Error> {
-        write { _ in episode.isOnWatch = isOnWatch }
+    func updateEpisode(_ episode: Episode, isOnWatch: Bool) -> AnyPublisher<Void, Error> {
+        getEpisodeData(id: episode.id)
+            .first()
+            .flatMap { [unowned self] episode in
+                write { _ in episode?.isOnWatch = isOnWatch }
+            }
             .subscribe(on: Constant.defaultQueue)
             .eraseToAnyPublisher()
     }
 
-    func updateEpisode(_ episode: EpisodeData, isDownloaded: Bool) -> AnyPublisher<Void, Error> {
-        write { _ in episode.isDownloaded = isDownloaded }
+    func updateEpisode(_ episode: Episode, isDownloaded: Bool) -> AnyPublisher<Void, Error> {
+        getEpisodeData(id: episode.id)
+            .first()
+            .flatMap { [unowned self] episode in
+                write { _ in episode?.isDownloaded = isDownloaded }
+            }
             .subscribe(on: Constant.defaultQueue)
             .eraseToAnyPublisher()
     }
 
-    func updateLastPosition(_ lastPosition: Int?, for episode: EpisodeData) -> AnyPublisher<Void, Error> {
-        write { _ in episode.lastPosition = lastPosition ?? -1 }
+    func updateLastPosition(_ lastPosition: Int?, for episode: Episode) -> AnyPublisher<Void, Error> {
+        getEpisodeData(id: episode.id)
+            .first()
+            .flatMap { [unowned self] episode in
+                write { _ in episode?.lastPosition = lastPosition ?? -1 }
+            }
             .subscribe(on: Constant.defaultQueue)
             .eraseToAnyPublisher()
     }
 
-    func updateLastPlayedDate(for episode: EpisodeData) -> AnyPublisher<Void, Error> {
+    func updateLastPlayedDate(for episode: Episode) -> AnyPublisher<Void, Error> {
         updateLastPlayedDate(for: episode, date: Date())
     }
 
-    func updateNumberOfPlays(_ episode: EpisodeData, numberOfPlays: Int) -> AnyPublisher<Void, Error> {
-        write { _ in episode.numberOfPlays = numberOfPlays }
+    func updateNumberOfPlays(_ episode: Episode, numberOfPlays: Int) -> AnyPublisher<Void, Error> {
+        getEpisodeData(id: episode.id)
+            .first()
+            .flatMap { [unowned self] episode in
+                write { _ in episode?.numberOfPlays = numberOfPlays }
+            }
+            .subscribe(on: Constant.defaultQueue)
+            .eraseToAnyPublisher()
     }
 
-    func incrementNumberOfPlays(of episode: EpisodeData) -> AnyPublisher<Void, Error> {
-        write { _ in episode.numberOfPlays += 1 }
+    func incrementNumberOfPlays(of episode: Episode) -> AnyPublisher<Void, Error> {
+        getEpisodeData(id: episode.id)
+            .first()
+            .flatMap { [unowned self] episode in
+                write { _ in episode?.numberOfPlays += 1 }
+            }
+            .subscribe(on: Constant.defaultQueue)
+            .eraseToAnyPublisher()
     }
 
-    func getLastPlayedEpisode() -> AnyPublisher<EpisodeData?, Error> {
+    func getLastPlayedEpisode() -> AnyPublisher<Episode?, Error> {
         makeInstanceOnRightThread()
             .flatMap { realm in
                 let emitter = realm.objects(EpisodeData.self)
                     .filter("lastPlayed != nil")
                     .sorted(byKeyPath: "lastPlayed", ascending: false)
                 return RealmPublishers.array(from: emitter).map { $0.first }
+            }
+            .map { [unowned self] episode in
+                guard let episode else { return nil }
+                return mapEpisode(from: episode)
             }
             .eraseToAnyPublisher()
     }
@@ -162,23 +196,30 @@ extension RealmDatabase: Database {
             .eraseToAnyPublisher()
     }
 
-    func updateDuration(_ duration: Int, for episode: EpisodeData) -> AnyPublisher<Void, Error> {
-        write { _ in episode.duration = duration }
+    func updateDuration(_ duration: Int, for episode: Episode) -> AnyPublisher<Void, Error> {
+        getEpisodeData(id: episode.id)
+            .first()
+            .flatMap { [unowned self] episode in
+                write { _ in episode?.duration = duration }
+            }
             .subscribe(on: Constant.defaultQueue)
             .eraseToAnyPublisher()
     }
 
-    func getEpisode(id: String) -> AnyPublisher<EpisodeData?, Error> {
-        makeInstanceOnRightThread()
-            .flatMap { realm in
-                let emitter = realm.objects(EpisodeData.self).filter("id == %@", id)
-                return RealmPublishers.array(from: emitter).map { $0.first }
+    func getEpisode(id: String) -> AnyPublisher<Episode?, Error> {
+        getEpisodeData(id: id)
+            .map { [unowned self] episode in
+                guard let episode else { return nil }
+                return mapEpisode(from: episode)
             }
             .eraseToAnyPublisher()
     }
 
-    func updateLastPlayedDate(for episode: EpisodeData, date: Date) -> AnyPublisher<Void, Error> {
-        write { _ in episode.lastPlayed = date }
+    func updateLastPlayedDate(for episode: Episode, date: Date) -> AnyPublisher<Void, Error> {
+        getEpisodeData(id: episode.id)
+            .flatMap { [unowned self] episode in
+                write { _ in episode?.lastPlayed = date }
+            }
             .subscribe(on: Constant.defaultQueue)
             .eraseToAnyPublisher()
     }
@@ -201,8 +242,12 @@ extension RealmDatabase: Database {
         .eraseToAnyPublisher()
     }
 
-    func deleteEpisode(_ episode: EpisodeData) -> AnyPublisher<Void, Error> {
-        write { $0.delete(episode) }
+    func deleteEpisode(_ episode: Episode) -> AnyPublisher<Void, Error> {
+        getEpisodeData(id: episode.id)
+            .flatMap { [unowned self] episode in
+                guard let episode else { return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher() }
+                return write { $0.delete(episode) }
+            }
             .subscribe(on: Constant.defaultQueue)
             .eraseToAnyPublisher()
     }
@@ -221,16 +266,19 @@ extension RealmDatabase: Database {
 
 extension RealmDatabase {
     private func write(block: @escaping (Realm) -> Void) -> AnyPublisher<Void, Error> {
-        Promise<Void, Error> { promise in
-            do {
-                try self.realm.write {
-                    block(self.realm)
-                    promise(.success(()))
+        makeInstanceOnRightThread()
+            .flatMap { realm in
+                Promise<Void, Error> { promise in
+                    do {
+                        try realm.write {
+                            block(realm)
+                            promise(.success(()))
+                        }
+                    } catch {
+                        promise(.failure(error))
+                    }
                 }
-            } catch {
-                promise(.failure(error))
             }
-        }
         .eraseToAnyPublisher()
     }
 
@@ -241,7 +289,68 @@ extension RealmDatabase {
     private func makeInstanceOnRightThread() -> AnyPublisher<Realm, Error> {
         Just(realm)
             .setFailureType(to: Error.self)
-            .receive(on: DispatchQueue.main)
+            .receive(on: Constant.defaultQueue)
             .eraseToAnyPublisher()
+    }
+
+    func getEpisodeData(id: String) -> AnyPublisher<EpisodeData?, Error> {
+        makeInstanceOnRightThread()
+            .flatMap { realm in
+                let emitter = realm.objects(EpisodeData.self).filter("id == %@", id)
+                return RealmPublishers.array(from: emitter).map { $0.first }
+            }
+            .eraseToAnyPublisher()
+    }
+
+    private func mapEpisode(from episode: Episode) -> EpisodeData {
+        let data = EpisodeData()
+
+        data.id = episode.id
+        data.title = episode.title
+        data.publishDate = episode.publishDate
+        data.descriptionText = episode.descriptionText ?? ""
+        data.mediaURL = episode.mediaURL.absoluteString
+        data.image = episode.image?.absoluteString
+        data.thumbnail = episode.thumbnail?.absoluteString
+        data.link = episode.link?.absoluteString
+        data.duration = episode.duration
+        data.isFavourite = episode.isFavourite
+        data.lastPosition = episode.lastPosition ?? -1
+        data.lastPlayed = episode.lastPlayed
+        data.isDownloaded = episode.isDownloaded
+        data.numberOfPlays = episode.numberOfPlays
+        data.isOnWatch = episode.isOnWatch
+
+        return data
+    }
+
+    private func mapEpisodes(_ episodes: [Episode]) -> [EpisodeData] {
+        episodes.map { mapEpisode(from: $0) }
+    }
+
+    private func mapEpisode(from data: EpisodeData) -> Episode? {
+        guard let mediaURLString = data.mediaURL,
+              let mediaURL = URL(string: mediaURLString) else { return nil }
+        return Episode(
+            id: data.id,
+            title: data.title,
+            publishDate: data.publishDate,
+            descriptionText: data.descriptionText,
+            mediaURL: mediaURL,
+            image: URL(string: data.image ?? ""),
+            thumbnail: URL(string: data.thumbnail ?? ""),
+            link: URL(string: data.link ?? ""),
+            duration: data.duration,
+            isFavourite: data.isFavourite,
+            lastPosition: data.lastPosition,
+            lastPlayed: data.lastPlayed,
+            isDownloaded: data.isDownloaded,
+            numberOfPlays: data.numberOfPlays,
+            isOnWatch: data.isOnWatch
+        )
+    }
+
+    private func mapEpisodes(_ episodes: [EpisodeData]) -> [Episode] {
+        episodes.compactMap { mapEpisode(from: $0) }
     }
 }

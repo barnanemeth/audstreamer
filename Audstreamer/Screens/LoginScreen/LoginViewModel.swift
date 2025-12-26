@@ -59,7 +59,7 @@ extension LoginViewModel {
     }
 
     func handleCancel() {
-        navigator.dismiss()
+        finishedOrCancelled()
     }
 }
 

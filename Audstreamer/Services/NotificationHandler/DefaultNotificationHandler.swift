@@ -63,7 +63,7 @@ extension DefaultNotificationHandler: NotificationHandler {
         database.getLastEpisodePublishDate()
             .first()
             .flatMap { [unowned self] in self.networking.getEpisodes(from: $0) }
-            .flatMap { [unowned self] episodes -> AnyPublisher<[EpisodeData], Error> in
+            .flatMap { [unowned self] episodes -> AnyPublisher<[Episode], Error> in
                 let episodesPublisher = Just(episodes).setFailureType(to: Error.self)
                 let insert = self.database.insertEpisodes(episodes)
 
@@ -106,7 +106,7 @@ extension DefaultNotificationHandler {
         return episodeID
     }
 
-    private func postNotifications(for episodes: [EpisodeData]) {
+    private func postNotifications(for episodes: [Episode]) {
         guard !episodes.isEmpty else { return }
         let title: String
         let body: String
@@ -139,9 +139,9 @@ extension DefaultNotificationHandler {
         UNUserNotificationCenter.current().add(request)
     }
 
-    private func getAttachments(for episode: EpisodeData) -> [UNNotificationAttachment] {
-        guard let imageURLString = episode.image?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let imageURL = URL(string: imageURLString),
+    private func getAttachments(for episode: Episode) -> [UNNotificationAttachment] {
+        // TODO: percent encoding?
+        guard let imageURL = episode.image,
               let data = try? Data(contentsOf: imageURL),
               let tempDirectoryURL = URL(string: "file://\(NSTemporaryDirectory())") else { return [] }
 

@@ -69,7 +69,7 @@ extension DefaultShortcutHandler: ShortcutHandler {
 // MARK: - Helpers
 
 extension DefaultShortcutHandler {
-    private func shortcutItem(for episode: EpisodeData, type: ShortcutItemType) -> UIApplicationShortcutItem {
+    private func shortcutItem(for episode: Episode, type: ShortcutItemType) -> UIApplicationShortcutItem {
         let title: String
         switch type {
         case .lastPlayedEpisode: title = L10n.playLastPlayedEpisode

@@ -103,10 +103,10 @@ final class PlayerWidgetViewModel {
     // MARK: Private properties
 
     private var cancellables = Set<AnyCancellable>()
-    private lazy var currentEpisode: AnyPublisher<EpisodeData?, Error> = {
+    private lazy var currentEpisode: AnyPublisher<Episode?, Error> = {
         audioPlayer.getCurrentPlayingAudioInfo()
             .map { $0?.id }
-            .flatMapLatest { [unowned self] id -> AnyPublisher<EpisodeData?, Error> in
+            .flatMapLatest { [unowned self] id -> AnyPublisher<Episode?, Error> in
                 guard let id = id else {
                     return Just(nil).setFailureType(to: Error.self).eraseToAnyPublisher()
                 }

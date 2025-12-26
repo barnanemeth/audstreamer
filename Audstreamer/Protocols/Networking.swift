@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 protocol Networking {
-    func getEpisodes(from date: Date?) -> AnyPublisher<[EpisodeData], Error>
+    func getEpisodes(from date: Date?) -> AnyPublisher<[Episode], Error>
     func addDevice(with notificationToken: String) -> AnyPublisher<Void, Error>
     func deleteDevice() -> AnyPublisher<Void, Error>
 }

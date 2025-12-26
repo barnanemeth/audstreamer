@@ -26,7 +26,7 @@ final class DatabaseUpdater {
     // MARK: Private properties
 
     private var cancellables = Set<AnyCancellable>()
-    private lazy var currentPlayingEpisode: AnyPublisher<EpisodeData, Error> = {
+    private lazy var currentPlayingEpisode: AnyPublisher<Episode, Error> = {
         audioPlayer.getCurrentPlayingAudioInfo()
             .compactMap { $0?.id }
             .flatMap { [unowned self] in self.database.getEpisode(id: $0).unwrap().first() }
@@ -86,7 +86,7 @@ extension DatabaseUpdater {
     private func subscribeToCurrentSeconds() {
         audioPlayer.getCurrentSeconds()
             .throttle(for: Constant.lastPositionUpdateInterval, scheduler: DispatchQueue.main, latest: true)
-            .flatMap { [unowned self] seconds -> AnyPublisher<(Second, EpisodeData), Error> in
+            .flatMap { [unowned self] seconds -> AnyPublisher<(Second, Episode), Error> in
                 let secondsPublisher = Just(seconds).setFailureType(to: Error.self)
                 let currentPlayingEpisode = self.currentPlayingEpisode.first()
 
@@ -108,7 +108,7 @@ extension DatabaseUpdater {
     private func setupDurationSubscription() {
         audioPlayer.getCurrentPlayingAudioInfo()
             .unwrap()
-            .flatMap { [unowned self] audioInfo -> AnyPublisher<(Int, EpisodeData?), Error> in
+            .flatMap { [unowned self] audioInfo -> AnyPublisher<(Int, Episode?), Error> in
                 let durationPublisher = Just(audioInfo.duration).setFailureType(to: Error.self)
                 let episode = self.database.getEpisode(id: audioInfo.id).first()
 
@@ -124,7 +124,7 @@ extension DatabaseUpdater {
 
     private func setupPlayingFinishedSubscription() {
         audioPlayer.getPlayingFinishedAudioInfo()
-            .flatMap { [unowned self] audioInfo -> AnyPublisher<(EpisodeData?, Int), Error> in
+            .flatMap { [unowned self] audioInfo -> AnyPublisher<(Episode?, Int), Error> in
                 let episode = self.database.getEpisode(id: audioInfo.id).first()
                 let duration = Just(audioInfo.duration).setFailureType(to: Error.self)
 

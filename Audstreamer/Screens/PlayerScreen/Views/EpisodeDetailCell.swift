@@ -179,7 +179,7 @@ extension EpisodeDetailCell {
 // MARK: - Public methods
 
 extension EpisodeDetailCell {
-    func setup(with episode: EpisodeData, isWatchAvailable: Bool) {
+    func setup(with episode: Episode, isWatchAvailable: Bool) {
         updateLinkButton(with: episode)
         updateDownloadDeleteButton(with: episode)
         updateFavoriteButton(with: episode)
@@ -193,29 +193,29 @@ extension EpisodeDetailCell {
 // MARK: - Helpers
 
 extension EpisodeDetailCell {
-    private func updateLinkButton(with episode: EpisodeData) {
-        if let linkString = episode.link, URL(string: linkString) != nil {
+    private func updateLinkButton(with episode: Episode) {
+        if episode.link != nil {
             linkButton.isHidden = false
         } else {
             linkButton.isHidden = true
         }
     }
 
-    private func updateDownloadDeleteButton(with episode: EpisodeData) {
+    private func updateDownloadDeleteButton(with episode: Episode) {
         let image = episode.isDownloaded ?
             Asset.symbol(.trashFill, scale: .large) :
             Asset.symbol(.arrowDownCircleFill, scale: .large)
         downloadDeleteButton.image = image
     }
 
-    private func updateFavoriteButton(with episode: EpisodeData) {
+    private func updateFavoriteButton(with episode: Episode) {
         let image = episode.isFavourite ?
             Asset.symbol(.heartSlashFill, scale: .large) :
             Asset.symbol(.heartFill, scale: .large)
         favoriteButton.image = image
     }
 
-    private func updateWatchButton(with episode: EpisodeData) {
+    private func updateWatchButton(with episode: Episode) {
         let image = episode.isOnWatch ?
             Asset.symbol(.applewatchSlash, scale: .large) :
             Asset.symbol(.applewatch, scale: .large)

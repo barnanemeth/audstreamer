@@ -173,7 +173,7 @@ extension EpisodeInfoCell {
 // MARK: - Public methods
 
 extension EpisodeInfoCell {
-    func setup(with episode: EpisodeData) {
+    func setup(with episode: Episode) {
         titleLabel.text = episode.title
         favoriteIconImageView.isHidden = !episode.isFavourite
         downloadedIconImageView.isHidden = !episode.isDownloaded
@@ -186,17 +186,17 @@ extension EpisodeInfoCell {
 // MARK: - Helpers
 
 extension EpisodeInfoCell {
-    private func setThumbnail(for episode: EpisodeData) {
-        guard let imageString = episode.thumbnail?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let imageURL = URL(string: imageString) else {
+    private func setThumbnail(for episode: Episode) {
+        // TODO: percent encoding?
+        guard let imageURL = episode.thumbnail else {
             return thumbnailImageView.image = Asset.Images.logoLarge.image
         }
         Nuke.loadImage(with: imageURL, into: thumbnailImageView)
     }
 
-    private func updateProgressView(for episode: EpisodeData) {
-        if episode.lastPosition >= Constant.playedThresholdSeconds {
-            let progress = Float(episode.lastPosition) / Float(episode.duration)
+    private func updateProgressView(for episode: Episode) {
+        if let lastPosition = episode.lastPosition, lastPosition >= Constant.playedThresholdSeconds {
+            let progress = Float(lastPosition) / Float(episode.duration)
             progressView.progress = progress
             progressView.isHidden = false
         } else {

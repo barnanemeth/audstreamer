@@ -12,10 +12,10 @@ struct EpisodeSection: Hashable, Equatable {
     // MARK: Enums
 
     enum EpisodeItem: Hashable, Equatable {
-        case info(episode: EpisodeData, isFavorite: Bool, isDownloaded: Bool, isOnWatch: Bool)
+        case info(episode: Episode, isFavorite: Bool, isDownloaded: Bool, isOnWatch: Bool)
         // swiftlint:disable:next enum_case_associated_values_count
         case detail(
-            episode: EpisodeData,
+            episode: Episode,
             isFavorite: Bool,
             duration: Int,
             isDownloaded: Bool,
@@ -26,7 +26,7 @@ struct EpisodeSection: Hashable, Equatable {
 
     // MARK: Properties
 
-    let episode: EpisodeData
+    let episode: Episode
     let isOpened: Bool
     let title: String?
     let isDownloaded: Bool

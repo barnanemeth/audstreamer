@@ -204,11 +204,13 @@ extension Resolver {
     }
 
     private static func registerDevicesScreen() {
-        register { DevicesScreenViewModel() }
+        register { DevicesViewModel() }
             .scope(.unique)
 
-        register { DevicesScreen() }
-            .scope(.unique)
+        register { resolver in
+            DevicesScreen(viewModel: resolver.resolve())
+        }
+        .scope(.unique)
     }
 
     private static func registerSettingsScreen() {

@@ -13,6 +13,7 @@ extension Calendar.Component {
         case .year: return "yyyy"
         case .month: return "MMMM"
         case .day: return "d"
+        case .hour: return "HH"
         default: return ""
         }
     }

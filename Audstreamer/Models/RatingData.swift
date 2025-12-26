@@ -20,7 +20,7 @@ struct RatingData {
 
     // MARK: Init
 
-    init(episode: EpisodeData) {
+    init(episode: Episode) {
         self.episodeID = episode.id
         self.publishDate = episode.publishDate
         self.isFavorite = episode.isFavourite

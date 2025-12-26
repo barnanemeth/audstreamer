@@ -320,7 +320,7 @@ extension PlayerScreen {
 
     private func dequeueEpisodeInfoCell(from tableView: UITableView,
                                         with indexPath: IndexPath,
-                                        for episode: EpisodeData) -> EpisodeInfoCell? {
+                                        for episode: Episode) -> EpisodeInfoCell? {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: EpisodeInfoCell.reusdeIdentifier,
             for: indexPath
@@ -331,7 +331,7 @@ extension PlayerScreen {
 
     private func dequeueEpisodeDetailCell(from tableView: UITableView,
                                           with indexPath: IndexPath,
-                                          for episode: EpisodeData,
+                                          for episode: Episode,
                                           isWatchAvailable: Bool) -> EpisodeDetailCell? {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: EpisodeDetailCell.reusdeIdentifier,

@@ -174,7 +174,7 @@ extension CloudKitCloud: Cloud {
                     record.setValue(episode.lastPlayed, forKey: Key.lastPlayedDateKey)
                     return record
                 }
-                let lastPositions = episodes.filter { $0.lastPosition > .zero }.map { episode in
+                let lastPositions = episodes.filter { $0.lastPosition ?? -1 > .zero }.map { episode in
                     let record = CKRecord(recordType: RecordType.lastPositionRecordType.rawValue)
                     record.setValue(episode.id, forKey: Key.episodeIDKey)
                     record.setValue(episode.lastPosition, forKey: Key.lastPositionKey)

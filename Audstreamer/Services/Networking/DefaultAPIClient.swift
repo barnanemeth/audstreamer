@@ -56,7 +56,7 @@ final class DefaultAPIClient {
 // MARK: - Networking
 
 extension DefaultAPIClient: Networking {
-    func getEpisodes(from date: Date?) -> AnyPublisher<[EpisodeData], Error> {
+    func getEpisodes(from date: Date?) -> AnyPublisher<[Episode], Error> {
         var url = baseURL.appendingPathComponent("episodes").appendingPathComponent("rss")
         var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
         if let date = date {
@@ -71,8 +71,8 @@ extension DefaultAPIClient: Networking {
                 try self.validateResponse(response)
                 return self.replaceNoContentIfNeeded(response, bodyData: data)
             }
-            .decode(type: [EpisodeData].self, decoder: decoder)
-            .receive(on: Constant.defaultQueue)
+            .decode(type: [EpisodeAPIModel].self, decoder: decoder)
+            .map { [unowned self] in mapEpisodes(from: $0) }
             .eraseToAnyPublisher()
     }
 
@@ -129,5 +129,49 @@ extension DefaultAPIClient {
             return bodyData
         }
         return Constant.emptyBodyString.data(using: .utf8) ?? bodyData
+    }
+
+    private func mapEpisodes(from array: [EpisodeAPIModel]) -> [Episode] {
+        array.map { apiModel in
+            Episode(
+                id: apiModel.id,
+                title: apiModel.title,
+                publishDate: apiModel.publishDate,
+                descriptionText: apiModel.descriptionText,
+                mediaURL: apiModel.mediaURL,
+                image: apiModel.image,
+                thumbnail: apiModel.thumbnail,
+                link: apiModel.link,
+                duration: apiModel.duration
+            )
+        }
+    }
+}
+
+// MARK: - Inner types
+
+extension DefaultAPIClient {
+    fileprivate struct EpisodeAPIModel: Decodable {
+        let id: String
+        let title: String
+        let publishDate: Date
+        let descriptionText: String?
+        let mediaURL: URL
+        let image: URL?
+        let thumbnail: URL?
+        let link: URL?
+        let duration: Int
+
+        enum CodingKeys: String, CodingKey {
+            case thumbnail
+            case publishDate = "pub_date_ms"
+            case id
+            case title
+            case image
+            case link
+            case descriptionText = "description"
+            case mediaURL = "audio"
+            case duration = "audio_length_sec"
+        }
     }
 }
