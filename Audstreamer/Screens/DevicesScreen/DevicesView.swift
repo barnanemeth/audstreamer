@@ -56,5 +56,6 @@ extension DevicesView {
                 }
             }
         }
+        .disabled(device.id == viewModel.activeDeviceID)
     }
 }

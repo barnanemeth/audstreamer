@@ -14,6 +14,7 @@ final class DevicesViewModel: ViewModel {
     // MARK: Dependencies
 
     @ObservationIgnored @Injected private var socket: Socket
+    @ObservationIgnored @Injected private var navigator: Navigator
 
     // MARK: Properties
 
@@ -35,8 +36,10 @@ extension DevicesViewModel {
 // MARK: - Actions
 
 extension DevicesViewModel {
+    @MainActor
     func setActiveDeviceID(_ activeDeviceID: String) async {
         try? await socket.sendActiveDevice(activeDeviceID).value
+        navigator.dismiss()
     }
 }
 
