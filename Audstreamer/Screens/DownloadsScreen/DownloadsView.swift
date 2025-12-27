@@ -48,14 +48,14 @@ extension DownloadsView {
 
     private var listContent: some View {
         ForEach(viewModel.items, id: \.self) { data in
-            DownloadingView(data: data)
+            DownloadingComponent(data: data)
                 .swipeActions { swipeActions(for: data) }
                 .id(data)
         }
     }
 
     @ViewBuilder
-    private func swipeActions(for data: DownloadingView.Data) -> some View {
+    private func swipeActions(for data: DownloadingComponent.Data) -> some View {
         AsyncButton {
             if data.isPaused {
                 await viewModel.resume(data.item)

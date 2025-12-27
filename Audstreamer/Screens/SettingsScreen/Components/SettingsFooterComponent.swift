@@ -1,5 +1,5 @@
 //
-//  SettingsFooterView.swift
+//  SettingsFooterComponent.swift
 //  Audstreamer
 //
 //  Created by Barna Nemeth on 2025. 12. 22..
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SettingsFooterView: View {
+struct SettingsFooterComponent: View {
 
     // MARK: UI
 

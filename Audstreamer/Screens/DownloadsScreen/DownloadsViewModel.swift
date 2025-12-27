@@ -31,7 +31,7 @@ final class DownloadsViewModel: ViewModel {
 
     // MARK: Properties
 
-    private(set) var items = [DownloadingView.Data]()
+    private(set) var items = [DownloadingComponent.Data]()
     private(set) var isCompleted = false
     var currentlyShowedDialogDescriptor: DialogDescriptor?
 
@@ -40,7 +40,7 @@ final class DownloadsViewModel: ViewModel {
     @ObservationIgnored private lazy var singleEvent: AnyPublisher<DownloadEvent, Error> = {
         downloadService.getEvent().shareReplay()
     }()
-    @MainActor @ObservationIgnored private let itemsSubject = CurrentValueSubject<[DownloadingView.Data], Never>([])
+    @MainActor @ObservationIgnored private let itemsSubject = CurrentValueSubject<[DownloadingComponent.Data], Never>([])
 }
 
 // MARK: - View model
@@ -131,9 +131,9 @@ extension DownloadsViewModel {
         }
     }
 
-    private func getItems(from aggregatedEvent: DownloadAggregatedEvent) -> [DownloadingView.Data] {
+    private func getItems(from aggregatedEvent: DownloadAggregatedEvent) -> [DownloadingComponent.Data] {
         aggregatedEvent.items.map { item in
-            DownloadingView.Data(item: item, isPaused: false, eventPublisher: getEventPublisher(for: item))
+            DownloadingComponent.Data(item: item, isPaused: false, eventPublisher: getEventPublisher(for: item))
         }
     }
 
@@ -144,7 +144,7 @@ extension DownloadsViewModel {
     @MainActor
     private func performAction(with item: Downloadable,
                                type: DownloadActionType,
-                               modifyBlock: ((inout [DownloadingView.Data], Int) -> Void)? = nil) async {
+                               modifyBlock: ((inout [DownloadingComponent.Data], Int) -> Void)? = nil) async {
         var items = itemsSubject.value
         guard let index = items.firstIndex(where: { $0.id == item.id }) else { return }
 

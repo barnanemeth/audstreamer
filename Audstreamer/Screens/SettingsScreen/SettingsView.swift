@@ -108,7 +108,7 @@ extension SettingsView {
         Section {
             EmptyView()
         } footer: {
-            SettingsFooterView()
+            SettingsFooterComponent()
                 .frame(maxWidth: .infinity)
         }
     }

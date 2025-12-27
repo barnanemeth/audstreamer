@@ -1,5 +1,5 @@
 //
-//  DownloadingView.swift
+//  DownloadingComponent.swift
 //  Audstreamer
 //
 //  Created by Barna Nemeth on 2025. 12. 23..
@@ -10,7 +10,7 @@ import Combine
 
 import Lottie
 
-struct DownloadingView: View {
+struct DownloadingComponent: View {
 
     // MARK: Constants
 
@@ -53,7 +53,7 @@ struct DownloadingView: View {
 
 // MARK: - Helpers
 
-extension DownloadingView {
+extension DownloadingComponent {
     private var informations: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(data.item.title)
@@ -112,7 +112,7 @@ extension DownloadingView {
 
 // MARK: - Data
 
-extension DownloadingView {
+extension DownloadingComponent {
     struct Data: Identifiable, Equatable, Hashable {
         let item: Downloadable
         var isPaused: Bool
