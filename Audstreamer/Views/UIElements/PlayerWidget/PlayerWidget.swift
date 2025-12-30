@@ -7,8 +7,28 @@
 
 import UIKit
 import Combine
+import SwiftUI
 
 import SkeletonView
+
+struct PlayerWidgetSwiftUI: UIViewRepresentable {
+    let isLoading: Bool
+
+    func makeUIView(context: Context) -> PlayerWidget {
+        let widget = PlayerWidget()
+        widget.viewModel.isLoading = isLoading
+        widget.sizeToFit()
+        return widget
+    }
+
+    func updateUIView(_ uiView: PlayerWidget, context: Context) {
+        uiView.viewModel.isLoading = isLoading
+    }
+
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: PlayerWidget, context: Context) -> CGSize? {
+        CGSize(width: proposal.width ?? .zero, height: 180)
+    }
+}
 
 // swiftlint:disable file_length
 final class PlayerWidget: UIVisualEffectView {

@@ -39,22 +39,18 @@ enum URLHelper {
 // MARK: - Public methods
 
 extension URLHelper {
-    static func contentLength(of url: URL?) -> AnyPublisher<Int, Error> {
-        guard let url = url else { return Fail(error: URLError(.badURL)).eraseToAnyPublisher() }
+    static func contentLength(of url: URL?) async throws -> Int {
+        guard let url = url else { throw URLError(.badURL) }
 
         var request = URLRequest(url: url)
         request.httpMethod = Constant.httpMethodForContentLength
 
-        return URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap { _, response in
-                guard let httpResponse = response as? HTTPURLResponse,
-                      let lengthString = httpResponse.allHeaderFields[Constant.headerKeyForContentLength] as? String,
-                      let length = Int(lengthString) else {
-                    throw URLError(.badServerResponse)
-                }
-                return length
-            }
-            .receive(on: Constant.receiveQueue)
-            .eraseToAnyPublisher()
+        let (_, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+              let lengthString = httpResponse.allHeaderFields[Constant.headerKeyForContentLength] as? String,
+              let length = Int(lengthString) else {
+            throw URLError(.badServerResponse)
+        }
+        return length
     }
 }

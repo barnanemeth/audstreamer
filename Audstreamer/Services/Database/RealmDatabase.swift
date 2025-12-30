@@ -82,13 +82,14 @@ extension RealmDatabase: Database {
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 
         return makeInstanceOnRightThread()
-            .flatMap { realm in
+            .flatMapLatest { realm in
                 let emitter = realm
                     .objects(EpisodeData.self)
                     .filter(combinedPredicate)
                     .sorted(byKeyPath: "publishDate", ascending: false)
                 return RealmPublishers.array(from: emitter, keyPaths: Constant.observedKeyPaths)
             }
+            .subscribe(on: Constant.defaultQueue)
             .map { [unowned self] in mapEpisodes($0) }
             .eraseToAnyPublisher()
     }

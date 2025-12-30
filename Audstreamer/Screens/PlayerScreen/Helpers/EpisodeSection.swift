@@ -7,22 +7,7 @@
 
 import Foundation
 
-struct EpisodeSection: Hashable, Equatable {
-
-    // MARK: Enums
-
-    enum EpisodeItem: Hashable, Equatable {
-        case info(episode: Episode, isFavorite: Bool, isDownloaded: Bool, isOnWatch: Bool)
-        // swiftlint:disable:next enum_case_associated_values_count
-        case detail(
-            episode: Episode,
-            isFavorite: Bool,
-            duration: Int,
-            isDownloaded: Bool,
-            isOnWatch: Bool,
-            isWatchAvailable: Bool
-        )
-    }
+struct EpisodeSection: Identifiable, Hashable, Equatable {
 
     // MARK: Properties
 
@@ -32,29 +17,7 @@ struct EpisodeSection: Hashable, Equatable {
     let isDownloaded: Bool
     let isWatchAvailable: Bool
 
-    var episodeID: String { episode.id }
-    var items: [EpisodeItem] {
-        var items: [EpisodeItem] = [
-            .info(
-                episode: episode,
-                isFavorite: episode.isFavourite,
-                isDownloaded: episode.isDownloaded,
-                isOnWatch: episode.isOnWatch
-            )
-        ]
-        if isOpened {
-            let detail = EpisodeItem.detail(
-                episode: episode,
-                isFavorite: episode.isFavourite,
-                duration: episode.duration,
-                isDownloaded: episode.isDownloaded,
-                isOnWatch: episode.isOnWatch,
-                isWatchAvailable: isWatchAvailable
-            )
-            items.append(detail)
-        }
-        return items
-    }
+    var id: String { episode.id }
 }
 
 // MARK: - Hashable & Equatable
@@ -62,10 +25,19 @@ struct EpisodeSection: Hashable, Equatable {
 extension EpisodeSection {
     func hash(into hasher: inout Hasher) {
         hasher.combine(episode.id)
+        hasher.combine(episode.isFavourite)
+        hasher.combine(episode.isDownloaded)
+        hasher.combine(episode.isOnWatch)
         hasher.combine(isDownloaded)
+        hasher.combine(isOpened)
     }
 
-    static func == (_ lhs: EpisodeSection, _ rhs: EpisodeSection) -> Bool {
-        lhs.episode.id == rhs.episode.id && lhs.isDownloaded == rhs.isDownloaded
+    static func == (_ lhs: Self, _ rhs: Self) -> Bool {
+        lhs.episode.id == rhs.episode.id &&
+        lhs.episode.isFavourite == rhs.episode.isFavourite &&
+        lhs.episode.isDownloaded == rhs.episode.isDownloaded &&
+        lhs.episode.isOnWatch == rhs.episode.isOnWatch &&
+        lhs.isDownloaded == rhs.isDownloaded &&
+        lhs.isOpened == rhs.isOpened
     }
 }

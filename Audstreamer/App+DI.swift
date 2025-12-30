@@ -184,11 +184,13 @@ extension Resolver {
     }
 
     private static func registerPlayerScreen() {
-        register { PlayerScreenViewModel() }
+        register { PlayerViewModel() }
             .scope(.unique)
 
-        register { PlayerScreen() }
-            .scope(.unique)
+        register { resolver in
+            PlayerScreen(viewModel: resolver.resolve())
+        }
+        .scope(.unique)
     }
 
     private static func registerLoginScreen() {

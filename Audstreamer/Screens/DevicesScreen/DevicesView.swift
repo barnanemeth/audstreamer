@@ -13,7 +13,7 @@ struct DevicesView: ScreenView {
 
     // MARK: Dependencies
 
-    @State var viewModel: DevicesViewModel
+    @Bindable var viewModel: DevicesViewModel
 
     // MARK: UI
 

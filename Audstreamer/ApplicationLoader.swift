@@ -9,7 +9,7 @@ import UIKit
 import Combine
 import BackgroundTasks
 
-import Nuke
+import NukeExtensions
 
 final class ApplicationLoader: NSObject {
 
@@ -104,15 +104,29 @@ extension ApplicationLoader {
     }
 
     private func setupImageLoading() {
-        let contentModes = ImageLoadingOptions.ContentModes(
-            success: .scaleAspectFill,
-            failure: .scaleAspectFill,
-            placeholder: .scaleAspectFill
-        )
-        ImageLoadingOptions.shared.contentModes = contentModes
-        ImageLoadingOptions.shared.placeholder = Asset.Images.logoLarge.image
-        ImageLoadingOptions.shared.failureImage = Asset.Images.logoLarge.image
-        ImageLoadingOptions.shared.transition = .fadeIn(duration: 0.3)
+        Task { @MainActor in
+            let contentModes = ImageLoadingOptions.ContentModes(
+                success: .scaleAspectFill,
+                failure: .scaleAspectFill,
+                placeholder: .scaleAspectFill
+            )
+            ImageLoadingOptions.shared.contentModes = contentModes
+            ImageLoadingOptions.shared.placeholder = Asset.Images.logoLarge.image
+            ImageLoadingOptions.shared.failureImage = Asset.Images.logoLarge.image
+            ImageLoadingOptions.shared.transition = .fadeIn(duration: 0.3)
+
+            var options = ImageLoadingOptions()
+
+            options.contentModes = .init(
+                success: .scaleAspectFill,
+                failure: .scaleAspectFill,
+                placeholder: .scaleAspectFill
+            )
+
+            options.placeholder = Asset.Images.logoLarge.image
+            options.failureImage = Asset.Images.logoLarge.image
+            options.transition = .fadeIn(duration: 0.3)
+        }
     }
 
     private func resetBadge() {

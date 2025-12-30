@@ -15,7 +15,7 @@ struct LoginView: View {
 
     // MARK: - Dependencies
 
-    @State var viewModel: LoginViewModel
+    @Bindable var viewModel: LoginViewModel
 
     // MARK: Private properties
 
