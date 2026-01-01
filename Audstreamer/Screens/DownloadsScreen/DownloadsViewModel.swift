@@ -102,7 +102,7 @@ extension DownloadsViewModel {
 extension DownloadsViewModel {
     @MainActor
     private func subsribeToItems() async {
-        for await downloadingViewData in itemsSubject.values {
+        for await downloadingViewData in itemsSubject.asAsyncStream() {
             items = downloadingViewData
         }
     }
@@ -114,7 +114,7 @@ extension DownloadsViewModel {
             .replaceError(with: [])
             .removeDuplicates()
 
-        for await items in publisher.values {
+        for await items in publisher.asAsyncStream() {
             itemsSubject.send(items)
         }
     }
@@ -126,7 +126,7 @@ extension DownloadsViewModel {
             .map { $0.isEmpty }
             .replaceError(with: false)
 
-        for await isCompleted in publisher.values {
+        for await isCompleted in publisher.asAsyncStream() {
             self.isCompleted = isCompleted
         }
     }
@@ -173,7 +173,7 @@ extension DownloadsViewModel {
             .delay(for: Constant.finishRemoveDelay, scheduler: DispatchQueue.main)
 
         do {
-            for try await event in publisher.values {
+            for try await event in publisher.asAsyncStream() {
                 var items = itemsSubject.value
                 guard let index = items.firstIndex(where: { $0.id == event.item.id }) else { return }
                 items.remove(at: index)

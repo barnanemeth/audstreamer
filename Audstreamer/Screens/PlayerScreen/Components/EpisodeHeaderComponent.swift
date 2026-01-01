@@ -26,6 +26,7 @@ struct EpisodeHeaderComponent: View {
 
     // MARK: Private properties
 
+    @Namespace private var namespace
     private var isIndicatorsVisible: Bool {
         episode.isFavourite || episode.isDownloaded || episode.isOnWatch
     }

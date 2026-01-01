@@ -18,6 +18,7 @@ struct PlayerView: ScreenView {
     // MARK: Private properties
 
     @FocusState private var isSearchEnabled: Bool
+    @State private var isPlayerWidgetVisible = true
     private var searchTextBinding: Binding<String> {
         Binding<String>(
             get: { viewModel.searchKeyword ?? "" },
@@ -36,7 +37,7 @@ struct PlayerView: ScreenView {
         .listSectionSpacing(.compact)
         .animation(.default, value: viewModel.sections)
         .refreshable { await viewModel.refresh() }
-        .searchable(text: searchTextBinding)
+        .searchable(text: searchTextBinding, placement: .navigationBarDrawer)
         .searchFocused($isSearchEnabled)
         .toolbar { toolbar }
         .navigationTitle(viewModel.screenTitle)
@@ -44,10 +45,8 @@ struct PlayerView: ScreenView {
         .task { await viewModel.subscribe() }
         .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
         .feedbackEnabled(true)
-        .overlay(alignment: .bottom) {
-            PlayerWidgetSwiftUI(isLoading: viewModel.isLoading)
-                .padding(8)
-        }
+        .sheet(isPresented: $isPlayerWidgetVisible) { playerWidget }
+        .onChange(of: isSearchEnabled) { isPlayerWidgetVisible = !isSearchEnabled }
     }
 }
 
@@ -144,5 +143,13 @@ extension PlayerView {
             ContentUnavailableView("", systemSymbol: .exclamationmarkCircle, description: Text(L10n.noResults))
                 .fontWeight(.semibold)
         }
+    }
+
+    private var playerWidget: some View {
+        PlayerWidget(
+            isLoading: viewModel.isLoading,
+            onTitleTap: {},
+            onRemotePlayTap: {}
+        )
     }
 }

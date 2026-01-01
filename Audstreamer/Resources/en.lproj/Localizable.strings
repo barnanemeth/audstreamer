@@ -34,7 +34,7 @@
 "mainTitle" = "Audstreamer";
 "appleIDRequired" =  "Sign in to your Apple ID if you want to use cross-device synchronization";
 "downloading" = "Downloading";
-"listeningOn" = "Listening on %@";
+"listeningOn" = "Listening on **%@**";
 "downloadCellularWarningMessage" = "Using data over a cellular network may occur additional fees.";
 "laterOnWifi" = "Later on Wi-Fi";
 "favorites" = "Favorites";

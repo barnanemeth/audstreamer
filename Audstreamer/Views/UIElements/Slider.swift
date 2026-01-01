@@ -5,35 +5,35 @@
 //  Created by Barna Nemeth on 2025. 12. 13..
 //
 
-import UIKit
-import Combine
+import SwiftUI
 
-final class Slider: UISlider {
-
+struct Slider: View {
+    
     // MARK: Properties
 
-    var valueChangedPublisher: AnyPublisher<Float, Never> {
-        valueChangedSubject.eraseToAnyPublisher()
-    }
+    @Binding var value: Float
+    let onHighlightChanged: (Bool) -> Void
 
     // MARK: Private properties
 
-    private let valueChangedSubject = PassthroughSubject<Float, Never>()
+    @State private var isHighlighted = false
 
-    // MARK: Init
+    // MARK: UI
 
-    init() {
-        super.init(frame: .zero)
-
-        let action = UIAction { [weak self] _ in
-            guard let self else { return }
-            valueChangedSubject.send(self.value)
-        }
-        addAction(action, for: .valueChanged)
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    var body: some View {
+        SwiftUI.Slider(value: $value, in: 0...1)
+            .simultaneousGesture(
+                DragGesture(minimumDistance: .zero)
+                    .onChanged { _ in
+                        guard !isHighlighted else { return }
+                        isHighlighted = true
+                        onHighlightChanged(true)
+                    }
+                    .onEnded { _ in
+                        guard isHighlighted else { return }
+                        isHighlighted = false
+                        onHighlightChanged(false)
+                    }
+            )
     }
 }

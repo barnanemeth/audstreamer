@@ -36,7 +36,7 @@ struct DownloadingComponent: View {
         }
         .task(id: data.id) {
             do {
-                for try await event in data.eventPublisher.values {
+                for try await event in data.eventPublisher.asAsyncStream() {
                     downloadState = switch event {
                     case .queued: .queued
                     case let .inProgress(_, progress): .inProgress(progress.fractionCompleted)

@@ -104,7 +104,7 @@ extension SettingsViewModel {
     @MainActor
     private func subscribeToDownloadSize() async {
         let publisher = downloadService.getDownloadSize().replaceError(with: .zero)
-        for await downloadSize in publisher.values {
+        for await downloadSize in publisher.asAsyncStream() {
             downloadSizeText = getDownloadSizeText(for: downloadSize)
             isDeleteDownloadsVisible = downloadSize > .zero
         }
@@ -116,7 +116,7 @@ extension SettingsViewModel {
         let loginStatus = account.isLoggedIn().replaceError(with: false)
         let publisher = Publishers.CombineLatest(socketStatus, loginStatus)
 
-        for await (socketStatus, isLoggedIn) in publisher.values {
+        for await (socketStatus, isLoggedIn) in publisher.asAsyncStream() {
             let (statusText, statusColor, actionText) = switch socketStatus {
             case .connected: (L10n.connected, Asset.Colors.success.swiftUIColor, L10n.disconnect)
             case .pending: (L10n.pending, Asset.Colors.warning.swiftUIColor, L10n.disconnect)
@@ -136,7 +136,7 @@ extension SettingsViewModel {
     private func subscribeToAccountStatus() async {
         let publisher = account.isLoggedIn().replaceError(with: false)
 
-        for await isLoggedIn in publisher.values {
+        for await isLoggedIn in publisher.asAsyncStream() {
             let (text, color) = if isLoggedIn {
                 (L10n.logout, Asset.Colors.error.swiftUIColor)
             } else {

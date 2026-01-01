@@ -8,7 +8,8 @@
 import Foundation
 import Combine
 
-final class PlayerWidgetViewModel {
+@Observable
+final class PlayerWidgetViewModel: ViewModel {
 
     // MARK: Typealiases
 
@@ -29,81 +30,68 @@ final class PlayerWidgetViewModel {
 
     // MARK: Dependencies
 
-    @Injected private var database: Database
-    @Injected private var audioPlayer: AudioPlayer
-    @Injected private var socket: Socket
+    @ObservationIgnored @Injected private var database: Database
+    @ObservationIgnored @Injected private var audioPlayer: AudioPlayer
+    @ObservationIgnored @Injected private var socket: Socket
 
     // MARK: Properties
 
-    @Published var isLoading = false
-    @Published var isSliderHighlighted = false
-    @Published var currentSliderValue: Float = .zero
-    lazy var playPauseAction = CocoaAction(PlayerWidgetViewModel.playPlause, in: self)
-    lazy var skipBackwardAction = CocoaAction(PlayerWidgetViewModel.skipBackward, in: self)
-    lazy var skipForwardAction = CocoaAction(PlayerWidgetViewModel.skipForward, in: self)
-    var title: AnyPublisher<String, Never> {
-        currentEpisode
-            .compactMap { $0?.title }
-            .replaceError(with: String())
-            .eraseToAnyPublisher()
-    }
-    var currentProgress: AnyPublisher<Float, Never> {
-        currentSecondDurationPair
-            .map { [unowned self] in self.getProgress(from: $0) }
-            .replaceError(with: .zero)
-            .eraseToAnyPublisher()
-    }
-    var elapsedText: AnyPublisher<String, Never> {
-        combinedCurrentSecondDurationPair
-            .map { [unowned self] in self.getProgressTimeText(from: $0, type: .elapsed) }
-            .replaceError(with: Constant.emptyProgressText)
-            .removeDuplicates()
-            .eraseToAnyPublisher()
-    }
-    var remainingText: AnyPublisher<String, Never> {
-        combinedCurrentSecondDurationPair
-            .map { [unowned self] in self.getProgressTimeText(from: $0, type: .remaining) }
-            .replaceError(with: Constant.emptyProgressText)
-            .removeDuplicates()
-            .eraseToAnyPublisher()
-    }
-    var isEnabled: AnyPublisher<Bool, Never> {
-        audioPlayer.getCurrentPlayingAudioInfo()
-            .map { $0 != nil }
-            .flatMap { [unowned self] isCurrentExists -> AnyPublisher<(Bool, Bool), Error> in
-                let isCurrentExistsPublisher = Just(isCurrentExists).setFailureType(to: Error.self)
-                let isLoading = self.$isLoading.setFailureType(to: Error.self).first()
+    private(set) var activeRemotePlayingDeviceText: AttributedString?
+    private(set) var title: String?
+    private(set) var activeDevicesCount: Int?
+    private(set) var isPlaying = false
+    private(set) var currentProgress: Float = .zero
+    private(set) var isEnabled = true
+    private(set) var elapsedTimeText = Constant.emptyProgressText
+    private(set) var remainingTimeText = Constant.emptyProgressText
+    private(set) var devices = [Device]()
+    private(set) var activeDeviceID: String?
+    var isSliderHighlighted = false
+    var currentSliderValue: Float = .zero
 
-                return Publishers.Zip(isCurrentExistsPublisher, isLoading).eraseToAnyPublisher()
-            }
-            .map { $0 && !$1 }
-            .replaceError(with: false)
-            .eraseToAnyPublisher()
-    }
-    var isPlaying: AnyPublisher<Bool, Never> {
-        audioPlayer.isPlaying()
-            .replaceError(with: false)
-            .eraseToAnyPublisher()
-    }
-    var activeDevicesCount: AnyPublisher<Int, Never> {
-        socket.getDeviceList()
-            .map { $0.count }
-            .replaceError(with: .zero)
-            .eraseToAnyPublisher()
-    }
-    var currentActiveDevice: AnyPublisher<Device?, Never> {
-        Publishers.CombineLatest(socket.getDeviceList(), socket.getActiveDevice())
-            .map { deviceList, activeDeviceID in
-                deviceList.first(where: { $0.id == activeDeviceID })
-            }
-            .replaceError(with: nil)
-            .eraseToAnyPublisher()
-    }
+//    @ObservationIgnored @Published var isSliderHighlighted = false
+//    @ObservationIgnored @Published var currentSliderValue: Float = .zero
+//    @ObservationIgnored lazy var playPauseAction = CocoaAction(PlayerWidgetViewModel.playPlause, in: self)
+//    @ObservationIgnored lazy var skipBackwardAction = CocoaAction(PlayerWidgetViewModel.skipBackward, in: self)
+//    @ObservationIgnored lazy var skipForwardAction = CocoaAction(PlayerWidgetViewModel.skipForward, in: self)
+
+//    @ObservationIgnored var currentProgress: AnyPublisher<Float, Never> {
+//        currentSecondDurationPair
+//            .map { [unowned self] in self.getProgress(from: $0) }
+//            .replaceError(with: .zero)
+//            .eraseToAnyPublisher()
+//    }
+//    @ObservationIgnored var elapsedText: AnyPublisher<String, Never> {
+//        combinedCurrentSecondDurationPair
+//            .map { [unowned self] in self.getProgressTimeText(from: $0, type: .elapsed) }
+//            .replaceError(with: Constant.emptyProgressText)
+//            .removeDuplicates()
+//            .eraseToAnyPublisher()
+//    }
+//    @ObservationIgnored var remainingText: AnyPublisher<String, Never> {
+//        combinedCurrentSecondDurationPair
+//            .map { [unowned self] in self.getProgressTimeText(from: $0, type: .remaining) }
+//            .replaceError(with: Constant.emptyProgressText)
+//            .removeDuplicates()
+//            .eraseToAnyPublisher()
+//    }
+//    @ObservationIgnored var isEnabled: AnyPublisher<Bool, Never> {
+//        audioPlayer.getCurrentPlayingAudioInfo()
+//            .map { $0 != nil }
+//            .flatMap { [unowned self] isCurrentExists -> AnyPublisher<(Bool, Bool), Error> in
+//                let isCurrentExistsPublisher = Just(isCurrentExists).setFailureType(to: Error.self)
+//                let isLoading = self.$isLoading.setFailureType(to: Error.self).first()
+//
+//                return Publishers.Zip(isCurrentExistsPublisher, isLoading).eraseToAnyPublisher()
+//            }
+//            .map { $0 && !$1 }
+//            .replaceError(with: false)
+//            .eraseToAnyPublisher()
+//    }
 
     // MARK: Private properties
 
-    private var cancellables = Set<AnyCancellable>()
-    private lazy var currentEpisode: AnyPublisher<Episode?, Error> = {
+    @ObservationIgnored private lazy var currentEpisode: AnyPublisher<Episode?, Error> = {
         audioPlayer.getCurrentPlayingAudioInfo()
             .map { $0?.id }
             .flatMapLatest { [unowned self] id -> AnyPublisher<Episode?, Error> in
@@ -113,91 +101,182 @@ final class PlayerWidgetViewModel {
                 return self.database.getEpisode(id: id).eraseToAnyPublisher()
             }
             .shareReplay()
-            .eraseToAnyPublisher()
     }()
-    private var currentSecondDurationPair: AnyPublisher<SecondDurationPair, Error> {
+    @ObservationIgnored private var currentSecondDurationPair: AnyPublisher<SecondDurationPair, Error> {
         return Publishers.CombineLatest(audioPlayer.getCurrentSeconds(), currentEpisode.unwrap())
             .map { (second: $0, duration: $1.duration) }
             .eraseToAnyPublisher()
     }
-    private var combinedCurrentSecondDurationPair: AnyPublisher<SecondDurationPair, Error> {
-        let isSliderHighlighted = $isSliderHighlighted.setFailureType(to: Error.self)
-        let currentSliderValue = $currentSliderValue.setFailureType(to: Error.self)
+    @ObservationIgnored private var combinedCurrentSecondDurationPair: AnyPublisher<SecondDurationPair, Error> {
+        let isSliderHighlighted = ObservationTrackingPublisher(self.isSliderHighlighted).setFailureType(to: Error.self)
+        let currentSliderValue = ObservationTrackingPublisher(self.currentSliderValue).setFailureType(to: Error.self)
         return Publishers.CombineLatest3(currentSecondDurationPair, isSliderHighlighted, currentSliderValue)
             .map { [unowned self] in
                 self.getSecondDurationPair(secondDurationPair: $0, isSliderHighlighted: $1, sliderValue: $2)
             }
             .eraseToAnyPublisher()
     }
+}
 
-    // MARK: Init
+// MARK: - View model
 
-    init() {
-        subscribeToSlider()
+extension PlayerWidgetViewModel {
+    func subscribe() async {
+        await withTaskGroup { taskGroup in
+            taskGroup.addTask { await self.subscribeToRemotePlaying() }
+            taskGroup.addTask { await self.updateCurrentEpisodeTitle() }
+            taskGroup.addTask { await self.updatePlayingState() }
+            taskGroup.addTask { await self.subscribeToSlider() }
+            taskGroup.addTask { await self.updateProgress() }
+            taskGroup.addTask { await self.updateEnabledState() }
+            taskGroup.addTask { await self.updateTimeTexts() }
+            taskGroup.addTask { await self.subscribeToDeviceList() }
+            taskGroup.addTask { await self.subscribeToActiveDevice() }
+        }
     }
 }
 
 // MARK: - Actions
 
 extension PlayerWidgetViewModel {
-    private func playPlause() {
-        audioPlayer.isPlaying()
-            .first()
-            .flatMap { [unowned self] isPlaying -> AnyPublisher<Void, Error> in
-                let audioPlayer: AnyPublisher<Void, Error>
-                let socket: AnyPublisher<Void, Error>
-
-                if !isPlaying {
-                    audioPlayer = self.audioPlayer.play()
-                    socket = self.socket.sendPlaybackCommand(.play)
+    func playPlause() {
+        Task {
+            do {
+                let isPlaying = try await audioPlayer.isPlaying().value
+                if isPlaying {
+                    try await audioPlayer.pause().value
+                    try await socket.sendPlaybackCommand(.pause).value
                 } else {
-                    audioPlayer = self.audioPlayer.pause()
-                    socket = self.socket.sendPlaybackCommand(.pause)
+                    try await audioPlayer.play().value
+                    try await socket.sendPlaybackCommand(.play).value
                 }
-
-                return Publishers.Zip(audioPlayer, socket).toVoid()
+            } catch {
+                return
             }
-            .sink()
-            .store(in: &cancellables)
+        }
     }
 
-    private func skipBackward() {
-        Publishers.Zip(audioPlayer.seekBackward(), socket.sendPlaybackCommand(.skipBackward))
-            .sink()
-            .store(in: &cancellables)
+    func skipBackward() {
+        Task {
+            try? await audioPlayer.seekBackward().value
+            try? await socket.sendPlaybackCommand(.skipBackward).value
+        }
     }
 
-    private func skipForward() {
-        Publishers.Zip(audioPlayer.seekForward(), socket.sendPlaybackCommand(.skipForward))
-            .sink()
-            .store(in: &cancellables)
+    func skipForward() {
+        Task {
+            try? await audioPlayer.seekForward().value
+            try? await socket.sendPlaybackCommand(.skipForward).value
+        }
+    }
+
+    func setActiveDeviceID(_ activeDeviceID: String) {
+        Task {
+            try? await socket.sendActiveDevice(activeDeviceID).value
+        }
     }
 }
 
 // MARK: - Helpers
 
 extension PlayerWidgetViewModel {
-    private func subscribeToSlider() {
-        let isHighlighted = $isSliderHighlighted.dropFirst().filter { $0 }
-        let notHighlighted = $isSliderHighlighted.dropFirst().filter { !$0 }
+    @MainActor
+    private func subscribeToRemotePlaying() async {
+        let devicesPublisher = socket.getDeviceList().replaceError(with: [])
+        let activeDevicePublisher = socket.getActiveDevice().replaceError(with: nil)
+        let publisher = Publishers.CombineLatest(devicesPublisher, activeDevicePublisher)
 
-        Publishers.Zip(isHighlighted, notHighlighted)
-            .setFailureType(to: Error.self)
-            .toVoid()
-            .flatMap { [unowned self] _ -> AnyPublisher<(Float, Int), Error> in
-                let sliderValue = self.$currentSliderValue.setFailureType(to: Error.self).first()
-                let currentDuration = self.currentSecondDurationPair.first().map { $0.duration }
+        for await (devices, activeDeviceID) in publisher.asAsyncStream() {
+            activeRemotePlayingDeviceText = getActiveRemotePlayingDeviceText(devices: devices, activeDeviceID: activeDeviceID)
+            activeDevicesCount = getActiveDevicesCount(devices: devices)
+        }
+    }
 
-                return Publishers.Zip(sliderValue, currentDuration).eraseToAnyPublisher()
+    @MainActor
+    private func updateCurrentEpisodeTitle() async {
+        let publisher = currentEpisode.replaceError(with: nil)
+        for await episode in publisher.asAsyncStream() {
+            title = episode?.title
+        }
+    }
+
+    @MainActor
+    private func updatePlayingState() async {
+        let publisher = audioPlayer.isPlaying().replaceError(with: false)
+        for await isPlaying in publisher.asAsyncStream() {
+            self.isPlaying = isPlaying
+        }
+    }
+
+    private func subscribeToSlider() async {
+        let isHighlighted = ObservationTrackingPublisher(self.isSliderHighlighted).dropFirst().filter { $0 }
+        let notHighlighted = ObservationTrackingPublisher(self.isSliderHighlighted).dropFirst().filter { !$0 }
+        let publisher = Publishers.Zip(isHighlighted, notHighlighted)
+
+        do {
+            for await _ in publisher.asAsyncStream() {
+                currentProgress = currentSliderValue
+                let secondDurationPair = try await currentSecondDurationPair.value
+                try await audioPlayer.seek(to: Double(currentSliderValue) * Double(secondDurationPair.duration)).value
+                try await socket.sendPlaybackCommand(.seek(Double(currentSliderValue))).value
             }
-            .flatMap { [unowned self] sliderValue, duration in
-                let audioPlayer = self.audioPlayer.seek(to: Double(sliderValue) * Double(duration))
-                let socket = self.socket.sendPlaybackCommand(.seek(Double(sliderValue)))
+        } catch {
+            return
+        }
+    }
 
-                return Publishers.Zip(audioPlayer, socket).eraseToAnyPublisher()
+    @MainActor
+    private func updateProgress() async {
+        do {
+            for try await secondDurationPair in currentSecondDurationPair.asAsyncStream() {
+                guard !isSliderHighlighted else { return }
+                let progress = getProgress(from: secondDurationPair)
+                currentProgress = progress
+                currentSliderValue = progress
             }
-            .sink()
-            .store(in: &cancellables)
+        } catch {
+            return
+        }
+    }
+
+    @MainActor
+    private func updateEnabledState() async {
+        let publisher = audioPlayer.getCurrentPlayingAudioInfo().replaceError(with: nil)
+        for await audioInfo in publisher.asAsyncStream() {
+            isEnabled = audioInfo?.id != nil
+        }
+    }
+
+    @MainActor
+    private func updateTimeTexts() async {
+        let publisher = combinedCurrentSecondDurationPair.compactMap(\.self).replaceError(with: nil)
+        for await secondDurationPair in publisher.asAsyncStream() {
+            let (elapsed, remaining): (String, String) = if let secondDurationPair {
+                (getProgressTimeText(from: secondDurationPair, type: .elapsed), getProgressTimeText(from: secondDurationPair, type: .remaining))
+            } else {
+                (Constant.emptyProgressText, Constant.emptyProgressText)
+            }
+            elapsedTimeText = elapsed
+            remainingTimeText = remaining
+        }
+    }
+
+    @MainActor
+    private func subscribeToDeviceList() async {
+        let publisher = socket.getDeviceList().removeDuplicates().replaceError(with: [])
+
+        for await devices in publisher.asAsyncStream() {
+            self.devices = devices.sorted(by: { $0.connectionTime < $1.connectionTime })
+        }
+    }
+
+    @MainActor
+    private func subscribeToActiveDevice() async {
+        let publisher = socket.getActiveDevice().removeDuplicates().replaceError(with: nil)
+
+        for await activeDeviceID in publisher.asAsyncStream() {
+            self.activeDeviceID = activeDeviceID
+        }
     }
 
     private func getProgress(from secondDurationPair: SecondDurationPair) -> Float {
@@ -222,6 +301,23 @@ extension PlayerWidgetViewModel {
         case .remaining:
             let remaining = Double(secondDurationPair.duration) - secondDurationPair.second
             return ("-\(remaining.secondsToHoursMinutesSecondsString)")
+        }
+    }
+
+    private func getActiveRemotePlayingDeviceText(devices: [Device], activeDeviceID: String?) -> AttributedString? {
+        guard let activeDevice = devices.first(where: { $0.id == activeDeviceID }) else { return nil }
+        return if !DeviceHelper.isDeviceIDCurrent(activeDevice.id) {
+            try? AttributedString(markdown: L10n.listeningOn(activeDevice.name))
+        } else {
+            nil
+        }
+    }
+
+    private func getActiveDevicesCount(devices: [Device]) -> Int? {
+        if devices.count > 1 {
+            devices.count
+        } else {
+            nil
         }
     }
 }

@@ -54,7 +54,6 @@ extension Resolver {
         registerLoadingScreen()
         registerLoginScreen()
         registerPlayerScreen()
-        registerDevicesScreen()
         registerSettingsScreen()
         registerDownloadsScreen()
     }
@@ -201,16 +200,6 @@ extension Resolver {
 
         register { (resolver, args: Resolver.Args) in
             LoginScreen(viewModel: resolver.resolve(args: args.get()))
-        }
-        .scope(.unique)
-    }
-
-    private static func registerDevicesScreen() {
-        register { DevicesViewModel() }
-            .scope(.unique)
-
-        register { resolver in
-            DevicesScreen(viewModel: resolver.resolve())
         }
         .scope(.unique)
     }

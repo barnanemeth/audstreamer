@@ -182,11 +182,7 @@ extension PlayerViewModel {
 
     @MainActor
     func refresh() async {
-        do {
-            try await FetchUtil.fetchData().value
-        } catch {
-            showErrorAlert(for: error)
-        }
+        try? await FetchUtil.fetchData().value
     }
 
     func setSearchKeyword(_ keyword: String) {
@@ -207,11 +203,6 @@ extension PlayerViewModel {
         let settingsScreen: DownloadsScreen = Resolver.resolve()
         let navigationController = UINavigationController(rootViewController: settingsScreen)
         navigator.present(navigationController)
-    }
-
-    func showDevices(sourceView: UIView) {
-        let devicesViewController: DevicesScreen = Resolver.resolve()
-        navigator.presentPopover(devicesViewController, sourceView: sourceView)
     }
 
     func navigateToWebView(for episode: Episode) {
@@ -240,7 +231,7 @@ extension PlayerViewModel {
             }
             .replaceError(with: .notAvailable)
 
-        for await connectionStatus in publisher.values {
+        for await connectionStatus in publisher.asAsyncStream() {
             watchConnectionStatus = connectionStatus
         }
     }
@@ -248,7 +239,7 @@ extension PlayerViewModel {
     @MainActor
     private func subscribeToFilterAttributes() async {
         let publisher = filterService.getAttributes().replaceError(with: [])
-        for await attributes in publisher.values {
+        for await attributes in publisher.asAsyncStream() {
             filterAttributes = attributes
             isFilterActive = attributes.contains(where: { $0.isActive })
         }
@@ -416,7 +407,7 @@ extension PlayerViewModel {
 
     private func subscribeToShortcutEpisode() async {
         let publisher = shortcutHandler.getEpisodeID().replaceError(with: nil).unwrap()
-        for await episodeID in publisher.values {
+        for await episodeID in publisher.asAsyncStream() {
             guard let episode = try? await database.getEpisode(id: episodeID).value else { continue }
             try? await audioPlayer.insert(episode, playImmediately: true).value
         }

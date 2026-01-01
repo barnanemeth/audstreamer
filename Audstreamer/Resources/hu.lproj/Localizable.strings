@@ -34,7 +34,7 @@
 "mainTitle" = "Audstreamer";
 "appleIDRequired" =  "Jelentkezz be az Apple ID-ba, ha használni szeretnéd az eszközök közötti szinkronizációt";
 "downloading" = "Letöltés";
-"listeningOn" = "Lejátszás ezen a készüléken: %@";
+"listeningOn" = "Lejátszás ezen a készüléken: **%@**";
 "downloadCellularWarningMessage" = "Az adatok letöltése mobilhálózaton további költségekkel járhat.";
 "laterOnWifi" = "Később WiFi-n";
 "favorites" = "Kedvencek";

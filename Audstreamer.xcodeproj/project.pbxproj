@@ -29,7 +29,6 @@
 		70556A4525DC63D700ACDB4C /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70556A4425DC63D700ACDB4C /* LoginScreen.swift */; };
 		70C1211625F8DDC6008AB06B /* Data+HexString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C1211525F8DDC6008AB06B /* Data+HexString.swift */; };
 		70E20F5225E2FA5D00DE82CB /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E20F5125E2FA5D00DE82CB /* Device.swift */; };
-		70E9D24B25F7E79100D8D0AD /* DevicesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E9D24925F7E79100D8D0AD /* DevicesScreen.swift */; };
 		70EA651725EA78D90021F2F6 /* PlaybackCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EA651625EA78D90021F2F6 /* PlaybackCommand.swift */; };
 		70EB8A2C25E292FB00783C4F /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB8A2B25E292FB00783C4F /* Socket.swift */; };
 		70EB8A2E25E2951700783C4F /* PlaybackStateSocketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70EB8A2D25E2951700783C4F /* PlaybackStateSocketData.swift */; };
@@ -108,10 +107,8 @@
 		C2146FE329243979004D4E85 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C268CB52292184CD001361B9 /* SettingsScreen.swift */; };
 		C2146FE429243979004D4E85 /* CellButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C268CB5A29219A39001361B9 /* CellButton.swift */; };
 		C2146FE529243979004D4E85 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597FF5F5258003410030EEC1 /* Networking.swift */; };
-		C2146FE629243979004D4E85 /* DevicesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4BA28FC1F7000D246D7 /* DevicesViewModel.swift */; };
 		C2146FE729243979004D4E85 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F8D2D290EC84C00053070 /* UIView+Extensions.swift */; };
 		C2146FE829243979004D4E85 /* BadgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E467012901E5AB0089DEDC /* BadgeButton.swift */; };
-		C2146FE929243979004D4E85 /* DevicesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E9D24925F7E79100D8D0AD /* DevicesScreen.swift */; };
 		C2146FEA29243979004D4E85 /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F8D33290F05DD00053070 /* XCAssets+Generated.swift */; };
 		C2146FEC29243979004D4E85 /* LoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4C328FC391A00D246D7 /* LoadingViewModel.swift */; };
 		C2146FED29243979004D4E85 /* LoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597FF601258004A50030EEC1 /* LoadingScreen.swift */; };
@@ -179,7 +176,6 @@
 		C237C4B428FB6C8100D246D7 /* Publishers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4B328FB6C8100D246D7 /* Publishers.swift */; };
 		C237C4B628FB6C9900D246D7 /* Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4B528FB6C9900D246D7 /* Delete.swift */; };
 		C237C4B828FB6CA900D246D7 /* Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4B728FB6CA900D246D7 /* Add.swift */; };
-		C237C4BB28FC1F7000D246D7 /* DevicesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4BA28FC1F7000D246D7 /* DevicesViewModel.swift */; };
 		C237C4BF28FC333600D246D7 /* AssignOwnership.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4BE28FC333600D246D7 /* AssignOwnership.swift */; };
 		C237C4C128FC338A00D246D7 /* ObjectOwnership.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4C028FC338A00D246D7 /* ObjectOwnership.swift */; };
 		C237C4C428FC391A00D246D7 /* LoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4C328FC391A00D246D7 /* LoadingViewModel.swift */; };
@@ -343,6 +339,12 @@
 		C290BADE2932B88300F0532A /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C290BADC2932B88300F0532A /* BackgroundTask.swift */; };
 		C29221E1293543A000A24F43 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29221E0293543A000A24F43 /* EmptyStateView.swift */; };
 		C29221E2293543A000A24F43 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29221E0293543A000A24F43 /* EmptyStateView.swift */; };
+		C292315B2F04675C004C71C6 /* PulsingBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C292315A2F04675C004C71C6 /* PulsingBackgroundModifier.swift */; };
+		C292315C2F04675C004C71C6 /* PulsingBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C292315A2F04675C004C71C6 /* PulsingBackgroundModifier.swift */; };
+		C292315F2F0521F0004C71C6 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C292315E2F0521F0004C71C6 /* Badge.swift */; };
+		C29231602F0521F0004C71C6 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = C292315E2F0521F0004C71C6 /* Badge.swift */; };
+		C29231622F059892004C71C6 /* SizeChangedModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29231612F059892004C71C6 /* SizeChangedModifier.swift */; };
+		C29231632F059892004C71C6 /* SizeChangedModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29231612F059892004C71C6 /* SizeChangedModifier.swift */; };
 		C294B1242913F70B00A30403 /* ApplicationLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C294B1232913F70B00A30403 /* ApplicationLoader.swift */; };
 		C294B1262913FDE300A30403 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C294B1252913FDE300A30403 /* NotificationHandler.swift */; };
 		C294B1282913FEC400A30403 /* DefaultNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C294B1272913FEC400A30403 /* DefaultNotificationHandler.swift */; };
@@ -405,8 +407,6 @@
 		C2C2D6B72EFAC101008AFF00 /* DownloadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D6B52EFAC101008AFF00 /* DownloadsView.swift */; };
 		C2C2D6B92EFAC209008AFF00 /* DownloadingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D6B82EFAC209008AFF00 /* DownloadingComponent.swift */; };
 		C2C2D6BA2EFAC209008AFF00 /* DownloadingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D6B82EFAC209008AFF00 /* DownloadingComponent.swift */; };
-		C2C2D7302EFDC638008AFF00 /* DevicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D72F2EFDC638008AFF00 /* DevicesView.swift */; };
-		C2C2D7312EFDC638008AFF00 /* DevicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D72F2EFDC638008AFF00 /* DevicesView.swift */; };
 		C2C2D7362EFED970008AFF00 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D7352EFED970008AFF00 /* Episode.swift */; };
 		C2C2D7372EFED970008AFF00 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D7352EFED970008AFF00 /* Episode.swift */; };
 		C2D471A529279E53002AD543 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27947042926662300A7402F /* About.swift */; };
@@ -543,7 +543,6 @@
 		70556A4425DC63D700ACDB4C /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		70C1211525F8DDC6008AB06B /* Data+HexString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+HexString.swift"; sourceTree = "<group>"; };
 		70E20F5125E2FA5D00DE82CB /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
-		70E9D24925F7E79100D8D0AD /* DevicesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesScreen.swift; sourceTree = "<group>"; };
 		70EA651625EA78D90021F2F6 /* PlaybackCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackCommand.swift; sourceTree = "<group>"; };
 		70EB8A2B25E292FB00783C4F /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
 		70EB8A2D25E2951700783C4F /* PlaybackStateSocketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackStateSocketData.swift; sourceTree = "<group>"; };
@@ -580,7 +579,6 @@
 		C237C4B328FB6C8100D246D7 /* Publishers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Publishers.swift; sourceTree = "<group>"; };
 		C237C4B528FB6C9900D246D7 /* Delete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delete.swift; sourceTree = "<group>"; };
 		C237C4B728FB6CA900D246D7 /* Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Add.swift; sourceTree = "<group>"; };
-		C237C4BA28FC1F7000D246D7 /* DevicesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewModel.swift; sourceTree = "<group>"; };
 		C237C4BE28FC333600D246D7 /* AssignOwnership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignOwnership.swift; sourceTree = "<group>"; };
 		C237C4C028FC338A00D246D7 /* ObjectOwnership.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectOwnership.swift; sourceTree = "<group>"; };
 		C237C4C328FC391A00D246D7 /* LoadingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewModel.swift; sourceTree = "<group>"; };
@@ -677,6 +675,9 @@
 		C290BAD92932ACA200F0532A /* JWTHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTHelper.swift; sourceTree = "<group>"; };
 		C290BADC2932B88300F0532A /* BackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTask.swift; sourceTree = "<group>"; };
 		C29221E0293543A000A24F43 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		C292315A2F04675C004C71C6 /* PulsingBackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingBackgroundModifier.swift; sourceTree = "<group>"; };
+		C292315E2F0521F0004C71C6 /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
+		C29231612F059892004C71C6 /* SizeChangedModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeChangedModifier.swift; sourceTree = "<group>"; };
 		C294B1232913F70B00A30403 /* ApplicationLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationLoader.swift; sourceTree = "<group>"; };
 		C294B1252913FDE300A30403 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		C294B1272913FEC400A30403 /* DefaultNotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNotificationHandler.swift; sourceTree = "<group>"; };
@@ -714,7 +715,6 @@
 		C2C2D6B22EF9DB76008AFF00 /* FillWidthModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillWidthModifier.swift; sourceTree = "<group>"; };
 		C2C2D6B52EFAC101008AFF00 /* DownloadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsView.swift; sourceTree = "<group>"; };
 		C2C2D6B82EFAC209008AFF00 /* DownloadingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadingComponent.swift; sourceTree = "<group>"; };
-		C2C2D72F2EFDC638008AFF00 /* DevicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesView.swift; sourceTree = "<group>"; };
 		C2C2D7352EFED970008AFF00 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		C2D7EA252A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+EpisodeService.swift"; sourceTree = "<group>"; };
 		C2D7EA272A39B2EF00D51F40 /* WatchEpisodeService+DownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchEpisodeService+DownloadService.swift"; sourceTree = "<group>"; };
@@ -867,7 +867,6 @@
 				C237C4D428FCA9A800D246D7 /* PlayerScreen */,
 				C237C4CD28FC944300D246D7 /* LoginScreen */,
 				C237C4C228FC38E200D246D7 /* LoadingScreen */,
-				C237C4B928FC1F5F00D246D7 /* DevicesScreen */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -980,6 +979,7 @@
 		59B708092580EB2600AA831D /* UIElements */ = {
 			isa = PBXGroup;
 			children = (
+				C292315D2F0521E6004C71C6 /* Badge */,
 				C2A9A1422AF2EDB1002F0162 /* FileTransferWidget */,
 				C2367AEB293BDFEF009A1A71 /* EmptyStateView */,
 				C2367AEA293BDFBA009A1A71 /* Buttons */,
@@ -1086,16 +1086,6 @@
 				C237C4B728FB6CA900D246D7 /* Add.swift */,
 			);
 			path = RealmCombine;
-			sourceTree = "<group>";
-		};
-		C237C4B928FC1F5F00D246D7 /* DevicesScreen */ = {
-			isa = PBXGroup;
-			children = (
-				70E9D24925F7E79100D8D0AD /* DevicesScreen.swift */,
-				C2C2D72F2EFDC638008AFF00 /* DevicesView.swift */,
-				C237C4BA28FC1F7000D246D7 /* DevicesViewModel.swift */,
-			);
-			path = DevicesScreen;
 			sourceTree = "<group>";
 		};
 		C237C4C228FC38E200D246D7 /* LoadingScreen */ = {
@@ -1452,6 +1442,14 @@
 			path = DownloadsScreen;
 			sourceTree = "<group>";
 		};
+		C292315D2F0521E6004C71C6 /* Badge */ = {
+			isa = PBXGroup;
+			children = (
+				C292315E2F0521F0004C71C6 /* Badge.swift */,
+			);
+			path = Badge;
+			sourceTree = "<group>";
+		};
 		C29E4F4729DF428E00E2AF16 /* NotificationServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -1504,6 +1502,8 @@
 			children = (
 				C2C2D6B22EF9DB76008AFF00 /* FillWidthModifier.swift */,
 				C25A05B72F04066100BECB5F /* FeedbackEnabledModifier.swift */,
+				C292315A2F04675C004C71C6 /* PulsingBackgroundModifier.swift */,
+				C29231612F059892004C71C6 /* SizeChangedModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -1843,6 +1843,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				597FF5BC257ED2990030EEC1 /* AppDelegate.swift in Sources */,
+				C292315F2F0521F0004C71C6 /* Badge.swift in Sources */,
 				C21D64942A2CAF4E00226AFF /* EpisodeCommon.swift in Sources */,
 				C237C4B028FB47E200D246D7 /* DefaultAPIClient.swift in Sources */,
 				C266BAB7290551BC000B6097 /* Unwrap.swift in Sources */,
@@ -1909,7 +1910,6 @@
 				C237C4D628FCA9BA00D246D7 /* PlayerScreen.swift in Sources */,
 				C2C2D3922EF9B06D008AFF00 /* SettingsFooterComponent.swift in Sources */,
 				C237C4C628FC3ED700D246D7 /* ZipMany.swift in Sources */,
-				C2C2D7302EFDC638008AFF00 /* DevicesView.swift in Sources */,
 				C290BAD72932A38500F0532A /* CloudKitModifyPublisher.swift in Sources */,
 				70C1211625F8DDC6008AB06B /* Data+HexString.swift in Sources */,
 				C25A02972F03080D00BECB5F /* WatchConnectionStatus.swift in Sources */,
@@ -1972,12 +1972,11 @@
 				C270093B2EF87E1A00B54C93 /* Navigator.swift in Sources */,
 				C280C73D2EED624000352357 /* Slider.swift in Sources */,
 				597FF5F6258003410030EEC1 /* Networking.swift in Sources */,
-				C237C4BB28FC1F7000D246D7 /* DevicesViewModel.swift in Sources */,
+				C29231622F059892004C71C6 /* SizeChangedModifier.swift in Sources */,
 				C2696A692F014925001AFB19 /* EpisodeActionsComponent.swift in Sources */,
 				C2191E2C2C26CDA300812157 /* FetchUtil.swift in Sources */,
 				C21F8D2E290EC84C00053070 /* UIView+Extensions.swift in Sources */,
 				C2E467022901E5AB0089DEDC /* BadgeButton.swift in Sources */,
-				70E9D24B25F7E79100D8D0AD /* DevicesScreen.swift in Sources */,
 				C26743252932DD5D00B08632 /* CloudKitCloud+SavePreparation.swift in Sources */,
 				C21F8D34290F05DD00053070 /* XCAssets+Generated.swift in Sources */,
 				C237C4C428FC391A00D246D7 /* LoadingViewModel.swift in Sources */,
@@ -1995,6 +1994,7 @@
 				C240AC63292EBBCE00263C5A /* RatingData.swift in Sources */,
 				C2C2D7372EFED970008AFF00 /* Episode.swift in Sources */,
 				C21F8D31290F03D600053070 /* Strings+Generated.swift in Sources */,
+				C292315C2F04675C004C71C6 /* PulsingBackgroundModifier.swift in Sources */,
 				C28429F52915BD5200BC1146 /* DownloadOperation.swift in Sources */,
 				C2A9A1472AF2EE19002F0162 /* FileTransferWidgetViewModel.swift in Sources */,
 				C2A9A1442AF2EE08002F0162 /* FileTransferWidget.swift in Sources */,
@@ -2018,6 +2018,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2146F9E29243979004D4E85 /* AppDelegate.swift in Sources */,
+				C29231602F0521F0004C71C6 /* Badge.swift in Sources */,
 				C2146F9F29243979004D4E85 /* DefaultAPIClient.swift in Sources */,
 				C23CBD772AF404A20024E0A1 /* EpisodeCommon+Extensions.swift in Sources */,
 				C2146FA029243979004D4E85 /* Unwrap.swift in Sources */,
@@ -2084,7 +2085,6 @@
 				C2C2D3912EF9B06D008AFF00 /* SettingsFooterComponent.swift in Sources */,
 				C2146FC329243979004D4E85 /* Data+HexString.swift in Sources */,
 				C2A9A13E2AF2DA49002F0162 /* FileTransferOperation.swift in Sources */,
-				C2C2D7312EFDC638008AFF00 /* DevicesView.swift in Sources */,
 				C290BAD82932A38500F0532A /* CloudKitModifyPublisher.swift in Sources */,
 				C2146FC529243979004D4E85 /* RemotePlayer.swift in Sources */,
 				C25A02962F03080D00BECB5F /* WatchConnectionStatus.swift in Sources */,
@@ -2148,14 +2148,13 @@
 				C2146FE329243979004D4E85 /* SettingsScreen.swift in Sources */,
 				C2191E2D2C26CDA300812157 /* FetchUtil.swift in Sources */,
 				C2146FE429243979004D4E85 /* CellButton.swift in Sources */,
+				C29231632F059892004C71C6 /* SizeChangedModifier.swift in Sources */,
 				C2696A6A2F014925001AFB19 /* EpisodeActionsComponent.swift in Sources */,
 				C2146FE529243979004D4E85 /* Networking.swift in Sources */,
-				C2146FE629243979004D4E85 /* DevicesViewModel.swift in Sources */,
 				C2146FE729243979004D4E85 /* UIView+Extensions.swift in Sources */,
 				C28658F32A45EDE200974E97 /* DownloadAggregatedEvent+Extensions.swift in Sources */,
 				C2146FE829243979004D4E85 /* BadgeButton.swift in Sources */,
 				C26743262932DD5D00B08632 /* CloudKitCloud+SavePreparation.swift in Sources */,
-				C2146FE929243979004D4E85 /* DevicesScreen.swift in Sources */,
 				C2C2D3812EF98B91008AFF00 /* Environment+FeedbackEnabled.swift in Sources */,
 				C2C2D3942EF9BBF8008AFF00 /* LoadingView.swift in Sources */,
 				C2C2D3852EF98BA8008AFF00 /* Environment+Loading.swift in Sources */,
@@ -2170,6 +2169,7 @@
 				C2146FF129243979004D4E85 /* Publishers.swift in Sources */,
 				C2C2D7362EFED970008AFF00 /* Episode.swift in Sources */,
 				C240AC64292EBBCE00263C5A /* RatingData.swift in Sources */,
+				C292315B2F04675C004C71C6 /* PulsingBackgroundModifier.swift in Sources */,
 				C2146FF229243979004D4E85 /* Strings+Generated.swift in Sources */,
 				C2146FF329243979004D4E85 /* DownloadOperation.swift in Sources */,
 				C21D649F2A2D12A000226AFF /* EpisodesService.swift in Sources */,
@@ -2518,8 +2518,8 @@
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2549,8 +2549,8 @@
 				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = 7JWB953S2M;
 				INFOPLIST_FILE = Audstreamer/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

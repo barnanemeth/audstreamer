@@ -91,9 +91,9 @@ internal enum L10n {
   internal static let favorites = L10n.tr("Localizable", "favorites", fallback: "Favorites")
   /// Later on Wi-Fi
   internal static let laterOnWifi = L10n.tr("Localizable", "laterOnWifi", fallback: "Later on Wi-Fi")
-  /// Listening on %@
+  /// Listening on **%@**
   internal static func listeningOn(_ p1: Any) -> String {
-    return L10n.tr("Localizable", "listeningOn", String(describing: p1), fallback: "Listening on %@")
+    return L10n.tr("Localizable", "listeningOn", String(describing: p1), fallback: "Listening on **%@**")
   }
   /// Loading
   internal static let loading = L10n.tr("Localizable", "loading", fallback: "Loading")
