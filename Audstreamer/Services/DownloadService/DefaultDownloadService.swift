@@ -17,6 +17,7 @@ final class DefaultDownloadService {
         static let queueConcurrentOperationNumber = 3
         static let receiveQueue: DispatchQueue = .main
         static let aggregatedPrecisionCoefficient = 2 << 12
+        static let queue = DispatchQueue(label: "DefaultDownloadService.DefaulQueue")
     }
 
     // MARK: Private properties
@@ -53,19 +54,25 @@ final class DefaultDownloadService {
 
 extension DefaultDownloadService: DownloadService {
     func download(_ item: Downloadable, userInfo: [String: Any]) -> AnyPublisher<Void, Error> {
-        guard !isItemInQueue(item) else { return Just.void() }
+        Promise { promise in
+            Constant.queue.async {
+                guard !self.isItemInQueue(item) else { return promise(.success(())) }
 
-        let downloadItem = DownloadItem(from: item, userInfo: userInfo)
-        let operation = DownloadOperation(item: downloadItem)
+                let downloadItem = DownloadItem(from: item, userInfo: userInfo)
+                let operation = DownloadOperation(item: downloadItem)
 
-        operation.eventPublisher
-            .handleEvents(receiveOutput: { [unowned self] _ in self.refreshSize() })
-            .append(Empty(completeImmediately: false))
-            .subscribe(eventSubject)
-            .store(in: &cancellables)
+                operation.eventPublisher
+                    .handleEvents(receiveOutput: { [unowned self] _ in self.refreshSize() })
+                    .append(Empty(completeImmediately: false))
+                    .subscribe(self.eventSubject)
+                    .store(in: &self.cancellables)
 
-        defer { eventSubject.send(.queued(item: downloadItem)) }
-        return Just(queue.addOperation(operation)).setFailureType(to: Error.self).eraseToAnyPublisher()
+                defer { self.eventSubject.send(.queued(item: downloadItem)) }
+                self.queue.addOperation(operation)
+                promise(.success(()))
+            }
+        }
+        .eraseToAnyPublisher()
     }
 
     func delete(_ item: Downloadable) -> AnyPublisher<Void, Error> {

@@ -56,7 +56,9 @@ extension Resolver {
         registerPlayerScreen()
         registerSettingsScreen()
         registerDownloadsScreen()
+        registerLoadingWidgets()
     }
+
     private static func registerKeyWindow() {
         register { UIApplication.shared.windows.first { $0.isKeyWindow } }
             .scope(.unique)
@@ -222,5 +224,13 @@ extension Resolver {
             DownloadsScreen(viewModel: resolver.resolve())
         }
         .scope(.unique)
+    }
+
+    private static func registerLoadingWidgets() {
+        register { DownloadingWidgetViewModel() }
+            .scope(.unique)
+
+        register { FileTransferWidgetViewModel() }
+            .scope(.unique)
     }
 }

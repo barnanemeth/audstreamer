@@ -13,3 +13,11 @@ extension DownloadAggregatedEvent {
         return isSilentDownloading
     }
 }
+
+// MARK: - LoadingAggregatedEvent
+
+extension DownloadAggregatedEvent: LoadingAggregatedEvent {
+    var progressValue: Double { progress.fractionCompleted }
+    var isFinished: Bool { progress.isFinished }
+    var numberOfItems: Int { items.count }
+}

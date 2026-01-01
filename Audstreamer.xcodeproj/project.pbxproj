@@ -67,7 +67,6 @@
 		C2146FB929243979004D4E85 /* DefaultFilterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C268CB4829213C21001361B9 /* DefaultFilterService.swift */; };
 		C2146FBA29243979004D4E85 /* DefaultAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DFEEA6290726670032200E /* DefaultAccount.swift */; };
 		C2146FBB29243979004D4E85 /* SocketUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24788C52902DAFD00667F1D /* SocketUpdater.swift */; };
-		C2146FBC29243979004D4E85 /* DownloadWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28429FB2915D51A00BC1146 /* DownloadWidget.swift */; };
 		C2146FBE29243979004D4E85 /* FilterAttribute+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C268CB4C29217381001361B9 /* FilterAttribute+Extensions.swift */; };
 		C2146FBF29243979004D4E85 /* FloatingPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F534762920492F0002452B /* FloatingPoint+Extension.swift */; };
 		C2146FC029243979004D4E85 /* MergeMany.swift in Sources */ = {isa = PBXBuildFile; fileRef = C294B12D2914150400A30403 /* MergeMany.swift */; };
@@ -109,7 +108,6 @@
 		C2146FF129243979004D4E85 /* Publishers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4B328FB6C8100D246D7 /* Publishers.swift */; };
 		C2146FF229243979004D4E85 /* Strings+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21F8D30290F03D600053070 /* Strings+Generated.swift */; };
 		C2146FF329243979004D4E85 /* DownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28429F42915BD5200BC1146 /* DownloadOperation.swift */; };
-		C2146FF429243979004D4E85 /* DownloadWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28429FD2915D52400BC1146 /* DownloadWidgetViewModel.swift */; };
 		C2146FF529243979004D4E85 /* JustVoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28DA0382913D37200037E4A /* JustVoid.swift */; };
 		C2146FF629243979004D4E85 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C294B1252913FDE300A30403 /* NotificationHandler.swift */; };
 		C2146FF729243979004D4E85 /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4D728FCA9C200D246D7 /* PlayerViewModel.swift */; };
@@ -155,6 +153,20 @@
 		C22880EE2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22880ED2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift */; };
 		C22880EF2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22880ED2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift */; };
 		C22880F02AEEF1DE007A7059 /* EpisodeTransferMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22880ED2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift */; };
+		C23133E12F06D918006A1CA9 /* LoadingWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23133E02F06D918006A1CA9 /* LoadingWidgetViewModel.swift */; };
+		C23133E22F06D918006A1CA9 /* LoadingWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23133E02F06D918006A1CA9 /* LoadingWidgetViewModel.swift */; };
+		C23133E42F06D92B006A1CA9 /* LoadingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23133E32F06D92B006A1CA9 /* LoadingWidget.swift */; };
+		C23133E52F06D92B006A1CA9 /* LoadingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23133E32F06D92B006A1CA9 /* LoadingWidget.swift */; };
+		C23133E72F06DBD0006A1CA9 /* LoadingWidgetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23133E62F06DBD0006A1CA9 /* LoadingWidgetState.swift */; };
+		C23133E82F06DBD0006A1CA9 /* LoadingWidgetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23133E62F06DBD0006A1CA9 /* LoadingWidgetState.swift */; };
+		C2313D322F06FBBE006A1CA9 /* LoadingAggregatedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2313D312F06FBBE006A1CA9 /* LoadingAggregatedEvent.swift */; };
+		C2313D332F06FBBE006A1CA9 /* LoadingAggregatedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2313D312F06FBBE006A1CA9 /* LoadingAggregatedEvent.swift */; };
+		C2313D352F0705B6006A1CA9 /* DownloadingWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2313D342F0705B6006A1CA9 /* DownloadingWidgetViewModel.swift */; };
+		C2313D362F0705B6006A1CA9 /* DownloadingWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2313D342F0705B6006A1CA9 /* DownloadingWidgetViewModel.swift */; };
+		C2313D382F0705C7006A1CA9 /* FileTransferWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2313D372F0705C7006A1CA9 /* FileTransferWidgetViewModel.swift */; };
+		C2313D392F0705C7006A1CA9 /* FileTransferWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2313D372F0705C7006A1CA9 /* FileTransferWidgetViewModel.swift */; };
+		C2313D3B2F07079C006A1CA9 /* FileTransferAggregatedProgress+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2313D3A2F07079C006A1CA9 /* FileTransferAggregatedProgress+Extensions.swift */; };
+		C2313D3C2F07079C006A1CA9 /* FileTransferAggregatedProgress+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2313D3A2F07079C006A1CA9 /* FileTransferAggregatedProgress+Extensions.swift */; };
 		C237C49D28FB1A6400D246D7 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C237C49C28FB1A6400D246D7 /* RealmSwift */; };
 		C237C4A328FB1AD400D246D7 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = C237C4A228FB1AD400D246D7 /* SocketIO */; };
 		C237C4A928FB20FA00D246D7 /* Combine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4A828FB20FA00D246D7 /* Combine+Extensions.swift */; };
@@ -265,8 +277,6 @@
 		C26C4FA329298E500015DC94 /* Calendar.Component+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26C4FA129298E500015DC94 /* Calendar.Component+Extensions.swift */; };
 		C26CDD642C06036F00D186D3 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C26CDD632C06036F00D186D3 /* LoadingAnimation.json */; };
 		C26CDD652C06036F00D186D3 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C26CDD632C06036F00D186D3 /* LoadingAnimation.json */; };
-		C26DE7E42939551B00CA1A4F /* DownloadWidgetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26DE7E32939551B00CA1A4F /* DownloadWidgetState.swift */; };
-		C26DE7E52939551B00CA1A4F /* DownloadWidgetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26DE7E32939551B00CA1A4F /* DownloadWidgetState.swift */; };
 		C27005BC2EF6FCBD00B54C93 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27005BB2EF6FCBD00B54C93 /* ProgressBar.swift */; };
 		C27008D62EF7224600B54C93 /* VolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27008D52EF7224600B54C93 /* VolumeView.swift */; };
 		C27008D82EF82A2100B54C93 /* EpisodeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27008D72EF82A2100B54C93 /* EpisodeRow.swift */; };
@@ -291,8 +301,6 @@
 		C28429F32915BCA100BC1146 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28429F22915BCA100BC1146 /* AsyncOperation.swift */; };
 		C28429F52915BD5200BC1146 /* DownloadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28429F42915BD5200BC1146 /* DownloadOperation.swift */; };
 		C28429F72915C33C00BC1146 /* DownloadItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28429F62915C33C00BC1146 /* DownloadItem.swift */; };
-		C28429FC2915D51A00BC1146 /* DownloadWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28429FB2915D51A00BC1146 /* DownloadWidget.swift */; };
-		C28429FE2915D52400BC1146 /* DownloadWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28429FD2915D52400BC1146 /* DownloadWidgetViewModel.swift */; };
 		C28658F22A45EDE200974E97 /* DownloadAggregatedEvent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28658F12A45EDE200974E97 /* DownloadAggregatedEvent+Extensions.swift */; };
 		C28658F32A45EDE200974E97 /* DownloadAggregatedEvent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28658F12A45EDE200974E97 /* DownloadAggregatedEvent+Extensions.swift */; };
 		C28658F52A45EEDF00974E97 /* DownloadItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28658F42A45EEDF00974E97 /* DownloadItem+Extensions.swift */; };
@@ -341,12 +349,6 @@
 		C2A9A13E2AF2DA49002F0162 /* FileTransferOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A9A13C2AF2DA49002F0162 /* FileTransferOperation.swift */; };
 		C2A9A1402AF2DF60002F0162 /* FileTransferAggregatedProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A9A13F2AF2DF60002F0162 /* FileTransferAggregatedProgress.swift */; };
 		C2A9A1412AF2DF60002F0162 /* FileTransferAggregatedProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A9A13F2AF2DF60002F0162 /* FileTransferAggregatedProgress.swift */; };
-		C2A9A1442AF2EE08002F0162 /* FileTransferWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A9A1432AF2EE08002F0162 /* FileTransferWidget.swift */; };
-		C2A9A1452AF2EE08002F0162 /* FileTransferWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A9A1432AF2EE08002F0162 /* FileTransferWidget.swift */; };
-		C2A9A1472AF2EE19002F0162 /* FileTransferWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A9A1462AF2EE19002F0162 /* FileTransferWidgetViewModel.swift */; };
-		C2A9A1482AF2EE19002F0162 /* FileTransferWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A9A1462AF2EE19002F0162 /* FileTransferWidgetViewModel.swift */; };
-		C2A9A14A2AF2EE24002F0162 /* FileTransferWidgetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A9A1492AF2EE24002F0162 /* FileTransferWidgetState.swift */; };
-		C2A9A14B2AF2EE24002F0162 /* FileTransferWidgetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A9A1492AF2EE24002F0162 /* FileTransferWidgetState.swift */; };
 		C2AC28532E7206A60038FBFB /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = C237C49C28FB1A6400D246D7 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C2AC28552E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2AC28542E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift */; };
 		C2AC28562E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2AC28542E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift */; };
@@ -541,6 +543,13 @@
 		C21F8D33290F05DD00053070 /* XCAssets+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
 		C21F8D35290F435800053070 /* CloudKitCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitCloud.swift; sourceTree = "<group>"; };
 		C22880ED2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeTransferMetadata.swift; sourceTree = "<group>"; };
+		C23133E02F06D918006A1CA9 /* LoadingWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWidgetViewModel.swift; sourceTree = "<group>"; };
+		C23133E32F06D92B006A1CA9 /* LoadingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWidget.swift; sourceTree = "<group>"; };
+		C23133E62F06DBD0006A1CA9 /* LoadingWidgetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWidgetState.swift; sourceTree = "<group>"; };
+		C2313D312F06FBBE006A1CA9 /* LoadingAggregatedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAggregatedEvent.swift; sourceTree = "<group>"; };
+		C2313D342F0705B6006A1CA9 /* DownloadingWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadingWidgetViewModel.swift; sourceTree = "<group>"; };
+		C2313D372F0705C7006A1CA9 /* FileTransferWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferWidgetViewModel.swift; sourceTree = "<group>"; };
+		C2313D3A2F07079C006A1CA9 /* FileTransferAggregatedProgress+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileTransferAggregatedProgress+Extensions.swift"; sourceTree = "<group>"; };
 		C237C4A828FB20FA00D246D7 /* Combine+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Extensions.swift"; sourceTree = "<group>"; };
 		C237C4AF28FB47E200D246D7 /* DefaultAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAPIClient.swift; sourceTree = "<group>"; };
 		C237C4B328FB6C8100D246D7 /* Publishers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Publishers.swift; sourceTree = "<group>"; };
@@ -602,7 +611,6 @@
 		C26BF9A72A15824300598F6E /* DefaultWatchConnectivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultWatchConnectivityService.swift; sourceTree = "<group>"; };
 		C26C4FA129298E500015DC94 /* Calendar.Component+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar.Component+Extensions.swift"; sourceTree = "<group>"; };
 		C26CDD632C06036F00D186D3 /* LoadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoadingAnimation.json; sourceTree = "<group>"; };
-		C26DE7E32939551B00CA1A4F /* DownloadWidgetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadWidgetState.swift; sourceTree = "<group>"; };
 		C27005BB2EF6FCBD00B54C93 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		C27008D52EF7224600B54C93 /* VolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeView.swift; sourceTree = "<group>"; };
 		C27008D72EF82A2100B54C93 /* EpisodeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeRow.swift; sourceTree = "<group>"; };
@@ -621,8 +629,6 @@
 		C28429F22915BCA100BC1146 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		C28429F42915BD5200BC1146 /* DownloadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadOperation.swift; sourceTree = "<group>"; };
 		C28429F62915C33C00BC1146 /* DownloadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadItem.swift; sourceTree = "<group>"; };
-		C28429FB2915D51A00BC1146 /* DownloadWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadWidget.swift; sourceTree = "<group>"; };
-		C28429FD2915D52400BC1146 /* DownloadWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadWidgetViewModel.swift; sourceTree = "<group>"; };
 		C28658F12A45EDE200974E97 /* DownloadAggregatedEvent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DownloadAggregatedEvent+Extensions.swift"; sourceTree = "<group>"; };
 		C28658F42A45EEDF00974E97 /* DownloadItem+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DownloadItem+Extensions.swift"; sourceTree = "<group>"; };
 		C28AC329294381E9006E04BA /* UserRating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRating.swift; sourceTree = "<group>"; };
@@ -656,9 +662,6 @@
 		C29F6B4F28FF414B00666184 /* PlayerWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerWidgetViewModel.swift; sourceTree = "<group>"; };
 		C2A9A13C2AF2DA49002F0162 /* FileTransferOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferOperation.swift; sourceTree = "<group>"; };
 		C2A9A13F2AF2DF60002F0162 /* FileTransferAggregatedProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferAggregatedProgress.swift; sourceTree = "<group>"; };
-		C2A9A1432AF2EE08002F0162 /* FileTransferWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferWidget.swift; sourceTree = "<group>"; };
-		C2A9A1462AF2EE19002F0162 /* FileTransferWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferWidgetViewModel.swift; sourceTree = "<group>"; };
-		C2A9A1492AF2EE24002F0162 /* FileTransferWidgetState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTransferWidgetState.swift; sourceTree = "<group>"; };
 		C2AC28542E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Combine.swift"; sourceTree = "<group>"; };
 		C2AC28582E72BD010038FBFB /* CombineControlTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineControlTarget.swift; sourceTree = "<group>"; };
 		C2BBCD4D2957640600546903 /* Promise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
@@ -902,6 +905,8 @@
 				C23CBD7C2AF407FC0024E0A1 /* Downloadable+Extensions.swift */,
 				C2191E2B2C26CDA300812157 /* FetchUtil.swift */,
 				C27009392EF87E1A00B54C93 /* Navigator.swift */,
+				C2313D312F06FBBE006A1CA9 /* LoadingAggregatedEvent.swift */,
+				C2313D3A2F07079C006A1CA9 /* FileTransferAggregatedProgress+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -926,10 +931,9 @@
 		59B708092580EB2600AA831D /* UIElements */ = {
 			isa = PBXGroup;
 			children = (
+				C23133DF2F06D905006A1CA9 /* LoadingWidget */,
 				C292315D2F0521E6004C71C6 /* Badge */,
-				C2A9A1422AF2EDB1002F0162 /* FileTransferWidget */,
 				C2367AEB293BDFEF009A1A71 /* EmptyStateView */,
-				C28429FA2915D50B00BC1146 /* DownloadWidget */,
 				C29F6B4828FF3C7500666184 /* PlayerWidget */,
 				C280C73B2EED624000352357 /* Slider.swift */,
 				C2C2D37D2EF98B3D008AFF00 /* AsyncButton.swift */,
@@ -1002,6 +1006,18 @@
 				C21F8D33290F05DD00053070 /* XCAssets+Generated.swift */,
 			);
 			path = Generated;
+			sourceTree = "<group>";
+		};
+		C23133DF2F06D905006A1CA9 /* LoadingWidget */ = {
+			isa = PBXGroup;
+			children = (
+				C23133E02F06D918006A1CA9 /* LoadingWidgetViewModel.swift */,
+				C23133E32F06D92B006A1CA9 /* LoadingWidget.swift */,
+				C23133E62F06DBD0006A1CA9 /* LoadingWidgetState.swift */,
+				C2313D342F0705B6006A1CA9 /* DownloadingWidgetViewModel.swift */,
+				C2313D372F0705C7006A1CA9 /* FileTransferWidgetViewModel.swift */,
+			);
+			path = LoadingWidget;
 			sourceTree = "<group>";
 		};
 		C2367AEB293BDFEF009A1A71 /* EmptyStateView */ = {
@@ -1347,16 +1363,6 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		C28429FA2915D50B00BC1146 /* DownloadWidget */ = {
-			isa = PBXGroup;
-			children = (
-				C28429FB2915D51A00BC1146 /* DownloadWidget.swift */,
-				C28429FD2915D52400BC1146 /* DownloadWidgetViewModel.swift */,
-				C26DE7E32939551B00CA1A4F /* DownloadWidgetState.swift */,
-			);
-			path = DownloadWidget;
-			sourceTree = "<group>";
-		};
 		C28AC3472943DE56006E04BA /* ShortcutHandler */ = {
 			isa = PBXGroup;
 			children = (
@@ -1401,16 +1407,6 @@
 				C29F6B4F28FF414B00666184 /* PlayerWidgetViewModel.swift */,
 			);
 			path = PlayerWidget;
-			sourceTree = "<group>";
-		};
-		C2A9A1422AF2EDB1002F0162 /* FileTransferWidget */ = {
-			isa = PBXGroup;
-			children = (
-				C2A9A1432AF2EE08002F0162 /* FileTransferWidget.swift */,
-				C2A9A1462AF2EE19002F0162 /* FileTransferWidgetViewModel.swift */,
-				C2A9A1492AF2EE24002F0162 /* FileTransferWidgetState.swift */,
-			);
-			path = FileTransferWidget;
 			sourceTree = "<group>";
 		};
 		C2C2D3862EF9999F008AFF00 /* Dialog */ = {
@@ -1770,6 +1766,7 @@
 				C292315F2F0521F0004C71C6 /* Badge.swift in Sources */,
 				C21D64942A2CAF4E00226AFF /* EpisodeCommon.swift in Sources */,
 				C237C4B028FB47E200D246D7 /* DefaultAPIClient.swift in Sources */,
+				C2313D352F0705B6006A1CA9 /* DownloadingWidgetViewModel.swift in Sources */,
 				C266BAB7290551BC000B6097 /* Unwrap.swift in Sources */,
 				C2C2D37E2EF98B3D008AFF00 /* AsyncButton.swift in Sources */,
 				C2F1EB462A38ABDF001F8B9E /* ReplyMessage.swift in Sources */,
@@ -1784,6 +1781,7 @@
 				C26BF9A82A15824300598F6E /* DefaultWatchConnectivityService.swift in Sources */,
 				C290BAD12932844B00F0532A /* RatingHelper.swift in Sources */,
 				C294B12C2914129000A30403 /* DefaultApplicationStateHandler.swift in Sources */,
+				C2313D382F0705C7006A1CA9 /* FileTransferWidgetViewModel.swift in Sources */,
 				C237C4B628FB6C9900D246D7 /* Delete.swift in Sources */,
 				C27009362EF84E0200B54C93 /* SettingsView.swift in Sources */,
 				C27009412EF95DF100B54C93 /* ScreenView.swift in Sources */,
@@ -1798,7 +1796,6 @@
 				C2C2D38C2EF999D1008AFF00 /* DialogDescriptor.swift in Sources */,
 				C26BF9A42A1581A800598F6E /* WatchConnectivityService.swift in Sources */,
 				70369AAE25DDD0C00094B3D7 /* KeychainSecureStore.swift in Sources */,
-				C2A9A14A2AF2EE24002F0162 /* FileTransferWidgetState.swift in Sources */,
 				597FF5F9258003630030EEC1 /* App+DI.swift in Sources */,
 				59B7082D258154DF00AA831D /* Double+ToHoursMinutesSeconds.swift in Sources */,
 				C2E37BE529003F4600FAD613 /* PlayingUpdater.swift in Sources */,
@@ -1810,7 +1807,6 @@
 				C268CB4929213C21001361B9 /* DefaultFilterService.swift in Sources */,
 				C2DFEEA7290726670032200E /* DefaultAccount.swift in Sources */,
 				C24788C62902DAFD00667F1D /* SocketUpdater.swift in Sources */,
-				C28429FC2915D51A00BC1146 /* DownloadWidget.swift in Sources */,
 				C22880EE2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift in Sources */,
 				C25A02942F03040600BECB5F /* PlayerView.swift in Sources */,
 				C25A05BC2F04123400BECB5F /* ActionButtonStyle.swift in Sources */,
@@ -1826,6 +1822,7 @@
 				C294B12E2914150400A30403 /* MergeMany.swift in Sources */,
 				C270093F2EF95D4D00B54C93 /* ViewModel.swift in Sources */,
 				C237C4D628FCA9BA00D246D7 /* PlayerScreen.swift in Sources */,
+				C2313D332F06FBBE006A1CA9 /* LoadingAggregatedEvent.swift in Sources */,
 				C2C2D3922EF9B06D008AFF00 /* SettingsFooterComponent.swift in Sources */,
 				C237C4C628FC3ED700D246D7 /* ZipMany.swift in Sources */,
 				C290BAD72932A38500F0532A /* CloudKitModifyPublisher.swift in Sources */,
@@ -1848,12 +1845,12 @@
 				C2696A6C2F0149C1001AFB19 /* EpisodeSectionComponent.swift in Sources */,
 				C237C4DE28FD65BC00D246D7 /* AudioPlayer.swift in Sources */,
 				C28429F32915BCA100BC1146 /* AsyncOperation.swift in Sources */,
-				C26DE7E42939551B00CA1A4F /* DownloadWidgetState.swift in Sources */,
 				70EB8A2C25E292FB00783C4F /* Socket.swift in Sources */,
 				C20405AE2913D29800E3EF98 /* FlatMapLatest.swift in Sources */,
 				C25A05B82F04066100BECB5F /* FeedbackEnabledModifier.swift in Sources */,
 				C28429F72915C33C00BC1146 /* DownloadItem.swift in Sources */,
 				C290BADD2932B88300F0532A /* BackgroundTask.swift in Sources */,
+				C23133E42F06D92B006A1CA9 /* LoadingWidget.swift in Sources */,
 				C2F1EB422A38A978001F8B9E /* EpisodeRequestMessage.swift in Sources */,
 				59B707FD258032AA00AA831D /* RealmDatabase.swift in Sources */,
 				C23E80E82EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */,
@@ -1892,6 +1889,7 @@
 				C21F8D34290F05DD00053070 /* XCAssets+Generated.swift in Sources */,
 				C237C4C428FC391A00D246D7 /* LoadingViewModel.swift in Sources */,
 				597FF602258004A50030EEC1 /* LoadingScreen.swift in Sources */,
+				C23133E22F06D918006A1CA9 /* LoadingWidgetViewModel.swift in Sources */,
 				C2C2D3952EF9BBF8008AFF00 /* LoadingView.swift in Sources */,
 				C2C2D3822EF98B91008AFF00 /* Environment+FeedbackEnabled.swift in Sources */,
 				C2C2D3842EF98BA8008AFF00 /* Environment+Loading.swift in Sources */,
@@ -1907,11 +1905,10 @@
 				C21F8D31290F03D600053070 /* Strings+Generated.swift in Sources */,
 				C292315C2F04675C004C71C6 /* PulsingBackgroundModifier.swift in Sources */,
 				C28429F52915BD5200BC1146 /* DownloadOperation.swift in Sources */,
-				C2A9A1472AF2EE19002F0162 /* FileTransferWidgetViewModel.swift in Sources */,
-				C2A9A1442AF2EE08002F0162 /* FileTransferWidget.swift in Sources */,
-				C28429FE2915D52400BC1146 /* DownloadWidgetViewModel.swift in Sources */,
 				C28DA0392913D37200037E4A /* JustVoid.swift in Sources */,
+				C2313D3C2F07079C006A1CA9 /* FileTransferAggregatedProgress+Extensions.swift in Sources */,
 				C294B1262913FDE300A30403 /* NotificationHandler.swift in Sources */,
+				C23133E72F06DBD0006A1CA9 /* LoadingWidgetState.swift in Sources */,
 				C21C5C742A2E2AB200306547 /* LastPlayedDateMessage.swift in Sources */,
 				C2C2D6B62EFAC101008AFF00 /* DownloadsView.swift in Sources */,
 				C26C4FA229298E500015DC94 /* Calendar.Component+Extensions.swift in Sources */,
@@ -1931,6 +1928,7 @@
 				C29231602F0521F0004C71C6 /* Badge.swift in Sources */,
 				C2146F9F29243979004D4E85 /* DefaultAPIClient.swift in Sources */,
 				C23CBD772AF404A20024E0A1 /* EpisodeCommon+Extensions.swift in Sources */,
+				C2313D362F0705B6006A1CA9 /* DownloadingWidgetViewModel.swift in Sources */,
 				C2146FA029243979004D4E85 /* Unwrap.swift in Sources */,
 				C2BBCD4F295862C500546903 /* Promise.swift in Sources */,
 				C2C2D37F2EF98B3D008AFF00 /* AsyncButton.swift in Sources */,
@@ -1943,8 +1941,8 @@
 				C2146FA529243979004D4E85 /* ObjectOwnership.swift in Sources */,
 				C2146FA629243979004D4E85 /* Account.swift in Sources */,
 				C26BF9A92A15824300598F6E /* DefaultWatchConnectivityService.swift in Sources */,
-				C26DE7E52939551B00CA1A4F /* DownloadWidgetState.swift in Sources */,
 				C2146FA929243979004D4E85 /* DefaultApplicationStateHandler.swift in Sources */,
+				C2313D392F0705C7006A1CA9 /* FileTransferWidgetViewModel.swift in Sources */,
 				C290BAD22932844B00F0532A /* RatingHelper.swift in Sources */,
 				C2146FAA29243979004D4E85 /* Delete.swift in Sources */,
 				C27009372EF84E0200B54C93 /* SettingsView.swift in Sources */,
@@ -1957,7 +1955,6 @@
 				C26BF9A52A1581A800598F6E /* WatchConnectivityService.swift in Sources */,
 				C2146FAD29243979004D4E85 /* PlaybackStateSocketData.swift in Sources */,
 				C2C2D38B2EF999D1008AFF00 /* DialogDescriptor.swift in Sources */,
-				C2A9A14B2AF2EE24002F0162 /* FileTransferWidgetState.swift in Sources */,
 				C2146FAE29243979004D4E85 /* DeviceHelper.swift in Sources */,
 				C2146FAF29243979004D4E85 /* KeychainSecureStore.swift in Sources */,
 				C28658F62A45EEDF00974E97 /* DownloadItem+Extensions.swift in Sources */,
@@ -1979,7 +1976,6 @@
 				C25A05BD2F04123400BECB5F /* ActionButtonStyle.swift in Sources */,
 				C2C2D3972EF9CB25008AFF00 /* LoginView.swift in Sources */,
 				C2146FBB29243979004D4E85 /* SocketUpdater.swift in Sources */,
-				C2146FBC29243979004D4E85 /* DownloadWidget.swift in Sources */,
 				C2AC285B2E72BD010038FBFB /* CombineControlTarget.swift in Sources */,
 				C2146FBE29243979004D4E85 /* FilterAttribute+Extensions.swift in Sources */,
 				C2C2D6BA2EFAC209008AFF00 /* DownloadingComponent.swift in Sources */,
@@ -1987,6 +1983,7 @@
 				C2146FC029243979004D4E85 /* MergeMany.swift in Sources */,
 				C2146FC129243979004D4E85 /* PlayerScreen.swift in Sources */,
 				C270093E2EF95D4D00B54C93 /* ViewModel.swift in Sources */,
+				C2313D322F06FBBE006A1CA9 /* LoadingAggregatedEvent.swift in Sources */,
 				C2146FC229243979004D4E85 /* ZipMany.swift in Sources */,
 				C2C2D3912EF9B06D008AFF00 /* SettingsFooterComponent.swift in Sources */,
 				C2146FC329243979004D4E85 /* Data+HexString.swift in Sources */,
@@ -2008,13 +2005,13 @@
 				C2A9A1412AF2DF60002F0162 /* FileTransferAggregatedProgress.swift in Sources */,
 				C2696A6D2F0149C1001AFB19 /* EpisodeSectionComponent.swift in Sources */,
 				C2146FCF29243979004D4E85 /* Combine+Extensions.swift in Sources */,
-				C2A9A1452AF2EE08002F0162 /* FileTransferWidget.swift in Sources */,
 				C23CBD752AF404470024E0A1 /* EpisodeCommon.swift in Sources */,
 				C2F1EB432A38A978001F8B9E /* EpisodeRequestMessage.swift in Sources */,
 				C2146FD029243979004D4E85 /* AudioPlayer.swift in Sources */,
 				C25A05B92F04066100BECB5F /* FeedbackEnabledModifier.swift in Sources */,
 				C2146FD129243979004D4E85 /* AsyncOperation.swift in Sources */,
 				C2146FD329243979004D4E85 /* Socket.swift in Sources */,
+				C23133E52F06D92B006A1CA9 /* LoadingWidget.swift in Sources */,
 				C2F1EB472A38ABDF001F8B9E /* ReplyMessage.swift in Sources */,
 				C23E80E72EF2D8D40093ACA5 /* MockRemotePlayer.swift in Sources */,
 				C290BADE2932B88300F0532A /* BackgroundTask.swift in Sources */,
@@ -2025,7 +2022,6 @@
 				C2146FD629243979004D4E85 /* RealmDatabase.swift in Sources */,
 				C25A029A2F03D18400BECB5F /* ObservationTrackingPublisher.swift in Sources */,
 				C2AC28552E72BCBB0038FBFB /* UIBarButtonItem+Combine.swift in Sources */,
-				C2A9A1482AF2EE19002F0162 /* FileTransferWidgetViewModel.swift in Sources */,
 				C2146FD729243979004D4E85 /* LoginViewModel.swift in Sources */,
 				C23CBD742AF3E04A0024E0A1 /* WCSessionFileTransfer+Extensions.swift in Sources */,
 				C2C2D0622EF9713E008AFF00 /* Async.swift in Sources */,
@@ -2053,6 +2049,7 @@
 				C28658F32A45EDE200974E97 /* DownloadAggregatedEvent+Extensions.swift in Sources */,
 				C26743262932DD5D00B08632 /* CloudKitCloud+SavePreparation.swift in Sources */,
 				C2C2D3812EF98B91008AFF00 /* Environment+FeedbackEnabled.swift in Sources */,
+				C23133E12F06D918006A1CA9 /* LoadingWidgetViewModel.swift in Sources */,
 				C2C2D3942EF9BBF8008AFF00 /* LoadingView.swift in Sources */,
 				C2C2D3852EF98BA8008AFF00 /* Environment+Loading.swift in Sources */,
 				C2146FEA29243979004D4E85 /* XCAssets+Generated.swift in Sources */,
@@ -2070,9 +2067,10 @@
 				C2146FF229243979004D4E85 /* Strings+Generated.swift in Sources */,
 				C2146FF329243979004D4E85 /* DownloadOperation.swift in Sources */,
 				C21D649F2A2D12A000226AFF /* EpisodesService.swift in Sources */,
-				C2146FF429243979004D4E85 /* DownloadWidgetViewModel.swift in Sources */,
 				C2146FF529243979004D4E85 /* JustVoid.swift in Sources */,
+				C2313D3B2F07079C006A1CA9 /* FileTransferAggregatedProgress+Extensions.swift in Sources */,
 				C2146FF629243979004D4E85 /* NotificationHandler.swift in Sources */,
+				C23133E82F06DBD0006A1CA9 /* LoadingWidgetState.swift in Sources */,
 				C26C4FA329298E500015DC94 /* Calendar.Component+Extensions.swift in Sources */,
 				C2C2D6B72EFAC101008AFF00 /* DownloadsView.swift in Sources */,
 				C2146FF729243979004D4E85 /* PlayerViewModel.swift in Sources */,

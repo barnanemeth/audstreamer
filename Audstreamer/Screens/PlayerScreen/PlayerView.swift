@@ -38,6 +38,8 @@ struct PlayerView: ScreenView {
             .listStyle(.insetGrouped)
             .listSectionSpacing(.compact)
             .animation(.default, value: viewModel.sections)
+            .safeAreaInset(edge: .top) { downloadingWidget }
+            .safeAreaInset(edge: .top) { fileTransferWidget }
             .refreshable { await viewModel.refresh() }
             .searchable(text: searchTextBinding, placement: .navigationBarDrawer)
             .searchFocused($isSearchEnabled)
@@ -154,10 +156,20 @@ extension PlayerView {
             isLoading: viewModel.isLoading,
             onTitleTap: { episodeID in
                 withAnimation {
-                    listScrollViewProxy?.scrollTo(episodeID, anchor: .center)
+                    listScrollViewProxy?.scrollTo(episodeID, anchor: .top)
                     viewModel.openedEpisodeID = episodeID
                 }
-            },
+            }
         )
+    }
+
+    private var downloadingWidget: some View {
+        LoadingWidget(viewModel: Resolver.resolve(DownloadingWidgetViewModel.self)) {
+            viewModel.navigateToDownloads()
+        }
+    }
+
+    private var fileTransferWidget: some View {
+        LoadingWidget(viewModel: Resolver.resolve(FileTransferWidgetViewModel.self))
     }
 }
