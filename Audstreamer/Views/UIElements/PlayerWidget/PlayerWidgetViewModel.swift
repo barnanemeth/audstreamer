@@ -37,7 +37,7 @@ final class PlayerWidgetViewModel: ViewModel {
     // MARK: Properties
 
     private(set) var activeRemotePlayingDeviceText: AttributedString?
-    private(set) var title: String?
+    private(set) var episode: Episode?
     private(set) var activeDevicesCount: Int?
     private(set) var isPlaying = false
     private(set) var currentProgress: Float = .zero
@@ -46,6 +46,7 @@ final class PlayerWidgetViewModel: ViewModel {
     private(set) var remainingTimeText = Constant.emptyProgressText
     private(set) var devices = [Device]()
     private(set) var activeDeviceID: String?
+    var title: String? { episode?.title }
     var isSliderHighlighted = false
     var currentSliderValue: Float = .zero
 
@@ -84,7 +85,7 @@ extension PlayerWidgetViewModel {
     func subscribe() async {
         await withTaskGroup { taskGroup in
             taskGroup.addTask { await self.subscribeToRemotePlaying() }
-            taskGroup.addTask { await self.updateCurrentEpisodeTitle() }
+            taskGroup.addTask { await self.updateCurrentEpisode() }
             taskGroup.addTask { await self.updatePlayingState() }
             taskGroup.addTask { await self.subscribeToSlider() }
             taskGroup.addTask { await self.updateProgress() }
@@ -153,10 +154,10 @@ extension PlayerWidgetViewModel {
     }
 
     @MainActor
-    private func updateCurrentEpisodeTitle() async {
+    private func updateCurrentEpisode() async {
         let publisher = currentEpisode.replaceError(with: nil)
         for await episode in publisher.asAsyncStream() {
-            title = episode?.title
+            self.episode = episode
         }
     }
 

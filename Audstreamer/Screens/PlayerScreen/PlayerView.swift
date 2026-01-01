@@ -19,6 +19,7 @@ struct PlayerView: ScreenView {
 
     @FocusState private var isSearchEnabled: Bool
     @State private var isPlayerWidgetVisible = true
+    @State private var listScrollViewProxy: ScrollViewProxy?
     private var searchTextBinding: Binding<String> {
         Binding<String>(
             get: { viewModel.searchKeyword ?? "" },
@@ -29,16 +30,19 @@ struct PlayerView: ScreenView {
     // MARK: UI
 
     var body: some View {
-        List {
-            listContent
+        ScrollViewReader { proxy in
+            List {
+                listContent
+            }
+            .overlay { emptyView }
+            .listStyle(.insetGrouped)
+            .listSectionSpacing(.compact)
+            .animation(.default, value: viewModel.sections)
+            .refreshable { await viewModel.refresh() }
+            .searchable(text: searchTextBinding, placement: .navigationBarDrawer)
+            .searchFocused($isSearchEnabled)
+            .onAppear { listScrollViewProxy = proxy }
         }
-        .overlay { emptyView }
-        .listStyle(.insetGrouped)
-        .listSectionSpacing(.compact)
-        .animation(.default, value: viewModel.sections)
-        .refreshable { await viewModel.refresh() }
-        .searchable(text: searchTextBinding, placement: .navigationBarDrawer)
-        .searchFocused($isSearchEnabled)
         .toolbar { toolbar }
         .navigationTitle(viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
@@ -148,8 +152,12 @@ extension PlayerView {
     private var playerWidget: some View {
         PlayerWidget(
             isLoading: viewModel.isLoading,
-            onTitleTap: {},
-            onRemotePlayTap: {}
+            onTitleTap: { episodeID in
+                withAnimation {
+                    listScrollViewProxy?.scrollTo(episodeID, anchor: .center)
+                    viewModel.openedEpisodeID = episodeID
+                }
+            },
         )
     }
 }

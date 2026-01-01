@@ -156,7 +156,6 @@
 		C22880EF2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22880ED2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift */; };
 		C22880F02AEEF1DE007A7059 /* EpisodeTransferMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22880ED2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift */; };
 		C237C49D28FB1A6400D246D7 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C237C49C28FB1A6400D246D7 /* RealmSwift */; };
-		C237C4A028FB1A9700D246D7 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = C237C49F28FB1A9700D246D7 /* SkeletonView */; };
 		C237C4A328FB1AD400D246D7 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = C237C4A228FB1AD400D246D7 /* SocketIO */; };
 		C237C4A928FB20FA00D246D7 /* Combine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4A828FB20FA00D246D7 /* Combine+Extensions.swift */; };
 		C237C4B028FB47E200D246D7 /* DefaultAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C237C4AF28FB47E200D246D7 /* DefaultAPIClient.swift */; };
@@ -703,7 +702,6 @@
 				C237C49D28FB1A6400D246D7 /* RealmSwift in Frameworks */,
 				C2DADF852917DA72006C5D58 /* Reachability in Frameworks */,
 				C268CB50292176E1001361B9 /* SFSafeSymbols in Frameworks */,
-				C237C4A028FB1A9700D246D7 /* SkeletonView in Frameworks */,
 				C237C4A328FB1AD400D246D7 /* SocketIO in Frameworks */,
 				C2696A5B2F004316001AFB19 /* NukeUI in Frameworks */,
 				C2F53475291FABF30002452B /* OrderedCollections in Frameworks */,
@@ -1471,7 +1469,6 @@
 			name = "Audstreamer-ios";
 			packageProductDependencies = (
 				C237C49C28FB1A6400D246D7 /* RealmSwift */,
-				C237C49F28FB1A9700D246D7 /* SkeletonView */,
 				C237C4A228FB1AD400D246D7 /* SocketIO */,
 				C2DADF6D2917146C006C5D58 /* Lottie */,
 				C2DADF842917DA72006C5D58 /* Reachability */,
@@ -1586,7 +1583,6 @@
 			mainGroup = 597FF5AF257ED2990030EEC1;
 			packageReferences = (
 				C237C49B28FB1A6400D246D7 /* XCRemoteSwiftPackageReference "realm-swift" */,
-				C237C49E28FB1A9700D246D7 /* XCRemoteSwiftPackageReference "SkeletonView" */,
 				C237C4A128FB1AD400D246D7 /* XCRemoteSwiftPackageReference "socket" */,
 				C2DADF6C2917146C006C5D58 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				C2DADF832917DA72006C5D58 /* XCRemoteSwiftPackageReference "Reachability" */,
@@ -2713,14 +2709,6 @@
 				minimumVersion = 20.0.3;
 			};
 		};
-		C237C49E28FB1A9700D246D7 /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Juanpe/SkeletonView";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.11.0;
-			};
-		};
 		C237C4A128FB1AD400D246D7 /* XCRemoteSwiftPackageReference "socket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
@@ -2811,11 +2799,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C237C49B28FB1A6400D246D7 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
-		};
-		C237C49F28FB1A9700D246D7 /* SkeletonView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C237C49E28FB1A9700D246D7 /* XCRemoteSwiftPackageReference "SkeletonView" */;
-			productName = SkeletonView;
 		};
 		C237C4A228FB1AD400D246D7 /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;

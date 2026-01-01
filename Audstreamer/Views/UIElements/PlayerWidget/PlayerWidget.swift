@@ -16,7 +16,7 @@ struct PlayerWidget: View {
     private enum Constant {
         static let padding: CGFloat = 20
         static let remotePlayButtonSize: CGFloat = 24
-        static let expandedPresentationDetent = PresentationDetent.height(208)
+        static let expandedPresentationDetent = PresentationDetent.height(198)
         static let collapsedPresentationDetent = PresentationDetent.height(88)
         static let titleGeometryID = "PlayerWidget.Title"
         static let playPauseButtonGeometryID = "PlayerWidget.PlayPauseButton"
@@ -29,8 +29,7 @@ struct PlayerWidget: View {
     // MARK: Properties
 
     let isLoading: Bool
-    let onTitleTap: () -> Void
-    let onRemotePlayTap: () -> Void
+    let onTitleTap: (Episode.ID) -> Void
 
     // MARK: Private properties
 
@@ -53,7 +52,7 @@ struct PlayerWidget: View {
     // MARK: UI
 
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 8) {
             if isExpanded {
                 expandedContent
             } else {
@@ -67,6 +66,7 @@ struct PlayerWidget: View {
         .task { await viewModel.subscribe() }
         .presentationDetents([Constant.expandedPresentationDetent, Constant.collapsedPresentationDetent], selection: $presentationDetent)
         .presentationBackgroundInteraction(.enabled)
+        .presentationSizing(.fitted)
         .interactiveDismissDisabled(true)
     }
 }
@@ -78,40 +78,14 @@ extension PlayerWidget {
     private var expandedContent: some View {
         remotePlaying
         titleAndRemotePlayButton
-        Spacer()
         controlButtons
         sliderAndTimeTexts
     }
 
     private var collapsedContent: some View {
         HStack {
-            Button {
-                onTitleTap()
-            } label: {
-                Text(titleText)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(Asset.Colors.label.swiftUIColor)
-                    .lineLimit(3)
-                    .padding(.top, 4)
-                    .redacted(reason: isLoading ? .placeholder : [])
-            }
-            .buttonStyle(.plain)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .matchedGeometryEffect(id: Constant.titleGeometryID, in: namespace)
-
-            Button {
-                viewModel.playPlause()
-            } label: {
-                let symbol: SFSymbol = if viewModel.isPlaying {
-                    .pauseCircleFill
-                } else {
-                    .playCircleFill
-                }
-                Image(systemSymbol: symbol)
-                    .font(.system(size: 38))
-                    .contentTransition(.symbolEffect(.replace))
-            }
-            .matchedGeometryEffect(id: Constant.playPauseButtonGeometryID, in: namespace)
+            title
+            playPauseButton
         }
     }
 
@@ -142,17 +116,17 @@ extension PlayerWidget {
 
     private var title: some View {
         Button {
-            onTitleTap()
+            guard let id = viewModel.episode?.id else { return }
+            onTitleTap(id)
         } label: {
             Text(titleText)
-                .font(.headline)
+                .font(.subheadline)
                 .foregroundStyle(Asset.Colors.label.swiftUIColor)
                 .lineLimit(3)
-                .padding(.top, 4)
                 .redacted(reason: isLoading ? .placeholder : [])
         }
         .buttonStyle(.plain)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .matchedGeometryEffect(id: Constant.titleGeometryID, in: namespace)
     }
 
@@ -214,20 +188,8 @@ extension PlayerWidget {
             }
             .frame(maxWidth: .infinity)
 
-            Button {
-                viewModel.playPlause()
-            } label: {
-                let symbol: SFSymbol = if viewModel.isPlaying {
-                    .pauseCircleFill
-                } else {
-                    .playCircleFill
-                }
-                Image(systemSymbol: symbol)
-                    .font(.system(size: 38))
-                    .contentTransition(.symbolEffect(.replace))
-            }
-            .matchedGeometryEffect(id: Constant.playPauseButtonGeometryID, in: namespace)
-            .frame(maxWidth: .infinity)
+            playPauseButton
+                .frame(maxWidth: .infinity)
 
             Button {
                 viewModel.skipForward()
@@ -239,6 +201,22 @@ extension PlayerWidget {
         }
         .foregroundStyle(Asset.Colors.primary.swiftUIColor)
         .opacity(isEnabled ? 1 : 0.5)
+    }
+
+    private var playPauseButton: some View {
+        Button {
+            viewModel.playPlause()
+        } label: {
+            let symbol: SFSymbol = if viewModel.isPlaying {
+                .pauseCircleFill
+            } else {
+                .playCircleFill
+            }
+            Image(systemSymbol: symbol)
+                .font(.system(size: 38))
+                .contentTransition(.symbolEffect(.replace))
+        }
+        .matchedGeometryEffect(id: Constant.playPauseButtonGeometryID, in: namespace)
     }
 
     private var sliderAndTimeTexts: some View {

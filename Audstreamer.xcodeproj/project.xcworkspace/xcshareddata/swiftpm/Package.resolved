@@ -1,5 +1,5 @@
 {
-  "originHash" : "611acaae5486d2beba3274f744fb94ce719b2c21c418968676218715b16fd8d1",
+  "originHash" : "c335529022958461123da2f76bbacd44171d54059393b94993bb314e2c373c1e",
   "pins" : [
     {
       "identity" : "lottie-ios",
@@ -53,15 +53,6 @@
       "state" : {
         "revision" : "e01b3d4f861412f8dcee8d93c417d2c2b0cdfd77",
         "version" : "7.0.0"
-      }
-    },
-    {
-      "identity" : "skeletonview",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Juanpe/SkeletonView",
-      "state" : {
-        "revision" : "cb4d48d603b650808677f2ddb381b05261b94a16",
-        "version" : "1.30.3"
       }
     },
     {
