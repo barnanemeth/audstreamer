@@ -37,15 +37,15 @@ final class DownloadWidget: UIView {
         let config = LottieConfiguration(renderingEngine: option)
         return LottieAnimationView(filePath: path, configuration: config)
     }()
-    private let errorImageView = UIImageView(image: Asset.symbol(.xmarkCircle, scale: .large))
+    private let errorImageView = UIImageView(image: UIImage())
 
     // MARK: Properties
 
     let viewModel = DownloadWidgetViewModel()
-    var tapAction: CocoaAction? {
-        get { tapGestureRecognizer.action }
-        set { tapGestureRecognizer.action = newValue }
-    }
+//    var tapAction: CocoaAction? {
+//        get { tapGestureRecognizer.action }
+//        set { tapGestureRecognizer.action = newValue }
+//    }
 
     // MARK: Private properties
 
@@ -58,7 +58,7 @@ final class DownloadWidget: UIView {
     private var width: CGFloat {
         min(UIScreen.main.bounds.width * 0.8, Constant.fallbackWidth)
     }
-    private let tapGestureRecognizer = TapGestureRecognizer()
+//    private let tapGestureRecognizer = TapGestureRecognizer()
 
     // MARK: Init
 
@@ -132,7 +132,7 @@ extension DownloadWidget {
     }
 
     private func setupTapGestureRecognizer() {
-        addGestureRecognizer(tapGestureRecognizer)
+//        addGestureRecognizer(tapGestureRecognizer)
     }
 
     private func setupProgressIndicatorView() {

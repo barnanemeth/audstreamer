@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Slider: View {
-    
+
     // MARK: Properties
 
     @Binding var value: Float

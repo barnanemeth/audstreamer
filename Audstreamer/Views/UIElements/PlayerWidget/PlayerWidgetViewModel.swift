@@ -49,46 +49,6 @@ final class PlayerWidgetViewModel: ViewModel {
     var isSliderHighlighted = false
     var currentSliderValue: Float = .zero
 
-//    @ObservationIgnored @Published var isSliderHighlighted = false
-//    @ObservationIgnored @Published var currentSliderValue: Float = .zero
-//    @ObservationIgnored lazy var playPauseAction = CocoaAction(PlayerWidgetViewModel.playPlause, in: self)
-//    @ObservationIgnored lazy var skipBackwardAction = CocoaAction(PlayerWidgetViewModel.skipBackward, in: self)
-//    @ObservationIgnored lazy var skipForwardAction = CocoaAction(PlayerWidgetViewModel.skipForward, in: self)
-
-//    @ObservationIgnored var currentProgress: AnyPublisher<Float, Never> {
-//        currentSecondDurationPair
-//            .map { [unowned self] in self.getProgress(from: $0) }
-//            .replaceError(with: .zero)
-//            .eraseToAnyPublisher()
-//    }
-//    @ObservationIgnored var elapsedText: AnyPublisher<String, Never> {
-//        combinedCurrentSecondDurationPair
-//            .map { [unowned self] in self.getProgressTimeText(from: $0, type: .elapsed) }
-//            .replaceError(with: Constant.emptyProgressText)
-//            .removeDuplicates()
-//            .eraseToAnyPublisher()
-//    }
-//    @ObservationIgnored var remainingText: AnyPublisher<String, Never> {
-//        combinedCurrentSecondDurationPair
-//            .map { [unowned self] in self.getProgressTimeText(from: $0, type: .remaining) }
-//            .replaceError(with: Constant.emptyProgressText)
-//            .removeDuplicates()
-//            .eraseToAnyPublisher()
-//    }
-//    @ObservationIgnored var isEnabled: AnyPublisher<Bool, Never> {
-//        audioPlayer.getCurrentPlayingAudioInfo()
-//            .map { $0 != nil }
-//            .flatMap { [unowned self] isCurrentExists -> AnyPublisher<(Bool, Bool), Error> in
-//                let isCurrentExistsPublisher = Just(isCurrentExists).setFailureType(to: Error.self)
-//                let isLoading = self.$isLoading.setFailureType(to: Error.self).first()
-//
-//                return Publishers.Zip(isCurrentExistsPublisher, isLoading).eraseToAnyPublisher()
-//            }
-//            .map { $0 && !$1 }
-//            .replaceError(with: false)
-//            .eraseToAnyPublisher()
-//    }
-
     // MARK: Private properties
 
     @ObservationIgnored private lazy var currentEpisode: AnyPublisher<Episode?, Error> = {

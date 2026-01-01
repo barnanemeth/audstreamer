@@ -67,14 +67,6 @@ extension Navigator {
         topViewController?.present(alertController, animated: true)
     }
 
-    func presentAlert(title: String?, message: String?) {
-        topViewController?.showAlert(title: title, message: message)
-    }
-
-    func presentAlert(for error: Error) {
-        topViewController?.showAlert(for: error)
-    }
-
     func dismiss(animated: Bool = true, completion: (() -> Void)? = nil) {
         topViewController?.dismiss(animated: animated, completion: completion)
     }

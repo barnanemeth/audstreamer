@@ -18,14 +18,6 @@ extension FilterAttribute {
         }
     }
 
-    var image: UIImage? {
-        switch type {
-        case .favorites: return Asset.symbol(.heart)
-        case .downloads: return Asset.symbol(.arrowDownCircle)
-        case .watch: return Asset.symbol(.applewatch)
-        }
-    }
-
     var systemImage: String {
         switch type {
         case .favorites: SFSymbol.heart.rawValue
