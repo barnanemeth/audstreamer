@@ -9,6 +9,11 @@ import UIKit
 import Combine
 import BackgroundTasks
 
+import Common
+import Domain
+import UI
+import UIComponentKit
+
 import NukeExtensions
 
 final class ApplicationLoader: NSObject {
@@ -28,7 +33,7 @@ final class ApplicationLoader: NSObject {
     @LazyInjected private var notificationHandler: NotificationHandler
     @LazyInjected private var cloud: Cloud
     @LazyInjected private var shortcutHandler: ShortcutHandler
-    @LazyInjected private var navigator: Navigator
+    @LazyInjected private var navigator: NavigatorPublic
 
     // MARK: Private properties
 
@@ -40,7 +45,7 @@ final class ApplicationLoader: NSObject {
 
 extension ApplicationLoader {
     func load(with window: UIWindow?) {
-        Resolver.setupDI()
+        Resolver.registerDependencies()
         applicationStateHandler.start()
         setupWindow(window)
         setupBackgroundRefresh()
@@ -68,9 +73,6 @@ extension ApplicationLoader {
 extension ApplicationLoader {
     private func setupWindow(_ window: UIWindow?) {
         navigator.setup(with: window)
-
-        let loadingScreen: LoadingScreen = Resolver.resolve()
-        navigator.start(with: loadingScreen)
     }
 
     private func setupBackgroundRefresh() {

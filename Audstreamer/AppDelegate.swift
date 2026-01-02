@@ -9,8 +9,11 @@ import Foundation
 import UIKit
 import Combine
 
+import Common
+import Domain
+
 @main
-class AppDelegate: UIResponder {
+final class AppDelegate: UIResponder {
 
     // MARK: Dependencies
 
