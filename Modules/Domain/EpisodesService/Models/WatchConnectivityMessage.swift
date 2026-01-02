@@ -7,13 +7,13 @@
 
 import Foundation
 
-enum WatchConnectivityMessageKey: String, CaseIterable {
+public enum WatchConnectivityMessageKey: String, CaseIterable {
     case lastPlayedDate
     case lastPosition
     case episodeRequest
     case reply
 
-    var modelType: WatchConnectivityMessage.Type {
+    public var modelType: WatchConnectivityMessage.Type {
         switch self {
         case .lastPlayedDate: return LastPlayedDateMessage.self
         case .lastPosition: return LastPositionMessage.self
@@ -23,17 +23,17 @@ enum WatchConnectivityMessageKey: String, CaseIterable {
     }
 }
 
-protocol WatchConnectivityMessage {
+public protocol WatchConnectivityMessage {
     static var messageKey: String { get }
     var asUserInfo: [String: Any] { get }
     init?(from userInfo: [String: Any])
 }
 
-protocol WatchConnectivityEpisodeBasedMessage: WatchConnectivityMessage {
+public protocol WatchConnectivityEpisodeBasedMessage: WatchConnectivityMessage {
     static var episodeIDKey: String { get }
     var episodeID: String { get }
 }
 
 extension WatchConnectivityEpisodeBasedMessage {
-    static var episodeIDKey: String { "episodeID" }
+    public static var episodeIDKey: String { "episodeID" }
 }

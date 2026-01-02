@@ -65,3 +65,6 @@
 "playNewestEpisode" = "Legújabb lejátszása";
 "transferring" = "Fájlok küldése";
 "signInWithApple" = "Bejelentkezés az Apple-lel";
+"noEpisodes" = "Nem található epizód";
+"transferring" = "Átvitel...";
+"transferred" = "Kész";

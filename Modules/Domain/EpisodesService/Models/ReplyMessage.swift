@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ReplyMessage: WatchConnectivityMessage {
+public struct ReplyMessage: WatchConnectivityMessage {
 
     // MARK: Enums
 
@@ -17,18 +17,18 @@ struct ReplyMessage: WatchConnectivityMessage {
         static let statusKey = "status"
     }
 
-    enum Status: String {
+    public enum Status: String {
         case success
         case failed
     }
 
     // MARK: Properties
 
-    static var messageKey: String { WatchConnectivityMessageKey.reply.rawValue }
+    public static var messageKey: String { WatchConnectivityMessageKey.reply.rawValue }
 
-    let status: Status
+    public let status: Status
 
-    var asUserInfo: [String: Any] {
+    public var asUserInfo: [String: Any] {
         [
             Self.messageKey: [
                 Self.Constant.statusKey: status.rawValue
@@ -36,14 +36,14 @@ struct ReplyMessage: WatchConnectivityMessage {
         ]
     }
 
-    init?(from userInfo: [String: Any]) {
+    public init?(from userInfo: [String: Any]) {
         guard let messageDictionary = userInfo[Self.messageKey] as? [String: Any],
               let statusString = messageDictionary[Constant.statusKey] as? String,
               let status = Status(rawValue: statusString) else { return nil }
         self.status = status
     }
 
-    init(status: Status) {
+    public init(status: Status) {
         self.status = status
     }
 }

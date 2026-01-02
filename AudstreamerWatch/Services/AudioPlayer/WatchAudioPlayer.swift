@@ -1,8 +1,8 @@
 //
-//  DefaultAudioPlayer.swift
-//  Audstreamer
+//  WatchAudioPlayer.swift
+//  AudstreamerWatch
 //
-//  Created by Barna Nemeth on 2022. 10. 17..
+//  Created by Barna Nemeth on 2026. 01. 02..
 //
 
 import Foundation
@@ -12,7 +12,7 @@ import AVFoundation
 import Common
 import Domain
 
-final class DefaultAudioPlayer {
+final class WatchAudioPlayer {
 
     // MARK: Constants
 
@@ -56,7 +56,7 @@ final class DefaultAudioPlayer {
 
 // MARK: - AudioPlayer
 
-extension DefaultAudioPlayer: AudioPlayer {
+extension WatchAudioPlayer: AudioPlayer {
     func isMuted() -> AnyPublisher<Bool, Error> {
         audioPlayer.publisher(for: \.isMuted)
             .setFailureType(to: Error.self)
@@ -148,10 +148,10 @@ extension DefaultAudioPlayer: AudioPlayer {
 
 // MARK: - Helpers
 
-extension DefaultAudioPlayer {
+extension WatchAudioPlayer {
     private func initAudioSession() {
         do {
-            try audioSession.setCategory(.playback)
+            try audioSession.setCategory(.playback, mode: .default, policy: .longFormAudio)
         } catch {
             preconditionFailure("Cannot initialize AVAudioSession: \(error)")
         }
@@ -183,7 +183,6 @@ extension DefaultAudioPlayer {
         let asset = AVURLAsset(url: item.url)
         let audioIdentifier = item.id
         let audioPreferredStartTime = item.preferredStartTime
-        asset.resourceLoader.setDelegate(nil, queue: Constant.loadQueue)
         asset.loadValuesAsynchronously(forKeys: [Constant.durationResourceKey]) { [unowned self] in
             do {
                 try self.checkAssetLoadState(for: asset)
@@ -203,12 +202,15 @@ extension DefaultAudioPlayer {
 
     private func activateSessionIfNeeded() -> AnyPublisher<Void, Error> {
         Promise<Void, Error> { [unowned self] promise in
-            do {
-                try self.audioSession.setActive(true)
+            self.audioSession.activate(options: [], completionHandler: { success, error in
+                if let error {
+                    return promise(.failure(error))
+                }
+                if !success {
+                    return promise(.failure(AudioPlayeError.cannotActivate))
+                }
                 promise(.success(()))
-            } catch {
-                promise(.failure(error))
-            }
+            })
         }
         .eraseToAnyPublisher()
     }

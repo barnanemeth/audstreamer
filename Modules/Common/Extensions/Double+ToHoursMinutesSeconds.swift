@@ -16,7 +16,7 @@ extension Double {
 // MARK: - Public methods
 
 extension Double {
-    var secondsToHoursMinutesSecondsString: String {
+    public var secondsToHoursMinutesSecondsString: String {
         let time = secondsToHoursMinutesSeconds
         let hoursString = time.hours.description.count == 2 ? time.hours.description : "0\(time.hours.description)"
         let minutesString = time.minutes.description.count == 2 ?

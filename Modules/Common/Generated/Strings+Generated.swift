@@ -113,6 +113,8 @@ public enum L10n {
   public static let newEpisodes = L10n.tr("Localizable", "newEpisodes", fallback: "New episodes")
   /// New episodes available
   public static let newEpisodesAreAvailable = L10n.tr("Localizable", "newEpisodesAreAvailable", fallback: "New episodes available")
+  /// No episodes
+  public static let noEpisodes = L10n.tr("Localizable", "noEpisodes", fallback: "No episodes")
   /// No results
   public static let noResults = L10n.tr("Localizable", "noResults", fallback: "No results")
   /// Localizable.strings
@@ -147,8 +149,10 @@ public enum L10n {
   public static let socket = L10n.tr("Localizable", "socket", fallback: "Socket")
   /// Storage
   public static let storage = L10n.tr("Localizable", "storage", fallback: "Storage")
-  /// Transferring
-  public static let transferring = L10n.tr("Localizable", "transferring", fallback: "Transferring")
+  /// Transferred
+  public static let transferred = L10n.tr("Localizable", "transferred", fallback: "Transferred")
+  /// Transferring...
+  public static let transferring = L10n.tr("Localizable", "transferring", fallback: "Transferring...")
   /// Plural format key: "Transferring %#@format@ (%d%%)"
   public static func transferringEpisodesCountPercentage(_ p1: Int, _ p2: Int) -> String {
     return L10n.tr("Localizable", "transferringEpisodesCountPercentage", p1, p2, fallback: "Plural format key: \"Transferring %#@format@ (%d%%)\"")

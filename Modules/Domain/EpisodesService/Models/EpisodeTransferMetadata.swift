@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct EpisodeTransferMetadata: WatchConnectivityEpisodeBasedMessage {
+public struct EpisodeTransferMetadata: WatchConnectivityEpisodeBasedMessage {
 
     // MARK: Properties
 
-    let episodeID: String
+    public let episodeID: String
 
-    static var messageKey: String {
+    public static var messageKey: String {
         "EpisodeMetadata"
     }
-    var asUserInfo: [String: Any] {
+    public var asUserInfo: [String: Any] {
         [
             Self.messageKey: [
                 Self.episodeIDKey: episodeID
@@ -26,11 +26,11 @@ struct EpisodeTransferMetadata: WatchConnectivityEpisodeBasedMessage {
 
     // MARK: Init
 
-    init(episodeID: String) {
+    public init(episodeID: String) {
         self.episodeID = episodeID
     }
 
-    init?(from userInfo: [String: Any]) {
+    public init?(from userInfo: [String: Any]) {
         guard let messageDictionary = userInfo[Self.messageKey] as? [String: Any],
               let episodeID = messageDictionary[Self.episodeIDKey] as? String else { return nil }
         self.episodeID = episodeID

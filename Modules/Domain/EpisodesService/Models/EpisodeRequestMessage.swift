@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct EpisodeRequestMessage: WatchConnectivityEpisodeBasedMessage {
+public struct EpisodeRequestMessage: WatchConnectivityEpisodeBasedMessage {
 
     // MARK: Properties
 
-    static var messageKey: String { WatchConnectivityMessageKey.episodeRequest.rawValue }
+    public static var messageKey: String { WatchConnectivityMessageKey.episodeRequest.rawValue }
 
-    let episodeID: String
+    public let episodeID: String
 
-    var asUserInfo: [String: Any] {
+    public var asUserInfo: [String: Any] {
         [
             Self.messageKey: [
                 Self.episodeIDKey: episodeID
@@ -25,13 +25,13 @@ struct EpisodeRequestMessage: WatchConnectivityEpisodeBasedMessage {
 
     // MARK: Init
 
-    init?(from userInfo: [String: Any]) {
+    public init?(from userInfo: [String: Any]) {
         guard let messageDictionary = userInfo[Self.messageKey] as? [String: Any],
               let episodeID = messageDictionary[Self.episodeIDKey] as? String else { return nil }
         self.episodeID = episodeID
     }
 
-    init(episodeID: String) {
+    public init(episodeID: String) {
         self.episodeID = episodeID
     }
 }

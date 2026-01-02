@@ -13,15 +13,14 @@ struct AudstreamerWatchApp: App {
 
     // MARK: Private properties
 
-//    @WKApplicationDelegateAdaptor var appDelegate: WatchAppDelegate
+    @WKApplicationDelegateAdaptor var appDelegate: WatchAppDelegate
 
     // MARK: UI
 
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-//                EpisodesView()
-                Text("watch")
+                EpisodesView()
             }
         }
     }

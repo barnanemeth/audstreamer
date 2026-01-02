@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LastPositionMessage: WatchConnectivityEpisodeBasedMessage {
+public struct LastPositionMessage: WatchConnectivityEpisodeBasedMessage {
 
     // MARK: Constants
 
@@ -17,12 +17,12 @@ struct LastPositionMessage: WatchConnectivityEpisodeBasedMessage {
 
     // MARK: Properties
 
-    static var messageKey: String { WatchConnectivityMessageKey.lastPosition.rawValue }
+    public static var messageKey: String { WatchConnectivityMessageKey.lastPosition.rawValue }
 
-    let episodeID: String
-    let position: Int
+    public let episodeID: String
+    public let position: Int
 
-    var asUserInfo: [String: Any] {
+    public var asUserInfo: [String: Any] {
         [
             Self.messageKey: [
                 Self.episodeIDKey: episodeID,
@@ -33,7 +33,7 @@ struct LastPositionMessage: WatchConnectivityEpisodeBasedMessage {
 
     // MARK: Init
 
-    init?(from userInfo: [String: Any]) {
+    public init?(from userInfo: [String: Any]) {
         guard let messageDictionary = userInfo[Self.messageKey] as? [String: Any],
               let episodeID = messageDictionary[Self.episodeIDKey] as? String,
               let position = messageDictionary[Constant.positionKey] as? Int else { return nil }
@@ -41,7 +41,7 @@ struct LastPositionMessage: WatchConnectivityEpisodeBasedMessage {
         self.position = position
     }
 
-    init(episodeID: String, position: Int) {
+    public init(episodeID: String, position: Int) {
         self.episodeID = episodeID
         self.position = position
     }

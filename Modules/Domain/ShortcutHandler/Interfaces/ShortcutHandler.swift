@@ -11,5 +11,7 @@ import Combine
 public protocol ShortcutHandler {
     func setupItems()
     func getEpisodeID() -> AnyPublisher<String?, Error>
+    #if !os(watchOS)
     func handleShortcutItemAction(_ shortcutItem: UIApplicationShortcutItem, completion: @escaping ((Bool) -> Void))
+    #endif
 }

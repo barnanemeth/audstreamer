@@ -11,5 +11,7 @@ import Combine
 public protocol ApplicationStateHandler {
     func start()
     func stop()
+    #if !os(watchOS)
     func getState() -> AnyPublisher<UIApplication.State, Error>
+    #endif
 }

@@ -66,3 +66,6 @@
 "onWatch" = "On Watch";
 "transferring" = "Transferring";
 "signInWithApple" = "Sign in with Apple";
+"noEpisodes" = "No episodes";
+"transferring" = "Transferring...";
+"transferred" = "Transferred";

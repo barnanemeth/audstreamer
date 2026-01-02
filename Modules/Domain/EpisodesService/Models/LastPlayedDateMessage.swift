@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LastPlayedDateMessage: WatchConnectivityEpisodeBasedMessage {
+public struct LastPlayedDateMessage: WatchConnectivityEpisodeBasedMessage {
 
     // MARK: Constants
 
@@ -17,12 +17,12 @@ struct LastPlayedDateMessage: WatchConnectivityEpisodeBasedMessage {
 
     // MARK: Properties
 
-    static var messageKey: String { WatchConnectivityMessageKey.lastPlayedDate.rawValue }
+    public static var messageKey: String { WatchConnectivityMessageKey.lastPlayedDate.rawValue }
 
-    let episodeID: String
-    let date: Date
+    public let episodeID: String
+    public let date: Date
 
-    var asUserInfo: [String: Any] {
+    public var asUserInfo: [String: Any] {
         [
             Self.messageKey: [
                 Self.episodeIDKey: episodeID,
@@ -33,7 +33,7 @@ struct LastPlayedDateMessage: WatchConnectivityEpisodeBasedMessage {
 
     // MARK: Init
 
-    init?(from userInfo: [String: Any]) {
+    public init?(from userInfo: [String: Any]) {
         guard let messageDictionary = userInfo[Self.messageKey] as? [String: Any],
               let episodeID = messageDictionary[Self.episodeIDKey] as? String,
               let date = messageDictionary[Constant.dateKey] as? Date else { return nil }
@@ -41,7 +41,7 @@ struct LastPlayedDateMessage: WatchConnectivityEpisodeBasedMessage {
         self.date = date
     }
 
-    init(episodeID: String, date: Date) {
+    public init(episodeID: String, date: Date) {
         self.episodeID = episodeID
         self.date = date
     }
