@@ -210,6 +210,7 @@ extension PlayerViewModel {
 
     @MainActor
     func navigateToDownloads() {
+        isPlayerWidgetVisible = false
         navigator.navigate(to: .downloads, method: .push)
     }
 }

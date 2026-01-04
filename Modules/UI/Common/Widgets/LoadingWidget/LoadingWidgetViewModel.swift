@@ -18,6 +18,7 @@ class LoadingWidgetViewModel: ViewModel {
     // MARK: Private properties
 
     @ObservationIgnored private let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
+    @ObservationIgnored private var subscriptionTask: Task<Void, Never>?
 
     // MARK: Overridable properties
 
@@ -39,6 +40,18 @@ class LoadingWidgetViewModel: ViewModel {
     private(set) var state: LoadingWidgetState = .indeterminate
     private(set) var title: String?
     private(set) var subtitle: String?
+
+    // MARK: Init
+
+    init() {
+        subscriptionTask = Task { [weak self] in
+            await self?.subscribe()
+        }
+    }
+
+    deinit {
+        subscriptionTask?.cancel()
+    }
 
     // MARK: - Overridable
 

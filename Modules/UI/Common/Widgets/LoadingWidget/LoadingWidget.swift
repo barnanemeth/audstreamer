@@ -62,7 +62,6 @@ struct LoadingWidget: View {
             }
         }
         .animation(Constant.animation, value: viewModel.isVisible)
-        .task { await viewModel.subscribe() }
     }
 }
 
