@@ -58,7 +58,10 @@ extension AppleIDAuthorization: Authorization {
 
 extension AppleIDAuthorization: ASAuthorizationControllerPresentationContextProviding {
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        Resolver.resolve() as UIWindow
+        guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else {
+            return ASPresentationAnchor()
+        }
+        return window
     }
 }
 

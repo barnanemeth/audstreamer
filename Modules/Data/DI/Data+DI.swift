@@ -14,7 +14,6 @@ internal import Reachability
 
 extension Resolver {
     public static func registerDataServices() {
-        registerKeyWindow()
         registerApplicationStateHandler()
         registerNetworking()
         registerDatabase()
@@ -38,11 +37,6 @@ extension Resolver {
 }
 
 extension Resolver {
-    private static func registerKeyWindow() {
-        register { UIApplication.shared.windows.first { $0.isKeyWindow } }
-            .scope(.unique)
-    }
-
     private static func registerApplicationStateHandler() {
         register { DefaultApplicationStateHandler() }
             .implements(ApplicationStateHandler.self)
