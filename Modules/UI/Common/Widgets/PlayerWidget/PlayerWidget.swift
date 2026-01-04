@@ -237,7 +237,7 @@ extension PlayerWidget {
             get: { viewModel.isSliderHighlighted ? viewModel.currentSliderValue : viewModel.currentProgress },
             set: { viewModel.currentSliderValue = $0 }
         )
-        Slider(value: binding) { isHighlighted in
+        UIComponentKit.Slider(value: binding) { isHighlighted in
             viewModel.isSliderHighlighted = isHighlighted
         }
         .tint(Asset.Colors.primary.swiftUIColor)

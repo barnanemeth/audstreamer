@@ -7,20 +7,25 @@
 
 import SwiftUI
 
-struct Slider: View {
-
-    // MARK: Properties
-
-    @Binding var value: Float
-    let onHighlightChanged: (Bool) -> Void
+public struct Slider: View {
 
     // MARK: Private properties
 
+    @Binding private var value: Float
+    private let onHighlightChanged: (Bool) -> Void
     @State private var isHighlighted = false
+
+    // MARK: Init
+
+    public init(value: Binding<Float>, onHighlightChanged: @escaping (Bool) -> Void) {
+        self._value = value
+        self.onHighlightChanged = onHighlightChanged
+        self.isHighlighted = isHighlighted
+    }
 
     // MARK: UI
 
-    var body: some View {
+    public var body: some View {
         SwiftUI.Slider(value: $value, in: 0...1)
             .simultaneousGesture(
                 DragGesture(minimumDistance: .zero)
