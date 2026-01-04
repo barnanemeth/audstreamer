@@ -9,6 +9,8 @@ import Foundation
 import Combine
 import WatchConnectivity
 
+import Domain
+
 final class WatchEpisodeService: NSObject {
 
     // MARK: Constants

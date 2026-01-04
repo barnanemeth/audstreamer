@@ -1,0 +1,71 @@
+/* 
+  Localizable.strings
+  Audstreamer
+
+  Created by Németh Barna on 2020. 12. 08..
+  
+*/
+
+"ok" = "OK";
+"error" = "Error";
+"badResponseFormat" = "Bad response format";
+"unacceptableStatus" = "Unacceptable HTTP status (%d)";
+"badAPIStatus" = "Bad API status";
+"duration" = "Duration\n%@";
+"publishDate" = "Publish date\n%@";
+"delete" = "Delete";
+"download" = "Download";
+"devices" = "Devices";
+"cancel" = "Cancel";
+"logout" = "Sign out";
+"logoutConfirm" = "Are you sure to want to log out?";
+"retry" = "Retry";
+"continue" = "Continue";
+"newEpisode" = "New episode";
+"newEpisodes" = "New episodes";
+"newEpisodesAreAvailable" = "New episodes available";
+"play" = "Play";
+"download" = "Download";
+"favorite" = "Favorite";
+"share" = "Share";
+"loading" = "Loading";
+"logIn" = "Sign in";
+"logInInfo" = "If you signed in, you are able to use real-time handoff service.";
+"mainTitle" = "Audstreamer";
+"appleIDRequired" =  "Sign in to your Apple ID if you want to use cross-device synchronization";
+"downloading" = "Downloading";
+"listeningOn" = "Listening on **%@**";
+"downloadCellularWarningMessage" = "Using data over a cellular network may occur additional fees.";
+"laterOnWifi" = "Later on Wi-Fi";
+"favorites" = "Favorites";
+"downloads" = "Downloads";
+"settings" = "Settings";
+"account" = "Account";
+"socket" = "Socket";
+"connected" = "Connected";
+"pending" = "Pending";
+"disconnected" = "Disconnected";
+"connect" = "Connect";
+"disconnect" = "Disconnect";
+"storage" = "Storage";
+"downloadsSize" = "Downloads: **%@**";
+"deleteDownloads" = "Delete downloads";
+"deleteDownloadsConfirm" = "Are you sure to delete downloaded episodes?";
+"version" = "Version %@ (%@)";
+"copyright" = "© %@ %@";
+"authorName" = "Barna Nemeth";
+"noResults" = "No results";
+"allDownloadsCompleted" = "All downloads are completed";
+"downloadQueued" = "Queued";
+"downloadInProgress" = "In progress";
+"downloadFinished" = "Finished";
+"downloadError" = "Error: %@";
+"downloadPaused" = "Paused";
+"playLastPlayedEpisode" = "Play last played episode";
+"playNewestEpisode" = "Play newest episode";
+"onWatch" = "On Watch";
+"transferring" = "Transferring";
+"signInWithApple" = "Sign in with Apple";
+"noEpisodes" = "No episodes";
+"transferring" = "Transferring...";
+"transferred" = "Transferred";

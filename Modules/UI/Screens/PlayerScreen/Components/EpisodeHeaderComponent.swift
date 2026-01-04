@@ -1,0 +1,113 @@
+//
+//  EpisodeHeaderComponent.swift
+//  Audstreamer
+//
+//  Created by Barna Nemeth on 2025. 12. 28..
+//
+
+import SwiftUI
+
+import Domain
+import UIComponentKit
+
+internal import NukeUI
+internal import SFSafeSymbols
+
+struct EpisodeHeaderComponent: View {
+
+    // MARK: Constants
+
+    private enum Constant {
+        static let thumbnailAspectRatio: CGFloat = 16 / 9
+        static let thumbnailSize = CGSize(width: 106, height: 60)
+        static let playedThresholdSeconds = 10
+    }
+
+    // MARK: Properties
+
+    let episode: Episode
+
+    // MARK: Private properties
+
+    @Namespace private var namespace
+    private var isIndicatorsVisible: Bool {
+        episode.isFavourite || episode.isDownloaded || episode.isOnWatch
+    }
+    private var playingProgress: Float? {
+        guard let lastPosition = episode.lastPosition, lastPosition >= Constant.playedThresholdSeconds else { return nil }
+        return Float(lastPosition) / Float(episode.duration)
+    }
+
+    // MARK: UI
+
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(alignment: .top, spacing: 8) {
+                thumbnail
+
+                Text(episode.title)
+                    .font(.caption)
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                indicators
+            }
+
+            playingProgressIndicator
+        }
+        .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+// MARK: - Helpers
+
+extension EpisodeHeaderComponent {
+    private var thumbnail: some View {
+        ZStack {
+            Color.clear
+            LazyImage(url: episode.thumbnail) { state in
+                if state.isLoading {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                } else if let image = state.image {
+                    image
+                        .resizable()
+                }
+            }
+        }
+        .frame(width: Constant.thumbnailSize.width, height: Constant.thumbnailSize.height)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+
+    @ViewBuilder
+    private var indicators: some View {
+        if isIndicatorsVisible {
+            VStack {
+                HStack(spacing: 8) {
+                    if episode.isFavourite {
+                        Image(systemSymbol: .heartFill)
+                    }
+                    if episode.isDownloaded {
+                        Image(systemSymbol: .arrowDownCircleFill)
+                    }
+                    if episode.isOnWatch {
+                        Image(systemSymbol: .applewatch)
+                    }
+                }
+                .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+
+                Spacer()
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var playingProgressIndicator: some View {
+        if let playingProgress {
+            ProgressView(value: playingProgress)
+                .progressViewStyle(.linear)
+                .tint(Asset.Colors.primary.swiftUIColor)
+        }
+    }
+}

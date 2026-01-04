@@ -9,6 +9,9 @@ import Foundation
 import Combine
 import AVFoundation
 
+import Common
+import Domain
+
 final class EpisodesViewModel: ObservableObject {
 
     // MARK: Dependencies

@@ -8,6 +8,10 @@
 import SwiftUI
 import WatchKit
 
+import Domain
+
+import SFSafeSymbols
+
 struct PlayingView: View {
 
     // MARK: Private properties
@@ -69,24 +73,24 @@ extension PlayingView {
             Button {
                 viewModel.seekBackward()
             } label: {
-                Image(systemName: "backward.circle.fill")
+                Image(systemSymbol: ._10ArrowTriangleheadCounterclockwise)
             }
 
             Button {
                 viewModel.playPause()
             } label: {
-                let systemImage = if viewModel.isPlaying {
-                    "pause.circle.fill"
+                let symbol: SFSymbol = if viewModel.isPlaying {
+                    .pauseCircleFill
                 } else {
-                    "play.circle.fill"
+                    .playCircleFill
                 }
-                Image(systemName: systemImage)
+                Image(systemSymbol: symbol)
             }
 
             Button {
                 viewModel.seekForward()
             } label: {
-                Image(systemName: "forward.circle.fill")
+                Image(systemSymbol: ._10ArrowTriangleheadClockwise)
             }
         }
         .font(.title)

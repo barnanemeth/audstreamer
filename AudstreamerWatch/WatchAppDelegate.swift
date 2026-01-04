@@ -8,6 +8,9 @@
 import WatchKit
 import Combine
 
+import Common
+import Domain
+
 final class WatchAppDelegate: NSObject {
 
     // MARK: Dependencies
@@ -46,7 +49,7 @@ extension WatchAppDelegate {
             .implements(DownloadService.self)
             .scope(.cached)
 
-        Resolver.register { DefaultAudioPlayer() }
+        Resolver.register { WatchAudioPlayer() }
             .implements(AudioPlayer.self)
             .scope(.cached)
 

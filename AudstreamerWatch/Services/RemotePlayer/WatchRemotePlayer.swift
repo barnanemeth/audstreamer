@@ -9,6 +9,8 @@ import Foundation
 import Combine
 import MediaPlayer
 
+import Domain
+
 final class WatchRemotePlayer {
 
     // MARK: Typealiases

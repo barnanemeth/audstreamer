@@ -8,9 +8,13 @@
 import Foundation
 import UIKit
 import Combine
+import SwiftUI
 
-@main
-class AppDelegate: UIResponder {
+import Common
+import Domain
+import UI
+
+final class AppDelegate: UIResponder {
 
     // MARK: Dependencies
 
@@ -31,7 +35,7 @@ class AppDelegate: UIResponder {
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        applicationLoader.load(with: window)
+        applicationLoader.load()
         return true
     }
 

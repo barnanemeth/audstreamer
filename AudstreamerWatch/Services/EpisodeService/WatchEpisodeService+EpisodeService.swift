@@ -8,6 +8,9 @@
 import Foundation
 import Combine
 
+import Common
+import Domain
+
 // MARK: - EpisodesService
 
 extension WatchEpisodeService: EpisodeService {

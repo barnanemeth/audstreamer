@@ -8,6 +8,8 @@
 import Foundation
 import WatchConnectivity
 
+import Domain
+
 // MARK: - WCSessionDelegate methods
 
 extension WatchEpisodeService: WCSessionDelegate {

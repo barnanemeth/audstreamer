@@ -8,6 +8,8 @@
 import Foundation
 import Combine
 
+import Domain
+
 struct MockWatchEpisodeService { }
 
 // MARK: - EpisodeService

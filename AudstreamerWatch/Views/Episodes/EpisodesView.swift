@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+import Common
+
+import SFSafeSymbols
+
 struct EpisodesView: View {
 
     // MARK: Private properties
@@ -38,7 +42,7 @@ extension EpisodesView {
     private var emptyOverlay: some View {
         if viewModel.episodes.isEmpty {
             VStack(spacing: 16) {
-                Image(systemName: "square.stack")
+                Image(systemSymbol: .exclamationmarkCircle)
                     .font(.largeTitle)
                 
                 Text(L10n.noEpisodes)

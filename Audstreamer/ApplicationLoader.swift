@@ -9,7 +9,12 @@ import UIKit
 import Combine
 import BackgroundTasks
 
-import Nuke
+import Common
+import Domain
+import UI
+import UIComponentKit
+
+import NukeExtensions
 
 final class ApplicationLoader: NSObject {
 
@@ -38,10 +43,10 @@ final class ApplicationLoader: NSObject {
 // MARK: - Public methods
 
 extension ApplicationLoader {
-    func load(with window: UIWindow?) {
-        Resolver.setupDI()
+    @MainActor
+    func load() {
+        Resolver.registerDependencies()
         applicationStateHandler.start()
-        setupWindow(window)
         setupBackgroundRefresh()
         notificationHandler.setupNotifications()
         setupImageLoading()
@@ -65,13 +70,6 @@ extension ApplicationLoader {
 // MARK: - Helpers
 
 extension ApplicationLoader {
-    private func setupWindow(_ window: UIWindow?) {
-        let loadingViewController: LoadingScreen = Resolver.resolve()
-        window?.rootViewController = loadingViewController
-        window?.tintColor = Asset.Colors.primary.color
-        window?.makeKeyAndVisible()
-    }
-
     private func setupBackgroundRefresh() {
         let identifier = Constant.backgroundTaskIdentifier
         let refreshTaskRequest = BGAppRefreshTaskRequest(identifier: identifier)
@@ -103,15 +101,29 @@ extension ApplicationLoader {
     }
 
     private func setupImageLoading() {
-        let contentModes = ImageLoadingOptions.ContentModes(
-            success: .scaleAspectFill,
-            failure: .scaleAspectFill,
-            placeholder: .scaleAspectFill
-        )
-        ImageLoadingOptions.shared.contentModes = contentModes
-        ImageLoadingOptions.shared.placeholder = Asset.Images.logoLarge.image
-        ImageLoadingOptions.shared.failureImage = Asset.Images.logoLarge.image
-        ImageLoadingOptions.shared.transition = .fadeIn(duration: 0.3)
+        Task { @MainActor in
+            let contentModes = ImageLoadingOptions.ContentModes(
+                success: .scaleAspectFill,
+                failure: .scaleAspectFill,
+                placeholder: .scaleAspectFill
+            )
+            ImageLoadingOptions.shared.contentModes = contentModes
+            ImageLoadingOptions.shared.placeholder = Asset.Images.logoLarge.image
+            ImageLoadingOptions.shared.failureImage = Asset.Images.logoLarge.image
+            ImageLoadingOptions.shared.transition = .fadeIn(duration: 0.3)
+
+            var options = ImageLoadingOptions()
+
+            options.contentModes = .init(
+                success: .scaleAspectFill,
+                failure: .scaleAspectFill,
+                placeholder: .scaleAspectFill
+            )
+
+            options.placeholder = Asset.Images.logoLarge.image
+            options.failureImage = Asset.Images.logoLarge.image
+            options.transition = .fadeIn(duration: 0.3)
+        }
     }
 
     private func resetBadge() {

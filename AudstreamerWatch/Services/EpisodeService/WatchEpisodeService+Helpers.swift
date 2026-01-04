@@ -8,6 +8,8 @@
 import Foundation
 import Combine
 
+import Domain
+
 // MARK: - Helpers
 
 extension WatchEpisodeService {
