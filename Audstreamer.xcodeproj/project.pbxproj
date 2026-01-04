@@ -16,7 +16,6 @@
 		C21C5C802A2E83DC00306547 /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C5C7F2A2E83DC00306547 /* Updater.swift */; };
 		C21D64A42A2D137E00226AFF /* WatchRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21D64A32A2D137E00226AFF /* WatchRemotePlayer.swift */; };
 		C2313E102F08096A006A1CA9 /* UIComponentKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313E0A2F08096A006A1CA9 /* UIComponentKit.framework */; };
-		C2313E112F08096A006A1CA9 /* UIComponentKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313E0A2F08096A006A1CA9 /* UIComponentKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C231414B2F081C07006A1CA9 /* Resolver+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C231414A2F081C07006A1CA9 /* Resolver+Extensions.swift */; };
 		C231415A2F081DBD006A1CA9 /* WatchEpisodeService+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D7EA292A39B31B00D51F40 /* WatchEpisodeService+Helpers.swift */; };
 		C231415F2F081E2F006A1CA9 /* Environment+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3832EF98BA8008AFF00 /* Environment+Loading.swift */; };
@@ -170,13 +169,9 @@
 		C231420F2F081FF5006A1CA9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 59B7084325826E6A00AA831D /* Localizable.strings */; };
 		C23142102F081FF5006A1CA9 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = C20987AC293A4CF9005A160E /* Localizable.stringsdict */; };
 		C23142112F082029006A1CA9 /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; };
-		C23142122F082029006A1CA9 /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C23142152F08202D006A1CA9 /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DF22F08094B006A1CA9 /* Data.framework */; };
-		C23142162F08202D006A1CA9 /* Data.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DF22F08094B006A1CA9 /* Data.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C23142192F082031006A1CA9 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DE62F08093C006A1CA9 /* Domain.framework */; };
-		C231421A2F082031006A1CA9 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DE62F08093C006A1CA9 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C231421D2F082035006A1CA9 /* UI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DFE2F08095B006A1CA9 /* UI.framework */; };
-		C231421E2F082035006A1CA9 /* UI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DFE2F08095B006A1CA9 /* UI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C23142212F082053006A1CA9 /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; };
 		C23142222F082053006A1CA9 /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C23142262F082059006A1CA9 /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; };
@@ -211,9 +206,7 @@
 		C23142652F0838D0006A1CA9 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C26CDD632C06036F00D186D3 /* LoadingAnimation.json */; };
 		C23142662F0838D0006A1CA9 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C28B239F2C0B78860012FA81 /* DownloadAnimation.json */; };
 		C23142792F083F32006A1CA9 /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; };
-		C231427A2F083F32006A1CA9 /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C231427E2F083F34006A1CA9 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DE62F08093C006A1CA9 /* Domain.framework */; };
-		C231427F2F083F34006A1CA9 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DE62F08093C006A1CA9 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C23142812F0844A2006A1CA9 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = C23142802F0844A2006A1CA9 /* SFSafeSymbols */; };
 		C23142822F084627006A1CA9 /* WatchConnectivityMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C5C7B2A2E2C6700306547 /* WatchConnectivityMessage.swift */; };
 		C23142842F0846F6006A1CA9 /* LastPlayedDateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C5C732A2E2AB200306547 /* LastPlayedDateMessage.swift */; };
@@ -389,13 +382,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C231421A2F082031006A1CA9 /* Domain.framework in Embed Frameworks */,
 				C2AC28532E7206A60038FBFB /* RealmSwift in Embed Frameworks */,
-				C23142122F082029006A1CA9 /* Common.framework in Embed Frameworks */,
-				C2313E112F08096A006A1CA9 /* UIComponentKit.framework in Embed Frameworks */,
-				C23142162F08202D006A1CA9 /* Data.framework in Embed Frameworks */,
 				59C269C9258E9C0F008576EA /* (null) in Embed Frameworks */,
-				C231421E2F082035006A1CA9 /* UI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,18 +443,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C23142392F08206A006A1CA9 /* Common.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C231427D2F083F32006A1CA9 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				C231427F2F083F34006A1CA9 /* Domain.framework in Embed Frameworks */,
-				C231427A2F083F32006A1CA9 /* Common.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2275,7 +2251,6 @@
 				C26BF9892A1562E200598F6E /* Resources */,
 				C231428B2F0847F1006A1CA9 /* Swiftgen */,
 				C21D64992A2CF6AC00226AFF /* SwiftLint */,
-				C231427D2F083F32006A1CA9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3115,8 +3090,6 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.common;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = hu.barnanemeth.dev.Audstreamer.common.ios;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=watchos*]" = hu.barnanemeth.dev.Audstreamer.common.watchos;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
@@ -3172,8 +3145,6 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.common;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = hu.barnanemeth.dev.Audstreamer.common.ios;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=watchos*]" = hu.barnanemeth.dev.Audstreamer.common.watchos;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
