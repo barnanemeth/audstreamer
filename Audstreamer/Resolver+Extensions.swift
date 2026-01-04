@@ -11,6 +11,7 @@ import Data
 import UI
 
 extension Resolver {
+    @MainActor
     static func registerDependencies() {
         registerDataServices()
         registerUI()

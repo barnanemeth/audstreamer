@@ -70,8 +70,8 @@ struct PlayerWidget: View {
         .task { await viewModel.subscribe() }
         .presentationDetents([Constant.expandedPresentationDetent, Constant.collapsedPresentationDetent], selection: $presentationDetent)
         .presentationBackgroundInteraction(.enabled)
-        .presentationSizing(.fitted)
         .interactiveDismissDisabled(true)
+        .ignoresSafeArea(edges: .bottom)
     }
 }
 
@@ -219,6 +219,7 @@ extension PlayerWidget {
             Image(systemSymbol: symbol)
                 .font(.system(size: 38))
                 .contentTransition(.symbolEffect(.replace))
+                .foregroundStyle(Asset.Colors.primary.swiftUIColor)
         }
         .matchedGeometryEffect(id: Constant.playPauseButtonGeometryID, in: namespace)
     }
@@ -239,6 +240,7 @@ extension PlayerWidget {
         Slider(value: binding) { isHighlighted in
             viewModel.isSliderHighlighted = isHighlighted
         }
+        .tint(Asset.Colors.primary.swiftUIColor)
     }
 
     private var timeTexts: some View {

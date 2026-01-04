@@ -28,27 +28,15 @@ struct DownloadsView: ScreenView {
         .listStyle(.plain)
         .animation(.default, value: viewModel.items)
         .animation(.default, value: viewModel.isCompleted)
-        .toolbar { toolbar }
+        .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
         .navigationTitle(L10n.downloads)
         .task { await viewModel.subscribe() }
-        .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
     }
 }
 
 // MARK: - Helpers
 
 extension DownloadsView {
-    @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            Button {
-                viewModel.handleClose()
-            } label: {
-                Image(systemSymbol: .xmark)
-            }
-        }
-    }
-
     private var listContent: some View {
         ForEach(viewModel.items, id: \.self) { data in
             DownloadingComponent(data: data)

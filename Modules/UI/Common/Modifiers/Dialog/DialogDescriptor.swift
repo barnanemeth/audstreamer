@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct DialogDescriptor: Equatable {
+public struct DialogDescriptor: Hashable, Equatable {
 
     // MARK: Inner types
 

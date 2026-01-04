@@ -22,7 +22,7 @@ struct LoadingView: ScreenView {
 
     // MARK: Dependencies
 
-    @Bindable var viewModel: LoadingViewModel
+    @State var viewModel: LoadingViewModel
 
     // MARK: UI
 

@@ -33,7 +33,6 @@ final class ApplicationLoader: NSObject {
     @LazyInjected private var notificationHandler: NotificationHandler
     @LazyInjected private var cloud: Cloud
     @LazyInjected private var shortcutHandler: ShortcutHandler
-    @LazyInjected private var navigator: NavigatorPublic
 
     // MARK: Private properties
 
@@ -44,10 +43,10 @@ final class ApplicationLoader: NSObject {
 // MARK: - Public methods
 
 extension ApplicationLoader {
-    func load(with window: UIWindow?) {
+    @MainActor
+    func load() {
         Resolver.registerDependencies()
         applicationStateHandler.start()
-        setupWindow(window)
         setupBackgroundRefresh()
         notificationHandler.setupNotifications()
         setupImageLoading()
@@ -71,10 +70,6 @@ extension ApplicationLoader {
 // MARK: - Helpers
 
 extension ApplicationLoader {
-    private func setupWindow(_ window: UIWindow?) {
-        navigator.setup(with: window)
-    }
-
     private func setupBackgroundRefresh() {
         let identifier = Constant.backgroundTaskIdentifier
         let refreshTaskRequest = BGAppRefreshTaskRequest(identifier: identifier)

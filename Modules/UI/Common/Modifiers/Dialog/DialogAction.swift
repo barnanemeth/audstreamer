@@ -36,10 +36,14 @@ public struct DialogAction {
     }
 }
 
-// MARK: - Equatable
+// MARK: - Hashable & Equatable
 
-extension DialogAction: Equatable {
+extension DialogAction: Hashable, Equatable {
     public static func == (lhs: DialogAction, rhs: DialogAction) -> Bool {
         lhs.id == rhs.id
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

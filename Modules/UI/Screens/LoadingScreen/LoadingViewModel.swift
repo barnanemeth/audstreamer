@@ -9,7 +9,6 @@ import UIKit
 
 import Common
 import Domain
-
 import UIComponentKit
 
 @Observable
@@ -73,21 +72,17 @@ extension LoadingViewModel {
         }
     }
 
+    @MainActor
     private func navigateToPlayerScreen() {
-        let playerScreen: PlayerScreen = Resolver.resolve()
-        let navigationController = UINavigationController(rootViewController: playerScreen) // Note: with SwiftUI this is not necessary
-        navigationController.modalPresentationStyle = .overCurrentContext
-        navigationController.definesPresentationContext = true
-        navigator.present(navigationController)
+        navigator.navigate(to: .player, method: .managedCover)
     }
 
+    @MainActor
     private func navigateToLoginScreen() {
-        let loginScreen: LoginScreen = Resolver.resolve(args: true)
-        navigator.present(loginScreen, interactiveSheetDismissHandler: { [unowned self] in
-            navigateToPlayerScreen()
-        })
+        navigator.navigate(to: .login(shouldShowPlayerAtDismiss: true), method: .sheet)
     }
 
+    @MainActor
     private func presentErrorAlert(for error: Error) {
         currentlyShowedDialogDescriptor = DialogDescriptor(
             title: L10n.error,

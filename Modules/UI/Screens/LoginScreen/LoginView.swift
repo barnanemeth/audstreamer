@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+ 
 import Common
 import UIComponentKit
 
@@ -20,7 +20,7 @@ struct LoginView: View {
 
     // MARK: - Dependencies
 
-    @Bindable var viewModel: LoginViewModel
+    @State var viewModel: LoginViewModel
 
     // MARK: Private properties
 
@@ -40,6 +40,7 @@ struct LoginView: View {
         .padding(.top, 56)
         .padding([.horizontal, .bottom])
         .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
+        .interactiveDismissDisabled()
     }
 }
 

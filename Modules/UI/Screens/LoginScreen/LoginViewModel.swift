@@ -13,6 +13,8 @@ import Common
 import Domain
 import UIComponentKit
 
+import NavigatorUI
+
 @Observable
 final class LoginViewModel {
 
@@ -62,6 +64,7 @@ extension LoginViewModel {
         }
     }
 
+    @MainActor
     func handleCancel() {
         finishedOrCancelled()
     }
@@ -93,16 +96,11 @@ extension LoginViewModel {
         }
     }
 
+    @MainActor
     private func finishedOrCancelled() {
+        navigator.dismiss()
         if shouldShowPlayerAtDismiss {
-            let playerScreen: PlayerScreen = Resolver.resolve()
-            let navigationController = UINavigationController(rootViewController: playerScreen) // Note: with SwiftUI this is not necessary
-            navigationController.modalPresentationStyle = .overCurrentContext
-            navigationController.definesPresentationContext = true
-
-            navigator.dismissAndPresent(navigationController)
-        } else {
-            navigator.dismiss()
+            navigator.navigate(to: AppNavigationDestination.player, method: .managedCover)
         }
     }
 

@@ -80,6 +80,7 @@ extension EpisodeSectionComponent {
                             .arrowDownCircleFill
                         }
                         Image(systemSymbol: symbol)
+                            .foregroundStyle(Asset.Colors.primary.swiftUIColor)
                     }
                 }
             }

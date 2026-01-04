@@ -96,10 +96,6 @@ extension SettingsViewModel {
             ]
         )
     }
-
-    func handleClose() {
-        navigator.dismiss()
-    }
 }
 
 // MARK: - Helpers
@@ -191,9 +187,9 @@ extension SettingsViewModel {
         }
     }
 
+    @MainActor
     private func navigateToLoginScreen() {
-        let loginScreen: LoginScreen = Resolver.resolve(args: false)
-        navigator.present(loginScreen)
+        navigator.navigate(to: .login(shouldShowPlayerAtDismiss: false), method: .sheet)
     }
 
     private func getDownloadSizeText(for downloadSize: Int) -> AttributedString? {

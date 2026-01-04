@@ -53,6 +53,7 @@ final class PlayerViewModel: ViewModel {
     private(set) var isLoading = false
     var openedEpisodeID: String?
     var currentlyShowedDialogDescriptor: DialogDescriptor?
+    var isPlayerWidgetVisible = false
 
     // MARK: Private properties
 
@@ -61,14 +62,18 @@ final class PlayerViewModel: ViewModel {
         formatter.dateFormat = Constant.splitterDateComponents.dateFormat
         return formatter
     }()
+
+    // MARK: Init
+
+    init() {
+        watchConnectivityService.startUpdating()
+    }
 }
 
 // MARK: - View model
 
 extension PlayerViewModel {
     func subscribe() async {
-        watchConnectivityService.startUpdating()
-
         await withTaskGroup { taskGroup in
             taskGroup.addTask { await self.showAndInsertOpenableEpisode() }
             taskGroup.addTask { await self.startSocketUpdating() }
@@ -197,24 +202,15 @@ extension PlayerViewModel {
         }
     }
 
+    @MainActor
     func navigateToSettings() {
-        let settingsScreen: SettingsScreen = Resolver.resolve()
-        let navigationController = UINavigationController(rootViewController: settingsScreen)
-        navigator.present(navigationController)
+        isPlayerWidgetVisible = false
+        navigator.navigate(to: .settings, method: .push)
     }
 
+    @MainActor
     func navigateToDownloads() {
-        let settingsScreen: DownloadsScreen = Resolver.resolve()
-        let navigationController = UINavigationController(rootViewController: settingsScreen)
-        navigator.present(navigationController)
-    }
-
-    func navigateToWebView(for episode: Episode) {
-        guard let linkURL = episode.link else { return }
-        let webViewViewController = SFSafariViewController(url: linkURL)
-        webViewViewController.preferredControlTintColor = Asset.Colors.primary.color
-        webViewViewController.modalPresentationStyle = .overFullScreen
-        navigator.present(webViewViewController)
+        navigator.navigate(to: .downloads, method: .push)
     }
 }
 
@@ -487,3 +483,4 @@ extension PlayerViewModel {
         try await deleteEpisodes(episodes)
     }
 }
+

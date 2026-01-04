@@ -16,7 +16,7 @@ struct SettingsView: ScreenView {
 
     // MARK: Dependencies
 
-    @Bindable var viewModel: SettingsViewModel
+    @State var viewModel: SettingsViewModel
 
     // MARK: UI
 
@@ -31,8 +31,8 @@ struct SettingsView: ScreenView {
         .navigationTitle(L10n.settings)
         .toolbar { toolbar }
         .disabled(viewModel.isLoading)
-        .task { await viewModel.subscribe() }
         .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
+        .task { await viewModel.subscribe() }
     }
 }
 
@@ -41,14 +41,6 @@ struct SettingsView: ScreenView {
 extension SettingsView {
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            Button {
-                viewModel.handleClose()
-            } label: {
-                Image(systemSymbol: .xmark)
-            }
-        }
-
         if viewModel.isLoading {
             ToolbarItem(placement: .topBarTrailing) {
                 ProgressView()

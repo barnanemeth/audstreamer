@@ -1,5 +1,5 @@
 {
-  "originHash" : "c335529022958461123da2f76bbacd44171d54059393b94993bb314e2c373c1e",
+  "originHash" : "21e2cb72e614d530675a0e146c030d1aa2180486dc73a5d4cd358fb241035dc5",
   "pins" : [
     {
       "identity" : "lottie-ios",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "a004050748dc197c56256a14dca49a035d74726c",
         "version" : "4.5.2"
+      }
+    },
+    {
+      "identity" : "navigator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hmlongco/Navigator.git",
+      "state" : {
+        "revision" : "44c8d3c5f14a002ae25a44ec316d0a3c8586ed9a",
+        "version" : "1.4.5"
       }
     },
     {

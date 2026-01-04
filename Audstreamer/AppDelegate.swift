@@ -8,11 +8,12 @@
 import Foundation
 import UIKit
 import Combine
+import SwiftUI
 
 import Common
 import Domain
+import UI
 
-@main
 final class AppDelegate: UIResponder {
 
     // MARK: Dependencies
@@ -34,7 +35,7 @@ final class AppDelegate: UIResponder {
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        applicationLoader.load(with: window)
+        applicationLoader.load()
         return true
     }
 

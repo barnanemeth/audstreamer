@@ -63,10 +63,6 @@ extension DownloadsViewModel {
 // MARK: - Actions
 
 extension DownloadsViewModel {
-    func handleClose() {
-        navigator.dismiss()
-    }
-
     @MainActor
     func pause(_ item: Downloadable) async {
         await performAction(

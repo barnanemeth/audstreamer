@@ -17,12 +17,11 @@ struct PlayerView: ScreenView {
 
     // MARK: Dependencies
 
-    @Bindable var viewModel: PlayerViewModel
+    @State var viewModel: PlayerViewModel
 
     // MARK: Private properties
 
     @FocusState private var isSearchEnabled: Bool
-    @State private var isPlayerWidgetVisible = true
     @State private var listScrollViewProxy: ScrollViewProxy?
     private var searchTextBinding: Binding<String> {
         Binding<String>(
@@ -55,8 +54,9 @@ struct PlayerView: ScreenView {
         .task { await viewModel.subscribe() }
         .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
         .feedbackEnabled(true)
-        .sheet(isPresented: $isPlayerWidgetVisible) { playerWidget }
-        .onChange(of: isSearchEnabled) { isPlayerWidgetVisible = !isSearchEnabled }
+        .sheet(isPresented: $viewModel.isPlayerWidgetVisible) { playerWidget }
+        .onChange(of: isSearchEnabled) { viewModel.isPlayerWidgetVisible = !isSearchEnabled }
+        .onAppear { viewModel.isPlayerWidgetVisible = true }
     }
 }
 
