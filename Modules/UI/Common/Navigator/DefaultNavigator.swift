@@ -10,7 +10,7 @@ import SwiftUI
 import Common
 import UIComponentKit
 
-import NavigatorUI
+internal import NavigatorUI
 
 struct RootView: View {
 

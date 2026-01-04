@@ -9,7 +9,7 @@ import SwiftUI
 
 import Common
 
-import NavigatorUI
+internal import NavigatorUI
 
 enum AppNavigationDestination: @MainActor NavigationDestination {
     case loading

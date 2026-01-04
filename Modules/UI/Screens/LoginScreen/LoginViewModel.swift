@@ -13,7 +13,7 @@ import Common
 import Domain
 import UIComponentKit
 
-import NavigatorUI
+internal import NavigatorUI
 
 @Observable
 final class LoginViewModel {

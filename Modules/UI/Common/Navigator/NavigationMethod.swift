@@ -5,7 +5,7 @@
 //  Created by Barna Nemeth on 2026. 01. 04..
 //
 
-import NavigatorUI
+internal import NavigatorUI
 
 public enum NavigationMethod {
     case push
