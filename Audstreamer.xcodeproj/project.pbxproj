@@ -3115,6 +3115,8 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.common;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = hu.barnanemeth.dev.Audstreamer.common.ios;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=watchos*]" = hu.barnanemeth.dev.Audstreamer.common.watchos;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
@@ -3170,6 +3172,8 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.common;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = hu.barnanemeth.dev.Audstreamer.common.ios;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=watchos*]" = hu.barnanemeth.dev.Audstreamer.common.watchos;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
@@ -3224,6 +3228,8 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.domain;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = hu.barnanemeth.dev.Audstreamer.domain.ios;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=watchos*]" = hu.barnanemeth.dev.Audstreamer.domain.watchos;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
@@ -3279,6 +3285,8 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = hu.barnanemeth.dev.Audstreamer.domain;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = hu.barnanemeth.dev.Audstreamer.domain.ios;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=watchos*]" = hu.barnanemeth.dev.Audstreamer.domain.watchos;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
