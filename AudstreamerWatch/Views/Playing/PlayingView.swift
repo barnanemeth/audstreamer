@@ -55,7 +55,12 @@ extension PlayingView {
         VStack {
             title
             Spacer()
-            buttons
+            if #available(watchOS 26.0, *) {
+                buttons
+                    .buttonStyle(.glass)
+            } else {
+                buttons
+            }
             Spacer()
             progress
         }
@@ -94,7 +99,6 @@ extension PlayingView {
             }
         }
         .font(.title)
-        .buttonStyle(.glass)
     }
 
     private var progress: some View {
