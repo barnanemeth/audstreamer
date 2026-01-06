@@ -42,6 +42,7 @@ extension DefaultShortcutHandler: ShortcutHandler {
         let newestEpisode = database.getEpisodes().map { $0.max(by: { $0.publishDate < $1.publishDate }) }
 
         Publishers.CombineLatest(lastPlayedEpisode, newestEpisode)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { _ in },
                   receiveValue: { [unowned self] lastPlayedEpisode, newestEpisode in
                 var items = [UIApplicationShortcutItem]()

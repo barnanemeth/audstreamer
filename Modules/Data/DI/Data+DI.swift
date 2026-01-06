@@ -5,7 +5,7 @@
 //  Created by Barna Nemeth on 2026. 01. 02..
 //
 
-import UIKit
+import SwiftData
 
 import Common
 import Domain
@@ -33,6 +33,28 @@ extension Resolver {
         registerFilterService()
         registerShortcutHandler()
         registerWatchConnectivityService()
+
+        register {
+            do {
+                let schema = Schema([EpisodeDataModel.self])
+
+                let configuration = ModelConfiguration(
+                    schema: schema,
+                    isStoredInMemoryOnly: false,
+                    cloudKitDatabase: .none
+                )
+
+                let container = try ModelContainer(
+                    for: schema,
+                    configurations: [configuration]
+                )
+
+                return SwiftDataContextManager(modelContainer: container)
+            } catch {
+                fatalError("Cannot create ModelContainer")
+            }
+        }
+        .scope(.cached)
     }
 }
 
@@ -50,7 +72,7 @@ extension Resolver {
     }
 
     private static func registerDatabase() {
-        register { RealmDatabase() }
+        register { SwiftDataDatabase() }
             .implements(Database.self)
             .scope(.cached)
     }

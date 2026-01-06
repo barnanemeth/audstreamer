@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftData
 
 public protocol Database {
     func insertEpisodes(_ episodes: [Episode], overwrite: Bool) -> AnyPublisher<Void, Error>

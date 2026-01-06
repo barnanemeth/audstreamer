@@ -97,7 +97,7 @@ extension LoadingWidgetViewModel {
         let publisher = statePublisher
             .map { event in
                 switch event {
-                case .inProgress, .failed: true
+                case .inProgress: true
                 default: false
                 }
             }
