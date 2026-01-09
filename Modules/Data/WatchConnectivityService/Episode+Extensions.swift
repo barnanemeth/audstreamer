@@ -5,6 +5,8 @@
 //  Created by Barna Nemeth on 2026. 01. 09..
 //
 
+import Foundation
+
 import Domain
 
 extension Episode {
@@ -14,7 +16,7 @@ extension Episode {
             CodingKeys.title.rawValue: title,
             CodingKeys.publishDate.rawValue: publishDate,
             CodingKeys.duration.rawValue: duration,
-            CodingKeys.lastPosition.rawValue: lastPosition
+            CodingKeys.lastPosition.rawValue: lastPosition ?? -1
         ]
     }
 }

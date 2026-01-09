@@ -74,6 +74,7 @@ extension DefaultWatchConnectivityService: WatchConnectivityService {
         guard cancellables.isEmpty else { return }
 
         database.getEpisodes(filterWatch: true)
+            .removeDuplicates()
             .map { [unowned self] in self.mapEpisodes($0) }
             .replaceError(with: [:])
             .sink { [unowned self] message in
