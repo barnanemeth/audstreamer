@@ -22,7 +22,7 @@ final class PlayingViewModel: ObservableObject {
 
     // MARK: Properties
 
-    @Published private(set) var currentlyPlayingEpisode: EpisodeCommon?
+    @Published private(set) var currentlyPlayingEpisode: Episode?
     @Published private(set) var isPlaying = false
     @Published private(set) var progress: Float = 0.0
     @Published private(set) var elapsedTime = "00:00:00"
@@ -46,7 +46,7 @@ final class PlayingViewModel: ObservableObject {
 // MARK: - Actions
 
 extension PlayingViewModel {
-    func setEpisode(_ episode: EpisodeCommon) {
+    func setEpisode(_ episode: Episode) {
         audioPlayer.getCurrentPlayingAudioInfo()
             .first()
             .flatMap { [unowned self] audioInfo -> AnyPublisher<Void, Error> in

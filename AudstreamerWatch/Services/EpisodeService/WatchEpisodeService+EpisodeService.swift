@@ -14,7 +14,7 @@ import Domain
 // MARK: - EpisodesService
 
 extension WatchEpisodeService: EpisodeService {
-    func getEpisodes() -> AnyPublisher<[EpisodeCommon], Error> {
+    func getEpisodes() -> AnyPublisher<[Episode], Error> {
         episodes
     }
 

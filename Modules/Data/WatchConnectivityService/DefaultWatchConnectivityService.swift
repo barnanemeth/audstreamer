@@ -185,7 +185,7 @@ extension DefaultWatchConnectivityService {
     }
 
     private func mapEpisodes(_ episodes: [Episode]) -> [String: Any] {
-        let array = episodes.compactMap { EpisodeCommon(from: $0)?.asDictionary }
+        let array = episodes.compactMap { $0.asDictionary }
         return [Constant.episodesMessageKey: array]
     }
 

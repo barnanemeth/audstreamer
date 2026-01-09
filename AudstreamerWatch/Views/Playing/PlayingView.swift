@@ -16,7 +16,7 @@ struct PlayingView: View {
 
     // MARK: Private properties
 
-    let episode: EpisodeCommon
+    let episode: Episode
 
     @StateObject private var viewModel = PlayingViewModel()
 
@@ -51,7 +51,7 @@ extension PlayingView {
     }
 
     @ViewBuilder
-    private func episodeContent(with episode: EpisodeCommon) -> some View {
+    private func episodeContent(with episode: Episode) -> some View {
         VStack {
             title
             Spacer()

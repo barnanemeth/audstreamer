@@ -28,17 +28,17 @@ extension WatchEpisodeService {
         userDefaults.episodesData = episodeData
     }
 
-    func mapEpisodes(from dictionaryArray: [[String: Any]]?) -> [EpisodeCommon] {
+    func mapEpisodes(from dictionaryArray: [[String: Any]]?) -> [Episode] {
         guard let dictionaryArray else { return [] }
-        return dictionaryArray.compactMap { EpisodeCommon(from: $0) }
+        return dictionaryArray.compactMap { Episode(from: $0) }
     }
 
-    func decodeEpisodes(from data: Data?) throws -> [EpisodeCommon] {
+    func decodeEpisodes(from data: Data?) throws -> [Episode] {
         guard let data else { return [] }
-        return try decoder.decode([EpisodeCommon].self, from: data)
+        return try decoder.decode([Episode].self, from: data)
     }
 
-    func deleteEpisodeIfNeeded(_ episode: EpisodeCommon) -> AnyPublisher<Void, Error> {
+    func deleteEpisodeIfNeeded(_ episode: Episode) -> AnyPublisher<Void, Error> {
         isDownloaded(episode)
             .flatMap { [unowned self] _ in self.delete(episode) }
             .replaceError(with: ())

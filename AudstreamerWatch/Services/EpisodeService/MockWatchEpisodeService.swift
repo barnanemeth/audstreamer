@@ -15,20 +15,8 @@ struct MockWatchEpisodeService { }
 // MARK: - EpisodeService
 
 extension MockWatchEpisodeService: EpisodeService {
-    func getEpisodes() -> AnyPublisher<[EpisodeCommon], any Error> {
-        let episodes = (0..<100).compactMap { offset in
-            var episode = EpisodeCommon(
-                from: [
-                    "id": "id\(offset)",
-                    "title": "Title\(offset) title title title title title title",
-                    "duration": 60,
-                    "lastPosition": 0
-                ]
-            )
-            episode?.isDownloaded = false
-            return episode
-        }
-
+    func getEpisodes() -> AnyPublisher<[Episode], any Error> {
+        let episodes = [Episode]()
         return Just(episodes).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
