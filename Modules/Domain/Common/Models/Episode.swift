@@ -19,24 +19,25 @@ public struct Episode: Identifiable, Hashable, Equatable {
     public let image: URL?
     public let thumbnail: URL?
     public let link: URL?
-    public let duration: Int
-    public let isFavourite: Bool
-    public let lastPosition: Int?
-    public let lastPlayed: Date?
-    public let isDownloaded: Bool
-    public let numberOfPlays: Int
-    public let isOnWatch: Bool
+
+    public var duration: Int
+    public var isFavourite: Bool
+    public var lastPosition: Int?
+    public var lastPlayed: Date?
+    public var isDownloaded: Bool
+    public var numberOfPlays: Int
+    public var isOnWatch: Bool
 
     // MARK: Init
 
     public init(id: String,
                 title: String,
                 publishDate: Date,
-                descriptionText: String?,
+                descriptionText: String? = nil,
                 mediaURL: URL,
-                image: URL?,
-                thumbnail: URL?,
-                link: URL?,
+                image: URL? = nil,
+                thumbnail: URL? = nil,
+                link: URL? = nil,
                 duration: Int,
                 isFavourite: Bool = false,
                 lastPosition: Int? = nil,
@@ -95,4 +96,16 @@ extension Episode: Downloadable {
     }
 
     public var userInfo: [String: Any]? { nil }
+}
+
+// MARK: - Coding keys
+
+extension Episode {
+    public enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case publishDate
+        case duration
+        case lastPosition
+    }
 }

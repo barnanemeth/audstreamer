@@ -45,7 +45,7 @@ extension EpisodesViewModel {
             .assign(to: &$episodes)
     }
 
-    private func mapEpisodes(_ episodes: [EpisodeCommon], currentlyPlayingID: String?) -> [EpisodeRow.Data] {
+    private func mapEpisodes(_ episodes: [Episode], currentlyPlayingID: String?) -> [EpisodeRow.Data] {
         episodes.map { episode in
             EpisodeRow.Data(
                 episode: episode,

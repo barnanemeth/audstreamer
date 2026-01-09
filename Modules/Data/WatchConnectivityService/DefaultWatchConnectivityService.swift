@@ -74,6 +74,7 @@ extension DefaultWatchConnectivityService: WatchConnectivityService {
         guard cancellables.isEmpty else { return }
 
         database.getEpisodes(filterWatch: true)
+            .removeDuplicates()
             .map { [unowned self] in self.mapEpisodes($0) }
             .replaceError(with: [:])
             .sink { [unowned self] message in
@@ -185,7 +186,7 @@ extension DefaultWatchConnectivityService {
     }
 
     private func mapEpisodes(_ episodes: [Episode]) -> [String: Any] {
-        let array = episodes.compactMap { EpisodeCommon(from: $0)?.asDictionary }
+        let array = episodes.compactMap { $0.asDictionary }
         return [Constant.episodesMessageKey: array]
     }
 

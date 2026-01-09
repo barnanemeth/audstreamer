@@ -64,7 +64,7 @@ extension EpisodeRow {
 
 extension EpisodeRow {
     struct Data: Hashable, Equatable {
-        let episode: EpisodeCommon
+        let episode: Episode
         let isPlaying: Bool
         let transferringState: TransferringState
     }

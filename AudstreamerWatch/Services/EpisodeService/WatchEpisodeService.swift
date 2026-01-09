@@ -32,12 +32,12 @@ final class WatchEpisodeService: NSObject {
     let decoder = JSONDecoder()
     let fileManager = FileManager.default
     let updateTriggerSubject = PassthroughSubject<Void, Never>()
-    lazy var episodes: AnyPublisher<[EpisodeCommon], Error> = {
+    lazy var episodes: AnyPublisher<[Episode], Error> = {
         Publishers.CombineLatest(userDefaults.publisher(for: \.episodesData), updateTriggerSubject.prepend(()))
             .setFailureType(to: Error.self)
             .map(\.0)
             .tryMap { [unowned self] in try decodeEpisodes(from: $0) }
-            .flatMap { [unowned self] episodes -> AnyPublisher<([EpisodeCommon], [Bool]), Error> in
+            .flatMap { [unowned self] episodes -> AnyPublisher<([Episode], [Bool]), Error> in
                 let episodesPublishers = Just(episodes).setFailureType(to: Error.self)
                 let downloadStates: AnyPublisher<[Bool], Error> = if !episodes.isEmpty {
                     episodes.map { isDownloaded($0) }.zip()

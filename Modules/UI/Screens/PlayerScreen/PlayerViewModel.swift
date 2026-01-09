@@ -66,7 +66,15 @@ final class PlayerViewModel: ViewModel {
     // MARK: Init
 
     init() {
-        watchConnectivityService.startUpdating()
+        Task {
+            watchConnectivityService.startUpdating()
+            await withTaskGroup { taskGroup in
+                taskGroup.addTask { await self.startSocketUpdating() }
+                taskGroup.addTask { await self.startPlayingUpdating() }
+                taskGroup.addTask { await self.startDatabaseUpdating() }
+                taskGroup.addTask { await self.showAndInsertOpenableEpisode() }
+            }
+        }
     }
 }
 
@@ -75,7 +83,6 @@ final class PlayerViewModel: ViewModel {
 extension PlayerViewModel {
     func subscribe() async {
         await withTaskGroup { taskGroup in
-            taskGroup.addTask { await self.showAndInsertOpenableEpisode() }
             taskGroup.addTask { await self.startSocketUpdating() }
             taskGroup.addTask { await self.startPlayingUpdating() }
             taskGroup.addTask { await self.startDatabaseUpdating() }
