@@ -22,6 +22,7 @@ final class LoadingViewModel: ViewModel {
 
     // MARK: Dependencies
 
+    @ObservationIgnored @Injected private var episodeService: EpisodeService
     @ObservationIgnored @Injected private var account: Account
     @ObservationIgnored @Injected private var navigator: Navigator
 
@@ -46,7 +47,7 @@ extension LoadingViewModel {
         defer { isLoading = false }
         do {
             isLoading = true
-            try await FetchUtil.fetchData().value
+            try await episodeService.refresh().value
             await navigateNext()
         } catch {
             presentErrorAlert(for: error)

@@ -55,9 +55,9 @@ final class DefaultAPIClient {
     }()
 }
 
-// MARK: - Networking
+// MARK: - APIClient
 
-extension DefaultAPIClient: Networking {
+extension DefaultAPIClient: APIClient {
     func getEpisodes(from date: Date?) -> AnyPublisher<[Episode], Error> {
         var url = baseURL.appendingPathComponent("episodes").appendingPathComponent("rss")
         var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)

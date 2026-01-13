@@ -15,6 +15,82 @@ struct MockWatchEpisodeService { }
 // MARK: - EpisodeService
 
 extension MockWatchEpisodeService: EpisodeService {
+    func startUpdating() -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func stopUpdating() -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func download(_ episode: Domain.Episode) -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func episodes(matching attributes: Domain.EpisodeQueryAttributes) -> AnyPublisher<[Domain.Episode], any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+
+    func episode(id: String) -> AnyPublisher<Domain.Episode?, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func lastPlayedEpisode() -> AnyPublisher<Domain.Episode?, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func downloadEvents() -> AnyPublisher<Domain.DownloadEvent, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func aggregatedDownloadEvents() -> AnyPublisher<Domain.DownloadAggregatedEvent, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func aggregatedTransferEvents() -> AnyPublisher<Domain.FileTransferAggregatedProgress, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func refresh() -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func updateLastPlayedDate(_ lastPlayedDate: Date, for episode: Domain.Episode) -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func updateLastPosition(_ lastPosition: Int, for episode: Domain.Episode) -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func setFavorite(_ episode: Domain.Episode, isFavorite: Bool) -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func deleteDownload(for episode: Domain.Episode) -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func deleteAllDownloads() -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func pauseDownload(for episode: Domain.Episode) -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func resumeDownload(for episode: Domain.Episode) -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+    
+    func cancelDownload(for episode: Domain.Episode) -> AnyPublisher<Void, any Error> {
+        Empty().eraseToAnyPublisher()
+    }
+
+    func downloadsSize() -> AnyPublisher<Int, any Error> {
+        Empty(completeImmediately: false).eraseToAnyPublisher()
+    }
+
     func getEpisodes() -> AnyPublisher<[Episode], any Error> {
         let episodes = [Episode]()
         return Just(episodes).setFailureType(to: Error.self).eraseToAnyPublisher()
@@ -33,50 +109,6 @@ extension MockWatchEpisodeService: EpisodeService {
     }
 
     func sendUpdateTrigger() -> AnyPublisher<Void, any Error> {
-        Empty(completeImmediately: false).eraseToAnyPublisher()
-    }
-}
-
-// MARK: - DownloadService
-
-extension MockWatchEpisodeService: DownloadService {
-    func delete(_ item: any Downloadable) -> AnyPublisher<Void, any Error> {
-        Empty(completeImmediately: false).eraseToAnyPublisher()
-    }
-
-    func getEvent() -> AnyPublisher<DownloadEvent, any Error> {
-        Empty(completeImmediately: false).eraseToAnyPublisher()
-    }
-
-    func getAggregatedEvent() -> AnyPublisher<DownloadAggregatedEvent, any Error> {
-        Empty(completeImmediately: false).eraseToAnyPublisher()
-    }
-
-    func getDownloadSize() -> AnyPublisher<Int, any Error> {
-        Empty(completeImmediately: false).eraseToAnyPublisher()
-    }
-
-    func refreshDownloadSize() -> AnyPublisher<Void, any Error> {
-        Empty(completeImmediately: false).eraseToAnyPublisher()
-    }
-
-    func deleteDownloads() -> AnyPublisher<Void, any Error> {
-        Empty(completeImmediately: false).eraseToAnyPublisher()
-    }
-
-    func pause(_ item: any Downloadable) -> AnyPublisher<Void, any Error> {
-        Empty(completeImmediately: false).eraseToAnyPublisher()
-    }
-
-    func resume(_ item: any Downloadable) -> AnyPublisher<Void, any Error> {
-        Empty(completeImmediately: false).eraseToAnyPublisher()
-    }
-
-    func cancel(_ item: any Downloadable) -> AnyPublisher<Void, any Error> {
-        Empty(completeImmediately: false).eraseToAnyPublisher()
-    }
-
-    func isDownloaded(_ item: any Downloadable) -> AnyPublisher<Bool, any Error> {
         Empty(completeImmediately: false).eraseToAnyPublisher()
     }
 }

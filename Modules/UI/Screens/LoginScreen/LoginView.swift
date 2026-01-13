@@ -88,7 +88,7 @@ extension LoginView {
         }
 
         AsyncButton {
-            await viewModel.authorize()
+            await viewModel.login()
         } label: {
             Spacer()
             Image(systemSymbol: .appleLogo)

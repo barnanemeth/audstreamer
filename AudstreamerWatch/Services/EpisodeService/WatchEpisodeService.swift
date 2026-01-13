@@ -37,20 +37,10 @@ final class WatchEpisodeService: NSObject {
             .setFailureType(to: Error.self)
             .map(\.0)
             .tryMap { [unowned self] in try decodeEpisodes(from: $0) }
-            .flatMap { [unowned self] episodes -> AnyPublisher<([Episode], [Bool]), Error> in
-                let episodesPublishers = Just(episodes).setFailureType(to: Error.self)
-                let downloadStates: AnyPublisher<[Bool], Error> = if !episodes.isEmpty {
-                    episodes.map { isDownloaded($0) }.zip()
-                } else {
-                    Just([]).setFailureType(to: Error.self).eraseToAnyPublisher()
-                }
-
-                return Publishers.Zip(episodesPublishers, downloadStates).eraseToAnyPublisher()
-            }
-            .map { episodes, downloadStates in
-                zip(episodes, downloadStates).map { episode, isDownloaded in
+            .map { [unowned self] episodes in
+                episodes.map { episode in
                     var episode = episode
-                    episode.isDownloaded = isDownloaded
+                    episode.isDownloaded = isEpisodeDownloaded(episode)
                     return episode
                 }
             }

@@ -28,15 +28,11 @@ final class PlayerViewModel: ViewModel {
 
     // MARK: Dependencies
 
-    @ObservationIgnored @Injected private var database: Database
+    @ObservationIgnored @Injected private var episodeService: EpisodeService
     @ObservationIgnored @Injected private var audioPlayer: AudioPlayer
     @ObservationIgnored @Injected private var socket: Socket
-    @ObservationIgnored @Injected private var playingUpdater: PlayingUpdater
-    @ObservationIgnored @Injected private var socketUpdater: SocketUpdater
-    @ObservationIgnored @Injected private var databaseUpdater: DatabaseUpdater
     @ObservationIgnored @Injected private var cloud: Cloud
     @ObservationIgnored @Injected private var notificationHandler: NotificationHandler
-    @ObservationIgnored @Injected private var downloadService: DownloadService
     @ObservationIgnored @Injected private var filterService: FilterService
     @ObservationIgnored @Injected private var shortcutHandler: ShortcutHandler
     @ObservationIgnored @Injected private var watchConnectivityService: WatchConnectivityService
@@ -69,9 +65,7 @@ final class PlayerViewModel: ViewModel {
         Task {
             watchConnectivityService.startUpdating()
             await withTaskGroup { taskGroup in
-                taskGroup.addTask { await self.startSocketUpdating() }
-                taskGroup.addTask { await self.startPlayingUpdating() }
-                taskGroup.addTask { await self.startDatabaseUpdating() }
+                taskGroup.addTask { await self.startUpdating() }
                 taskGroup.addTask { await self.showAndInsertOpenableEpisode() }
             }
         }
@@ -83,9 +77,6 @@ final class PlayerViewModel: ViewModel {
 extension PlayerViewModel {
     func subscribe() async {
         await withTaskGroup { taskGroup in
-            taskGroup.addTask { await self.startSocketUpdating() }
-            taskGroup.addTask { await self.startPlayingUpdating() }
-            taskGroup.addTask { await self.startDatabaseUpdating() }
             taskGroup.addTask { await self.subscribeToShortcutEpisode() }
             taskGroup.addTask { await self.subscribeToWatchConnection() }
             taskGroup.addTask { await self.subscribeToFilterAttributes() }
@@ -136,7 +127,7 @@ extension PlayerViewModel {
             let isFavorite = !episode.isFavourite
             try await withThrowingTaskGroup { taskGroup in
                 taskGroup.addTask {
-                    try await self.database.updateEpisode(episode, isFavorite: isFavorite).value
+                    try await self.episodeService.setFavorite(episode, isFavorite: isFavorite).value
                 }
 
                 taskGroup.addTask {
@@ -175,7 +166,7 @@ extension PlayerViewModel {
     func downloadEpisodes(_ episodes: [Episode]) async {
         await withTaskGroup { taskGroup in
             episodes.forEach { episode in
-                taskGroup.addTask { try? await self.downloadService.download(episode).value }
+                taskGroup.addTask { try? await self.episodeService.download(episode).value }
             }
             await taskGroup.waitForAll()
         }
@@ -185,11 +176,10 @@ extension PlayerViewModel {
     func toggleEpisodeIsOnWatch(_ episode: Episode) async {
         do {
             let isOnWatch = !episode.isOnWatch
-            try await database.updateEpisode(episode, isOnWatch: isOnWatch).value
             if isOnWatch {
-                try await watchConnectivityService.transferEpisode(episode.id).value
+                try await episodeService.sendToWatch(episode).value
             } else {
-                try await watchConnectivityService.cancelFileTransferForEpisode(episode.id).value
+                try await episodeService.removeFromWatch(episode).value
             }
         } catch {
             showErrorAlert(for: error)
@@ -198,7 +188,7 @@ extension PlayerViewModel {
 
     @MainActor
     func refresh() async {
-        try? await FetchUtil.fetchData().value
+        try? await episodeService.refresh().value
     }
 
     func setSearchKeyword(_ keyword: String) {
@@ -311,14 +301,14 @@ extension PlayerViewModel {
 
     private func showAndInsertOpenableEpisode() async {
         do {
-            let lastPlayedEpisodeID = try await database.getLastPlayedEpisode().value?.id
+            let lastPlayedEpisodeID = try await episodeService.lastPlayedEpisode().value?.id
             let episodeIDFromNotification = try await  notificationHandler.getEpisodeID().value
             let episodeIDFromShortcut = try await  shortcutHandler.getEpisodeID().value
 
             openedEpisodeID = lastPlayedEpisodeID
 
             guard let episodeID = episodeIDFromNotification ?? episodeIDFromShortcut ?? lastPlayedEpisodeID,
-                  let episode = try await database.getEpisode(id: episodeID).value  else { return }
+                  let episode = try await episodeService.episode(id: episodeID).value  else { return }
 
             try await withThrowingTaskGroup { taskGroup in
                 taskGroup.addTask {
@@ -346,21 +336,12 @@ extension PlayerViewModel {
         try await audioPlayer.insert(episode, playImmediately: playImmediately).value
     }
 
-    private func startPlayingUpdating() async {
-        try? await playingUpdater.startUpdating().value
-    }
-
-    private func startSocketUpdating() async {
-        try? await socketUpdater.startUpdating().value
-    }
-
-    private func startDatabaseUpdating() async {
-        try? await databaseUpdater.startUpdating().value
+    private func startUpdating() async {
+        try? await episodeService.startUpdating().value
     }
 
     private func deleteEpisode(_ episode: Episode) async throws {
-        try await downloadService.delete(episode).value
-        try await database.updateEpisode(episode, isDownloaded: false).value
+        try await episodeService.deleteDownload(for: episode).value
     }
 
     private func isOnlyCellularAvailable() -> Bool {
@@ -386,18 +367,16 @@ extension PlayerViewModel {
 
     private func getEpisodes(by filterAttributes: [FilterAttribute],
                              keyword: String?) -> AnyPublisher<[Episode], Never> {
-        let filterFavorites = filterAttributes.contains { $0.type == .favorites && $0.isActive }
-        let filterDownloads = filterAttributes.contains { $0.type == .downloads && $0.isActive }
-        let filterWatch = filterAttributes.contains { $0.type == .watch && $0.isActive }
-
-        return database.getEpisodes(
-            filterFavorites: filterFavorites,
-            filterDownloads: filterDownloads,
-            filterWatch: filterWatch,
-            keyword: keyword
+        let queryAttributes = EpisodeQueryAttributes(
+            keyword: keyword,
+            filterFavorites: filterAttributes.contains { $0.type == .favorites && $0.isActive },
+            filterDownloads: filterAttributes.contains { $0.type == .downloads && $0.isActive },
+            filterWatch: filterAttributes.contains { $0.type == .watch && $0.isActive }
         )
-        .replaceError(with: [])
-        .eraseToAnyPublisher()
+
+        return episodeService.episodes(matching: queryAttributes)
+            .replaceError(with: [])
+            .eraseToAnyPublisher()
     }
 
     private func dateComponents(from section: EpisodeSection) -> DateComponents {
@@ -416,14 +395,14 @@ extension PlayerViewModel {
     private func subscribeToShortcutEpisode() async {
         let publisher = shortcutHandler.getEpisodeID().replaceError(with: nil).unwrap()
         for await episodeID in publisher.asAsyncStream() {
-            guard let episode = try? await database.getEpisode(id: episodeID).value else { continue }
+            guard let episode = try? await episodeService.episode(id: episodeID).value else { continue }
             try? await audioPlayer.insert(episode, playImmediately: true).value
         }
     }
 
     private func episodes(for section: EpisodeSection, isDownloaded: Bool) async throws -> [Episode] {
         let componentsToDownload = dateComponents(from: section)
-        let episodes = try await database.getEpisodes().value
+        let episodes = try await episodeService.episodes(matching: nil).value
         return episodes.filter { episode in
             let components = Calendar.current.dateComponents(
                 Set(Constant.splitterDateComponents),
@@ -437,8 +416,7 @@ extension PlayerViewModel {
         try await withThrowingTaskGroup { taskGroup in
             episodes.forEach { episode in
                 taskGroup.addTask {
-                    try await self.downloadService.delete(episode).value
-                    try await self.database.updateEpisode(episode, isDownloaded: false).value
+                    try await self.episodeService.deleteDownload(for: episode).value
                 }
             }
             try await taskGroup.waitForAll()

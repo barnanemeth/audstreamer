@@ -39,8 +39,8 @@ extension WatchEpisodeService {
     }
 
     func deleteEpisodeIfNeeded(_ episode: Episode) -> AnyPublisher<Void, Error> {
-        isDownloaded(episode)
-            .flatMap { [unowned self] _ in self.delete(episode) }
+        Just(isEpisodeDownloaded(episode))
+            .tryMap { [unowned self] _ in try delete(episode) }
             .replaceError(with: ())
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
@@ -76,5 +76,17 @@ extension WatchEpisodeService {
         if !exists || !isDirectory.boolValue {
             try? fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: true)
         }
+    }
+
+    func isEpisodeDownloaded(_ episode: Episode) -> Bool {
+        guard let url = WatchURLHelper.getURLForEpisode(episode.id) else {
+            return false
+        }
+        return fileManager.fileExists(atPath: url.path)
+    }
+
+    func delete(_ episode: Episode) throws {
+        guard let url = WatchURLHelper.getURLForEpisode(episode.id) else { return }
+        try fileManager.removeItem(at: url)
     }
 }

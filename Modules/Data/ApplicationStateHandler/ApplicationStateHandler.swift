@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-public protocol ApplicationStateHandler {
+protocol ApplicationStateHandler {
     func start()
     func stop()
     #if !os(watchOS)

@@ -87,7 +87,7 @@ extension PlayingViewModel {
 extension PlayingViewModel {
     private func subscribeToCurrenEpisode() {
         let currentAudioID = audioPlayer.getCurrentPlayingAudioInfo().compactMap(\.?.id).removeDuplicates()
-        let episodes = episodeService.getEpisodes()
+        let episodes = episodeService.episodes(matching: nil)
 
         Publishers.CombineLatest(currentAudioID, episodes)
             .map { currentAudioID, episodes in

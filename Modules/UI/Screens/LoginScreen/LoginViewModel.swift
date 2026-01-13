@@ -20,9 +20,6 @@ final class LoginViewModel {
 
     // MARK: Dependencies
 
-    @ObservationIgnored @Injected private var authorization: Authorization
-    @ObservationIgnored @Injected private var secureStore: SecureStore
-    @ObservationIgnored @Injected private var networking: Networking
     @ObservationIgnored @Injected private var account: Account
     @ObservationIgnored @Injected private var socket: Socket
     @ObservationIgnored @Injected private var navigator: Navigator
@@ -46,20 +43,13 @@ final class LoginViewModel {
 
 extension LoginViewModel {
     @MainActor
-    func authorize() async {
+    func login() async {
         do {
-            let authorizationData = try await authorization.authorize().value
-            try secureStore.storeToken(authorizationData)
-            try await account.refresh().value
-            await connectSocketIfNeeded()
-            try await requestNotificationPermission()
-            try await registerDevice()
-
+            try await account.login().value
             finishedOrCancelled()
         } catch let authorizationError as AuthorizationError where authorizationError == .userCanceled {
             return
         } catch {
-            try? secureStore.deleteToken()
             showErrorAlert(for: error)
         }
     }
@@ -73,29 +63,6 @@ extension LoginViewModel {
 // MARK: - Helpers
 
 extension LoginViewModel {
-    private func requestNotificationPermission() async throws {
-        let userNotificationCenter = UNUserNotificationCenter.current()
-        try await userNotificationCenter.requestAuthorization(options: [.alert, .sound, .badge])
-    }
-
-    @MainActor
-    private func registerDevice() async throws {
-        UIApplication.shared.registerForRemoteNotifications()
-        guard let notificationToken = UserDefaults.standard.string(forKey: "NotificationToken") else { return }
-        try await networking.addDevice(with: notificationToken).value
-    }
-
-    private func connectSocketIfNeeded() async {
-        do {
-            let socketStatus = try await socket.getStatus().value
-            if socketStatus != .connected {
-                try? await socket.connect().value
-            }
-        } catch {
-            NSLog("Cancellation error")
-        }
-    }
-
     @MainActor
     private func finishedOrCancelled() {
         navigator.dismiss()

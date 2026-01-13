@@ -9,9 +9,29 @@ import Foundation
 import Combine
 
 public protocol EpisodeService {
-    func getEpisodes() -> AnyPublisher<[Episode], Error>
-    func updateLastPlayedDate(_ lastPlayedDate: Date, for episodeID: String) -> AnyPublisher<Void, Error>
-    func updateLastPosition(_ lastPosition: Int, for episodeID: String) -> AnyPublisher<Void, Error>
-    func deleteAbandonedEpisodes() -> AnyPublisher<Void, Error>
-    func sendUpdateTrigger() -> AnyPublisher<Void, Error>
+    func episodes(matching attributes: EpisodeQueryAttributes) -> AnyPublisher<[Episode], Error>
+    func episode(id: String) -> AnyPublisher<Episode?, Error>
+    func lastPlayedEpisode() -> AnyPublisher<Episode?, Error>
+    func downloadEvents() -> AnyPublisher<DownloadEvent, Error>
+    func aggregatedDownloadEvents() -> AnyPublisher<DownloadAggregatedEvent, Error>
+    func aggregatedTransferEvents() -> AnyPublisher<FileTransferAggregatedProgress, Error>
+    
+    func refresh() -> AnyPublisher<Void, Error>
+    func startUpdating() -> AnyPublisher<Void, Error>
+    func stopUpdating() -> AnyPublisher<Void, Error>
+    func updateLastPlayedDate(_ lastPlayedDate: Date, for episode: Episode) -> AnyPublisher<Void, Error>
+    func updateLastPosition(_ lastPosition: Int, for episode: Episode) -> AnyPublisher<Void, Error>
+    func setFavorite(_ episode: Episode, isFavorite: Bool) -> AnyPublisher<Void, Error>
+    func download(_ episode: Episode) -> AnyPublisher<Void, Error>
+    func deleteDownload(for episode: Episode) -> AnyPublisher<Void, Error>
+    func deleteAllDownloads() -> AnyPublisher<Void, Error>
+    func pauseDownload(for episode: Episode) -> AnyPublisher<Void, Error>
+    func resumeDownload(for episode: Episode) -> AnyPublisher<Void, Error>
+    func cancelDownload(for episode: Episode) -> AnyPublisher<Void, Error>
+    func downloadsSize() -> AnyPublisher<Int, Error>
+
+    #if os(iOS)
+    func sendToWatch(_ episode: Episode) -> AnyPublisher<Void, Error>
+    func removeFromWatch(_ episode: Episode) -> AnyPublisher<Void, Error>
+    #endif
 }

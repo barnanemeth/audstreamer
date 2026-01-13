@@ -46,7 +46,6 @@ extension WatchAppDelegate {
     private func registerServices() {
         Resolver.register { WatchEpisodeService() }
             .implements(EpisodeService.self)
-            .implements(DownloadService.self)
             .scope(.cached)
 
         Resolver.register { WatchAudioPlayer() }
@@ -66,15 +65,15 @@ extension WatchAppDelegate {
     }
 
     private func deleteAbandonedEpisodes() {
-        episodeService.deleteAbandonedEpisodes()
-            .replaceError(with: ())
-            .sink()
-            .store(in: &cancellables)
+//        episodeService.deleteAbandonedEpisodes()
+//            .replaceError(with: ())
+//            .sink()
+//            .store(in: &cancellables)
     }
 
     private func sendUpdateTrigger() {
-        episodeService.sendUpdateTrigger()
-            .sink()
-            .store(in: &cancellables)
+//        episodeService.sendUpdateTrigger()
+//            .sink()
+//            .store(in: &cancellables)
     }
 }

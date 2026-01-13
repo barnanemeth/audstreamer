@@ -9,6 +9,7 @@ import Combine
 
 public protocol Account {
     func isLoggedIn() -> AnyPublisher<Bool, Error>
+    func login() -> AnyPublisher<Void, Error>
     func logout() -> AnyPublisher<Void, Error>
     func refresh() -> AnyPublisher<Void, Error>
 }

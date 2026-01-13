@@ -14,8 +14,9 @@ internal import Reachability
 
 extension Resolver {
     public static func registerDataServices() {
+        registerEpisodeService()
         registerApplicationStateHandler()
-        registerNetworking()
+        registerAPIClient()
         registerDatabase()
         registerCloud()
         registerAuthorization()
@@ -59,15 +60,21 @@ extension Resolver {
 }
 
 extension Resolver {
+    private static func registerEpisodeService() {
+        register { DefaultEpisodeService() }
+            .implements(EpisodeService.self)
+            .scope(.cached)
+    }
+
     private static func registerApplicationStateHandler() {
         register { DefaultApplicationStateHandler() }
             .implements(ApplicationStateHandler.self)
             .scope(.cached)
     }
 
-    private static func registerNetworking() {
+    private static func registerAPIClient() {
         register { DefaultAPIClient() }
-            .implements(Networking.self)
+            .implements(APIClient.self)
             .scope(.cached)
     }
 

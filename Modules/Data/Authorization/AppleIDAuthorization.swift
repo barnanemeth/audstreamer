@@ -36,22 +36,6 @@ extension AppleIDAuthorization: Authorization {
         authorizationSubject = PassthroughSubject<Data, Error>()
         return authorizationSubject.eraseToAnyPublisher()
     }
-
-    func checkAuthorizationStatus(for userID: String) -> AnyPublisher<AuthorizationState, Error> {
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        return Promise<AuthorizationState, Error> { promise in
-            appleIDProvider.getCredentialState(forUserID: userID, completion: { credentialState, _  in
-                switch credentialState {
-                case .authorized: promise(.success(.authorized))
-                case .revoked: promise(.success(.revoked))
-                case .notFound: promise(.success(.notFound))
-                case .transferred: promise(.success(.transferred))
-                @unknown default: preconditionFailure("Unreacheable default")
-                }
-            })
-        }
-        .eraseToAnyPublisher()
-    }
 }
 
 // MARK: - ASAuthorizationControllerPresentationContextProviding methods

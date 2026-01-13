@@ -49,9 +49,9 @@ extension DownloadsView {
     private func swipeActions(for data: DownloadingComponent.Data) -> some View {
         AsyncButton {
             if data.isPaused {
-                await viewModel.resume(data.item)
+                await viewModel.resume(data.episode)
             } else {
-                await viewModel.pause(data.item)
+                await viewModel.pause(data.episode)
             }
         } label: {
             Image(systemSymbol: data.isPaused ? .playFill : .pauseFill)
@@ -59,7 +59,7 @@ extension DownloadsView {
         .tint(data.isPaused ? Asset.Colors.success.swiftUIColor : Asset.Colors.warning.swiftUIColor)
 
         AsyncButton {
-            await viewModel.cancel(data.item)
+            await viewModel.cancel(data.episode)
         } label: {
             Image(systemSymbol: .stopFill)
         }

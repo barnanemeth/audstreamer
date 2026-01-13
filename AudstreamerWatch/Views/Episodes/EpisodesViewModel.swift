@@ -35,7 +35,7 @@ final class EpisodesViewModel: ObservableObject {
 
 extension EpisodesViewModel {
     private func setupBindings() {
-        let episodes = episodeService.getEpisodes().removeDuplicates()
+        let episodes = episodeService.episodes(matching: nil).removeDuplicates()
         let nowPlayingID = audioPlayer.getCurrentPlayingAudioInfo().removeDuplicates().map(\.?.id).prepend(nil)
 
         Publishers.CombineLatest(episodes, nowPlayingID)

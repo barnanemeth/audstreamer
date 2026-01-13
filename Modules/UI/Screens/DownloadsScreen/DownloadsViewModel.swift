@@ -30,7 +30,7 @@ final class DownloadsViewModel: ViewModel {
 
     // MARK: Dependencies
 
-    @ObservationIgnored @Injected private var downloadService: DownloadService
+    @ObservationIgnored @Injected private var episodeService: EpisodeService
     @ObservationIgnored @Injected private var navigator: Navigator
 
     // MARK: Properties
@@ -42,7 +42,7 @@ final class DownloadsViewModel: ViewModel {
     // MARK: Private properties
 
     @ObservationIgnored private lazy var singleEvent: AnyPublisher<DownloadEvent, Error> = {
-        downloadService.getEvent().shareReplay()
+        episodeService.downloadEvents().shareReplay()
     }()
     @MainActor @ObservationIgnored private let itemsSubject = CurrentValueSubject<[DownloadingComponent.Data], Never>([])
 }
@@ -64,9 +64,9 @@ extension DownloadsViewModel {
 
 extension DownloadsViewModel {
     @MainActor
-    func pause(_ item: Downloadable) async {
+    func pause(_ episode: Episode) async {
         await performAction(
-            with: item,
+            with: episode,
             type: .pause,
             modifyBlock: { items, index in
                 items[index].isPaused = true
@@ -75,9 +75,9 @@ extension DownloadsViewModel {
     }
 
     @MainActor
-    func resume(_ item: Downloadable) async {
+    func resume(_ episode: Episode) async {
         await performAction(
-            with: item,
+            with: episode,
             type: .resume,
             modifyBlock: { items, index in
                 items[index].isPaused = false
@@ -86,9 +86,9 @@ extension DownloadsViewModel {
     }
 
     @MainActor
-    func cancel(_ item: Downloadable) async {
+    func cancel(_ episode: Episode) async {
         await performAction(
-            with: item,
+            with: episode,
             type: .cancel,
             modifyBlock: { items, index in
                 items.remove(at: index)
@@ -109,7 +109,7 @@ extension DownloadsViewModel {
 
     @MainActor
     private func subscribeToAggregatedEvents() async {
-        let publisher = downloadService.getAggregatedEvent()
+        let publisher = episodeService.aggregatedDownloadEvents()
             .map { [unowned self] in self.getItems(from: $0) }
             .replaceError(with: [])
             .removeDuplicates()
@@ -132,8 +132,9 @@ extension DownloadsViewModel {
     }
 
     private func getItems(from aggregatedEvent: DownloadAggregatedEvent) -> [DownloadingComponent.Data] {
-        aggregatedEvent.items.map { item in
-            DownloadingComponent.Data(item: item, isPaused: false, eventPublisher: getEventPublisher(for: item))
+        aggregatedEvent.items.compactMap { item -> DownloadingComponent.Data? in
+            guard let episode = item as? Episode else { return nil }
+            return DownloadingComponent.Data(episode: episode, isPaused: false, eventPublisher: getEventPublisher(for: item))
         }
     }
 
@@ -142,17 +143,17 @@ extension DownloadsViewModel {
     }
 
     @MainActor
-    private func performAction(with item: Downloadable,
+    private func performAction(with episode: Episode,
                                type: DownloadActionType,
                                modifyBlock: ((inout [DownloadingComponent.Data], Int) -> Void)? = nil) async {
         var items = itemsSubject.value
-        guard let index = items.firstIndex(where: { $0.id == item.id }) else { return }
+        guard let index = items.firstIndex(where: { $0.id == episode.id }) else { return }
 
         do {
             switch type {
-            case .pause: try await downloadService.pause(item).value
-            case .resume: try await downloadService.resume(item).value
-            case .cancel: try await downloadService.cancel(item).value
+            case .pause: try await episodeService.pauseDownload(for: episode).value
+            case .resume: try await episodeService.resumeDownload(for: episode).value
+            case .cancel: try await episodeService.cancelDownload(for: episode).value
             }
 
             modifyBlock?(&items, index)

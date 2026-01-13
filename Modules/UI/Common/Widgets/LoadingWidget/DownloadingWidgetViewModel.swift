@@ -15,7 +15,7 @@ final class DownloadingWidgetViewModel: LoadingWidgetViewModel {
 
     // MARK: Dependencies
 
-    @ObservationIgnored @Injected private var downloadService: DownloadService
+    @ObservationIgnored @Injected private var episodeService: EpisodeService
 
     // MARK: Properties
 
@@ -24,7 +24,7 @@ final class DownloadingWidgetViewModel: LoadingWidgetViewModel {
     }
 
     @ObservationIgnored override var statePublisher: AnyPublisher<LoadingWidgetState?, Never> {
-        let aggregatedEvent = downloadService.getAggregatedEvent()
+        let aggregatedEvent = episodeService.aggregatedDownloadEvents()
             .filter { !$0.isSilentDownloading }
 
         return Publishers.CombineLatest(aggregatedEvent, singleError)
@@ -34,7 +34,7 @@ final class DownloadingWidgetViewModel: LoadingWidgetViewModel {
             .eraseToAnyPublisher()
     }
     @ObservationIgnored override var singleError: AnyPublisher<Error?, Error> {
-        downloadService.getEvent()
+        episodeService.downloadEvents()
             .map { event in
                 switch event {
                 case let .error(_, error): return error

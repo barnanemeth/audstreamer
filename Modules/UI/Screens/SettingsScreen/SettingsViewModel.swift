@@ -19,11 +19,9 @@ final class SettingsViewModel: ViewModel {
 
     // MARK: Dependencies
 
+    @ObservationIgnored @Injected private var episodeService: EpisodeService
     @ObservationIgnored @Injected private var account: Account
-    @ObservationIgnored @Injected private var downloadService: DownloadService
-    @ObservationIgnored @Injected private var networking: Networking
     @ObservationIgnored @Injected private var socket: Socket
-    @ObservationIgnored @Injected private var database: Database
     @ObservationIgnored @Injected private var navigator: Navigator
 
     // MARK: Properties
@@ -59,8 +57,7 @@ extension SettingsViewModel {
     @MainActor
     func deleteDownloads() async {
         do {
-            try await downloadService.deleteDownloads().value
-            try await database.resetDownloadEpisodes().value
+            try await episodeService.deleteAllDownloads().value
         } catch {
             showErrorAlert(for: error)
         }
@@ -103,7 +100,7 @@ extension SettingsViewModel {
 extension SettingsViewModel {
     @MainActor
     private func subscribeToDownloadSize() async {
-        let publisher = downloadService.getDownloadSize().replaceError(with: .zero)
+        let publisher = episodeService.downloadsSize().replaceError(with: .zero)
         for await downloadSize in publisher.asAsyncStream() {
             downloadSizeText = getDownloadSizeText(for: downloadSize)
             isDeleteDownloadsVisible = downloadSize > .zero
@@ -164,10 +161,7 @@ extension SettingsViewModel {
             defer { isLoading = false }
             do {
                 isLoading = true
-                try? await networking.deleteDevice().value
-                try? await socket.disconnect().value
                 try await account.logout().value
-                try await account.refresh().value
             } catch {
                 showErrorAlert(for: error)
             }
@@ -179,8 +173,7 @@ extension SettingsViewModel {
             defer { isLoading = false }
             do {
                 isLoading = true
-                try await downloadService.deleteDownloads().value
-                try await database.resetDownloadEpisodes().value
+                try await episodeService.deleteAllDownloads().value
             } catch {
                 showErrorAlert(for: error)
             }

@@ -33,7 +33,7 @@ final class PlayerWidgetViewModel: ViewModel {
 
     // MARK: Dependencies
 
-    @ObservationIgnored @Injected private var database: Database
+    @ObservationIgnored @Injected private var episodeService: EpisodeService
     @ObservationIgnored @Injected private var audioPlayer: AudioPlayer
     @ObservationIgnored @Injected private var socket: Socket
 
@@ -62,7 +62,7 @@ final class PlayerWidgetViewModel: ViewModel {
                 guard let id = id else {
                     return Just(nil).setFailureType(to: Error.self).eraseToAnyPublisher()
                 }
-                return self.database.getEpisode(id: id).eraseToAnyPublisher()
+                return episodeService.episode(id: id).eraseToAnyPublisher()
             }
             .shareReplay()
     }()

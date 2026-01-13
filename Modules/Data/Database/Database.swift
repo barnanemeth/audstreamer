@@ -9,7 +9,9 @@ import Foundation
 import Combine
 import SwiftData
 
-public protocol Database {
+import Domain
+
+protocol Database {
     func insertEpisodes(_ episodes: [Episode], overwrite: Bool) -> AnyPublisher<Void, Error>
     func getEpisodes(filterFavorites: Bool,
                      filterDownloads: Bool,

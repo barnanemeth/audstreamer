@@ -8,7 +8,9 @@
 import Foundation
 import Combine
 
-public protocol DownloadService {
+import Domain
+
+protocol DownloadService {
     func download(_ item: Downloadable, userInfo: [String: Any]) -> AnyPublisher<Void, Error>
     func delete(_ item: Downloadable) -> AnyPublisher<Void, Error>
     func getEvent() -> AnyPublisher<DownloadEvent, Error>
@@ -23,7 +25,7 @@ public protocol DownloadService {
 }
 
 extension DownloadService {
-    public func download(_ item: Downloadable, userInfo: [String: Any] = [:]) -> AnyPublisher<Void, Error> {
+    func download(_ item: Downloadable, userInfo: [String: Any] = [:]) -> AnyPublisher<Void, Error> {
         download(item, userInfo: userInfo)
     }
 }

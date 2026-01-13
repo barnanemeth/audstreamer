@@ -7,7 +7,7 @@
 
 import Combine
 
-public protocol DatabaseUpdater {
+protocol DatabaseUpdater {
     func startUpdating() -> AnyPublisher<Void, Error>
     func stopUpdating() -> AnyPublisher<Void, Error>
 }

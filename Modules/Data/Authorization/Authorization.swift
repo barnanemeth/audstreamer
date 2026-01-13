@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 
-public protocol Authorization {
+protocol Authorization {
     func authorize() -> AnyPublisher<Data, Error>
-    func checkAuthorizationStatus(for userID: String) -> AnyPublisher<AuthorizationState, Error>
 }

@@ -27,9 +27,7 @@ final class ApplicationLoader: NSObject {
 
     // MARK: Dependencies
 
-    @LazyInjected private var applicationStateHandler: ApplicationStateHandler
-    @LazyInjected private var database: Database
-    @LazyInjected private var networking: Networking
+    @LazyInjected private var episodeService: EpisodeService
     @LazyInjected private var notificationHandler: NotificationHandler
     @LazyInjected private var cloud: Cloud
     @LazyInjected private var shortcutHandler: ShortcutHandler
@@ -46,12 +44,16 @@ extension ApplicationLoader {
     @MainActor
     func load() {
         Resolver.registerDependencies()
-        applicationStateHandler.start()
+        startEpisdeService()
         setupBackgroundRefresh()
         notificationHandler.setupNotifications()
         setupImageLoading()
         shortcutHandler.setupItems()
         resetBadge()
+    }
+
+    func startEpisdeService() {
+        episodeService.startUpdating().sink().store(in: &cancellables)
     }
 
     func synchronizePrivateCloud() {
@@ -93,11 +95,7 @@ extension ApplicationLoader {
     }
 
     private func fetchAndSaveEpisodes() -> AnyPublisher<Void, Error> {
-        database.getLastEpisodePublishDate()
-            .first()
-            .flatMap { [unowned self] in self.networking.getEpisodes(from: $0) }
-            .flatMap { [unowned self] in self.database.insertEpisodes($0) }
-            .eraseToAnyPublisher()
+        episodeService.refresh()
     }
 
     private func setupImageLoading() {

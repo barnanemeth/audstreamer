@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol SecureStore {
+protocol SecureStore {
     func storeToken(_ token: Data) throws
     func getToken() throws -> Data
     func deleteToken() throws

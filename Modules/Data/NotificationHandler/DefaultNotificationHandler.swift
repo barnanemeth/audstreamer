@@ -25,7 +25,7 @@ final class DefaultNotificationHandler: NSObject {
     // MARK: Dependencies
 
     @LazyInjected private var secureStore: SecureStore
-    @LazyInjected private var networking: Networking
+    @LazyInjected private var apiClient: APIClient
     @LazyInjected private var database: Database
 
     // MARK: Private properties
@@ -59,13 +59,13 @@ extension DefaultNotificationHandler: NotificationHandler {
         let hexString = token.hexString
         let userDefaults = UserDefaults.standard
         userDefaults.set(hexString, forKey: Constant.notificationTokenUserDefaultsKey)
-        networking.addDevice(with: hexString).sink().store(in: &cancellables)
+        apiClient.addDevice(with: hexString).sink().store(in: &cancellables)
     }
 
     func handleFetchNotification(completion: @escaping (UIBackgroundFetchResult) -> Void) {
         database.getLastEpisodePublishDate()
             .first()
-            .flatMap { [unowned self] in self.networking.getEpisodes(from: $0) }
+            .flatMap { [unowned self] in self.apiClient.getEpisodes(from: $0) }
             .flatMap { [unowned self] episodes -> AnyPublisher<[Episode], Error> in
                 let episodesPublisher = Just(episodes).setFailureType(to: Error.self)
                 let insert = self.database.insertEpisodes(episodes)
