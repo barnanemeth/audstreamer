@@ -181,8 +181,6 @@
 		C23142612F0835F5006A1CA9 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C23142602F0835F5006A1CA9 /* Lottie */; };
 		C23142652F0838D0006A1CA9 /* LoadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C26CDD632C06036F00D186D3 /* LoadingAnimation.json */; };
 		C23142662F0838D0006A1CA9 /* DownloadAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = C28B239F2C0B78860012FA81 /* DownloadAnimation.json */; };
-		C23142792F083F32006A1CA9 /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; };
-		C231427E2F083F34006A1CA9 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DE62F08093C006A1CA9 /* Domain.framework */; };
 		C23142812F0844A2006A1CA9 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = C23142802F0844A2006A1CA9 /* SFSafeSymbols */; };
 		C23142822F084627006A1CA9 /* WatchConnectivityMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C5C7B2A2E2C6700306547 /* WatchConnectivityMessage.swift */; };
 		C23142842F0846F6006A1CA9 /* LastPlayedDateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C5C732A2E2AB200306547 /* LastPlayedDateMessage.swift */; };
@@ -192,6 +190,10 @@
 		C23142882F0846FD006A1CA9 /* ReplyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F1EB452A38ABDF001F8B9E /* ReplyMessage.swift */; };
 		C231428A2F08478C006A1CA9 /* Double+ToHoursMinutesSeconds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B7082C258154DF00AA831D /* Double+ToHoursMinutesSeconds.swift */; };
 		C231428E2F084860006A1CA9 /* WatchAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C231428D2F084860006A1CA9 /* WatchAudioPlayer.swift */; };
+		C23717882F178A600073A642 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DE62F08093C006A1CA9 /* Domain.framework */; };
+		C23717892F178A600073A642 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DE62F08093C006A1CA9 /* Domain.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C237178B2F178A620073A642 /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; };
+		C237178C2F178A620073A642 /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C237C4A328FB1AD400D246D7 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = C237C4A228FB1AD400D246D7 /* SocketIO */; };
 		C23CBD7B2AF405780024E0A1 /* WatchURLHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23CBD7A2AF405780024E0A1 /* WatchURLHelper.swift */; };
 		C23E80E12EF2D7900093ACA5 /* MockWatchEpisodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23E80E02EF2D7900093ACA5 /* MockWatchEpisodeService.swift */; };
@@ -405,6 +407,18 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C237178A2F178A600073A642 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C23717892F178A600073A642 /* Domain.framework in Embed Frameworks */,
+				C237178C2F178A620073A642 /* Common.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -724,9 +738,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C237178B2F178A620073A642 /* Common.framework in Frameworks */,
+				C23717882F178A600073A642 /* Domain.framework in Frameworks */,
 				C23142812F0844A2006A1CA9 /* SFSafeSymbols in Frameworks */,
-				C231427E2F083F34006A1CA9 /* Domain.framework in Frameworks */,
-				C23142792F083F32006A1CA9 /* Common.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2098,6 +2112,7 @@
 				C26BF9892A1562E200598F6E /* Resources */,
 				C231428B2F0847F1006A1CA9 /* Swiftgen */,
 				C21D64992A2CF6AC00226AFF /* SwiftLint */,
+				C237178A2F178A600073A642 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
