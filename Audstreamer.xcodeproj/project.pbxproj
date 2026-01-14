@@ -26,7 +26,6 @@
 		C20B07AE2F0AA39600A3E815 /* UIComponentKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313E0A2F08096A006A1CA9 /* UIComponentKit.framework */; };
 		C20B07AF2F0AA39600A3E815 /* UIComponentKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313E0A2F08096A006A1CA9 /* UIComponentKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C20F9C6D2AFAC920002F0F59 /* WatchEpisodeService+WCSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20F9C6C2AFAC920002F0F59 /* WatchEpisodeService+WCSessionDelegate.swift */; };
-		C21C5C802A2E83DC00306547 /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21C5C7F2A2E83DC00306547 /* Updater.swift */; };
 		C21D64A42A2D137E00226AFF /* WatchRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21D64A32A2D137E00226AFF /* WatchRemotePlayer.swift */; };
 		C231414B2F081C07006A1CA9 /* Resolver+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C231414A2F081C07006A1CA9 /* Resolver+Extensions.swift */; };
 		C231415A2F081DBD006A1CA9 /* WatchEpisodeService+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D7EA292A39B31B00D51F40 /* WatchEpisodeService+Helpers.swift */; };
@@ -462,7 +461,6 @@
 		C21C5C732A2E2AB200306547 /* LastPlayedDateMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPlayedDateMessage.swift; sourceTree = "<group>"; };
 		C21C5C772A2E2C2700306547 /* LastPositionMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPositionMessage.swift; sourceTree = "<group>"; };
 		C21C5C7B2A2E2C6700306547 /* WatchConnectivityMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityMessage.swift; sourceTree = "<group>"; };
-		C21C5C7F2A2E83DC00306547 /* Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
 		C21D649D2A2D12A000226AFF /* EpisodesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesService.swift; sourceTree = "<group>"; };
 		C21D64A32A2D137E00226AFF /* WatchRemotePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchRemotePlayer.swift; sourceTree = "<group>"; };
 		C21F8D30290F03D600053070 /* Strings+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Strings+Generated.swift"; sourceTree = "<group>"; };
@@ -798,6 +796,7 @@
 		C20372982A28D636002A6E54 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				C20372992A28D643002A6E54 /* UserDefaults+Extensions.swift */,
 				C23CBD7A2AF405780024E0A1 /* WatchURLHelper.swift */,
 				C252B19D2F1131F10007BE2A /* Episode+Extensions.swift */,
 			);
@@ -829,7 +828,6 @@
 				C2D7EA252A39B26900D51F40 /* WatchEpisodeService+EpisodeService.swift */,
 				C2D7EA292A39B31B00D51F40 /* WatchEpisodeService+Helpers.swift */,
 				C20F9C6C2AFAC920002F0F59 /* WatchEpisodeService+WCSessionDelegate.swift */,
-				C20372992A28D643002A6E54 /* UserDefaults+Extensions.swift */,
 			);
 			path = EpisodeService;
 			sourceTree = "<group>";
@@ -1661,14 +1659,6 @@
 			path = AudioPlayer;
 			sourceTree = "<group>";
 		};
-		C231428F2F084A2A006A1CA9 /* Updater */ = {
-			isa = PBXGroup;
-			children = (
-				C21C5C7F2A2E83DC00306547 /* Updater.swift */,
-			);
-			path = Updater;
-			sourceTree = "<group>";
-		};
 		C237C4C228FC38E200D246D7 /* LoadingScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -1756,7 +1746,6 @@
 		C25ED5792A2B828800E6A4D5 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				C231428F2F084A2A006A1CA9 /* Updater */,
 				C231428C2F084850006A1CA9 /* AudioPlayer */,
 				C21D64A22A2D137000226AFF /* RemotePlayer */,
 				C21D64A12A2D12DF00226AFF /* EpisodeService */,
@@ -2583,7 +2572,6 @@
 				C27008D62EF7224600B54C93 /* VolumeView.swift in Sources */,
 				C23E81672EF5881C0093ACA5 /* SystemVolumeControl.swift in Sources */,
 				C26BF99E2A15796700598F6E /* EpisodesView.swift in Sources */,
-				C21C5C802A2E83DC00306547 /* Updater.swift in Sources */,
 				C26BF9A22A157A3E00598F6E /* WatchEpisodeService.swift in Sources */,
 				C26BF98E2A1562E200598F6E /* AudstreamerWatchApp.swift in Sources */,
 				C25ED5752A2B818C00E6A4D5 /* PlayingViewModel.swift in Sources */,

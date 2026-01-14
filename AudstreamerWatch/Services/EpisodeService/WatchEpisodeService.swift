@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import WatchConnectivity
 
+import Common
 import Domain
 
 final class WatchEpisodeService: NSObject {
@@ -22,6 +23,9 @@ final class WatchEpisodeService: NSObject {
         static let episodesUserDefaultsKey = "Episodes"
         static let episodeIDMessageKey = "episodeID"
     }
+
+    @Injected var audioPlayer: AudioPlayer
+    @Injected var remotePlayer: RemotePlayer
 
     // MARK: Properties
 
@@ -46,6 +50,20 @@ final class WatchEpisodeService: NSObject {
             }
             .shareReplay()
     }()
+    var currentlyPalayingEpispde: AnyPublisher<Episode?, Error> {
+        audioPlayer.getCurrentPlayingAudioInfo()
+            .flatMapLatest { [unowned self] audioInfo -> AnyPublisher<Episode?, Error> in
+                guard let audioInfo else { return Just(nil).setFailureType(to: Error.self).eraseToAnyPublisher() }
+                return episode(id: audioInfo.id)
+                    .map { episode in
+                        guard var episode else { return nil }
+                        episode.duration = audioInfo.duration
+                        return episode
+                    }
+                    .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+    }
 
     // MARK: Init
 

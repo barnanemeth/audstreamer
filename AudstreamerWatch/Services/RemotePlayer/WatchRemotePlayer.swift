@@ -52,8 +52,8 @@ extension WatchRemotePlayer: RemotePlayer {
     }
 
     func updateNowPlaying(_ item: NowPlayable, preferredDuration: Int) -> AnyPublisher<Void, Error> {
-//        nowPlayingInfoCenter.nowPlayingInfo?[Constant.titleKey] = item.title
-//        nowPlayingInfoCenter.nowPlayingInfo?[Constant.playbackDurationKey] = Double(preferredDuration)
+        nowPlayingInfoCenter.nowPlayingInfo?[Constant.titleKey] = item.title
+        nowPlayingInfoCenter.nowPlayingInfo?[Constant.playbackDurationKey] = Double(preferredDuration)
 
         return Just.void()
     }
@@ -62,11 +62,6 @@ extension WatchRemotePlayer: RemotePlayer {
         Just({ nowPlayingInfoCenter.nowPlayingInfo?[Constant.elapsedPlaybackTimeKey] = elapsedTime }())
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
-    }
-
-    func updatePlaybackState(isPlaying: Bool) -> AnyPublisher<Void, Error> {
-        // Note: not supported in watchOS
-        Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 }
 

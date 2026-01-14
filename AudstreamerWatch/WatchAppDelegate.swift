@@ -16,7 +16,6 @@ final class WatchAppDelegate: NSObject {
     // MARK: Dependencies
 
     @LazyInjected private var episodeService: EpisodeService
-    @LazyInjected private var updater: Updater
 
     // MARK: Private properties
 
@@ -27,16 +26,14 @@ final class WatchAppDelegate: NSObject {
 extension WatchAppDelegate: WKApplicationDelegate {
     func applicationDidFinishLaunching() {
         registerServices()
-        startUpdating()
     }
 
     func applicationDidEnterBackground() {
-        deleteAbandonedEpisodes()
+        refreshEpisodes()
     }
 
     func applicationDidBecomeActive() {
-        sendUpdateTrigger()
-        deleteAbandonedEpisodes()
+        refreshEpisodes()
     }
 }
 
@@ -55,25 +52,12 @@ extension WatchAppDelegate {
         Resolver.register { WatchRemotePlayer() }
             .implements(RemotePlayer.self)
             .scope(.cached)
-
-        Resolver.register { Updater() }
-            .scope(.cached)
     }
 
-    private func startUpdating() {
-        updater.startUpdating()
-    }
-
-    private func deleteAbandonedEpisodes() {
-//        episodeService.deleteAbandonedEpisodes()
-//            .replaceError(with: ())
-//            .sink()
-//            .store(in: &cancellables)
-    }
-
-    private func sendUpdateTrigger() {
-//        episodeService.sendUpdateTrigger()
-//            .sink()
-//            .store(in: &cancellables)
+    private func refreshEpisodes() {
+        episodeService.refresh()
+            .replaceError(with: ())
+            .sink()
+            .store(in: &cancellables)
     }
 }

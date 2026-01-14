@@ -12,5 +12,8 @@ public protocol RemotePlayer {
     func getEvents() -> AnyPublisher<RemotePlayerEvent, Error>
     func updateNowPlaying(_ item: NowPlayable, preferredDuration: Int) -> AnyPublisher<Void, Error>
     func updateElapsedTime(_ elapsedTime: Double?) -> AnyPublisher<Void, Error>
+
+    #if os(iOS)
     func updatePlaybackState(isPlaying: Bool) -> AnyPublisher<Void, Error>
+    #endif
 }
