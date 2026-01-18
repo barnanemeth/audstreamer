@@ -34,7 +34,9 @@ actor SwiftDataContextManager {
         try modelContext.delete(model: Model.self, where: predicate)
     }
 
-    func save() throws {
-        try modelContext.save()
+    func transaction(_ block: () -> Void) throws {
+        try modelContext.transaction {
+            block()
+        }
     }
 }

@@ -12,7 +12,7 @@ import UIComponentKit
 
 internal import Lottie
 
-struct LoadingView: ScreenView {
+struct LoadingView: View {
 
     // MARK: Constants
 
@@ -22,7 +22,7 @@ struct LoadingView: ScreenView {
 
     // MARK: Dependencies
 
-    @State var viewModel: LoadingViewModel
+    @State private var viewModel = LoadingViewModel()
 
     // MARK: UI
 
@@ -31,11 +31,12 @@ struct LoadingView: ScreenView {
             Spacer()
             animation
             Spacer()
+            Spacer()
         }
         .overlay(alignment: .bottom) { label }
         .padding(.horizontal, Constant.horizontalPadding)
         .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
-        .task { await viewModel.fetchData() }
+        .task(id: "LoadingView.SubscriptionTask") { await viewModel.fetchData() }
     }
 }
 

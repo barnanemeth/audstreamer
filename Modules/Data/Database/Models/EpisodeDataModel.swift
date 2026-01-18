@@ -27,6 +27,8 @@ final class EpisodeDataModel {
     var numberOfPlays = 0
     var isOnWatch = false
 
+    @Relationship(inverse: \PodcastDataModel.episodes) var podcast: PodcastDataModel?
+
     init(id: String,
          title: String,
          publishDate: Date,

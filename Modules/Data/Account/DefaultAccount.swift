@@ -113,14 +113,18 @@ extension DefaultAccount {
     }
 
     private func registerDeviceIfPossible() -> AnyPublisher<Void, Error> {
-        Just({
-            UIApplication.shared.registerForRemoteNotifications()
-            return userDefaults.string(forKey: Constant.notificationTokenUserDefaultsKey)
-        }())
+        Promise { promise in
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+                let token = self.userDefaults.string(forKey: Constant.notificationTokenUserDefaultsKey)
+                promise(.success(token))
+            }
+        }
         .flatMap { [unowned self] token in
             guard let token else { return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher() }
             return apiClient.addDevice(with: token)
         }
+        .subscribe(on: DispatchQueue.main)
         .eraseToAnyPublisher()
     }
 }

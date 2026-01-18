@@ -2,28 +2,33 @@
 //  PlayerViewModel.swift
 //  Audstreamer
 //
-//  Created by Barna Nemeth on 2022. 10. 16..
+//  Created by Barna Nemeth on 2022. 10. 18..
 //
 
 import Foundation
 import Combine
-import UIKit
-import SafariServices
 
 import Common
 import Domain
-import UIComponentKit
-
-internal import Reachability
-internal import OrderedCollections
 
 @Observable
 final class PlayerViewModel: ViewModel {
 
+    // MARK: Typealiases
+
+    private typealias SecondDurationPair = (second: Second, duration: Int)
+
+    // MARK: Enums
+
+    private enum ProgressTimeTextType {
+        case elapsed
+        case remaining
+    }
+
     // MARK: Constants
 
     private enum Constant {
-        static let splitterDateComponents: [Calendar.Component] = [.year, .month]
+        static let emptyProgressText = "--:--:--"
     }
 
     // MARK: Dependencies
@@ -31,44 +36,49 @@ final class PlayerViewModel: ViewModel {
     @ObservationIgnored @Injected private var episodeService: EpisodeService
     @ObservationIgnored @Injected private var audioPlayer: AudioPlayer
     @ObservationIgnored @Injected private var socket: Socket
-    @ObservationIgnored @Injected private var cloud: Cloud
-    @ObservationIgnored @Injected private var notificationHandler: NotificationHandler
-    @ObservationIgnored @Injected private var filterService: FilterService
-    @ObservationIgnored @Injected private var shortcutHandler: ShortcutHandler
-    @ObservationIgnored @Injected private var watchConnectivityService: WatchConnectivityService
-    @ObservationIgnored @Injected private var navigator: Navigator
 
     // MARK: Properties
 
-    private(set) var screenTitle = (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) ?? ""
-    private(set) var watchConnectionStatus: WatchConnectionStatus = .notAvailable
-    private(set) var filterAttributes = [FilterAttribute]()
-    private(set) var isFilterActive = false
-    private(set) var searchKeyword: String?
-    private(set) var sections: [EpisodeSection]?
-    private(set) var isLoading = false
-    var openedEpisodeID: String?
-    var currentlyShowedDialogDescriptor: DialogDescriptor?
-    var isPlayerWidgetVisible = false
+    private(set) var activeRemotePlayingDeviceText: AttributedString?
+    private(set) var episode: Episode?
+    private(set) var activeDevicesCount: Int?
+    private(set) var isPlaying = false
+    private(set) var currentProgress: Float = .zero
+    private(set) var isEnabled = true
+    private(set) var elapsedTimeText = Constant.emptyProgressText
+    private(set) var remainingTimeText = Constant.emptyProgressText
+    private(set) var devices = [Device]()
+    private(set) var activeDeviceID: String?
+    var title: String? { episode?.title }
+    var isSliderHighlighted = false
+    var currentSliderValue: Float = .zero
 
     // MARK: Private properties
 
-    @ObservationIgnored private lazy var sectionTitleDateFormatte: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = Constant.splitterDateComponents.dateFormat
-        return formatter
-    }()
-
-    // MARK: Init
-
-    init() {
-        Task {
-            watchConnectivityService.startUpdating()
-            await withTaskGroup { taskGroup in
-                taskGroup.addTask { await self.startUpdating() }
-                taskGroup.addTask { await self.showAndInsertOpenableEpisode() }
+    @ObservationIgnored private lazy var currentEpisode: AnyPublisher<Episode?, Error> = {
+        audioPlayer.getCurrentPlayingAudioInfo()
+            .map { $0?.id }
+            .flatMapLatest { [unowned self] id -> AnyPublisher<Episode?, Error> in
+                guard let id = id else {
+                    return Just(nil).setFailureType(to: Error.self).eraseToAnyPublisher()
+                }
+                return episodeService.episode(id: id).eraseToAnyPublisher()
             }
-        }
+            .shareReplay()
+    }()
+    @ObservationIgnored private var currentSecondDurationPair: AnyPublisher<SecondDurationPair, Error> {
+        return Publishers.CombineLatest(audioPlayer.getCurrentSeconds(), currentEpisode.unwrap())
+            .map { (second: $0, duration: $1.duration) }
+            .eraseToAnyPublisher()
+    }
+    @ObservationIgnored private var combinedCurrentSecondDurationPair: AnyPublisher<SecondDurationPair, Error> {
+        let isSliderHighlighted = ObservationTrackingPublisher(self.isSliderHighlighted).setFailureType(to: Error.self)
+        let currentSliderValue = ObservationTrackingPublisher(self.currentSliderValue).setFailureType(to: Error.self)
+        return Publishers.CombineLatest3(currentSecondDurationPair, isSliderHighlighted, currentSliderValue)
+            .map { [unowned self] in
+                self.getSecondDurationPair(secondDurationPair: $0, isSliderHighlighted: $1, sliderValue: $2)
+            }
+            .eraseToAnyPublisher()
     }
 }
 
@@ -77,10 +87,15 @@ final class PlayerViewModel: ViewModel {
 extension PlayerViewModel {
     func subscribe() async {
         await withTaskGroup { taskGroup in
-            taskGroup.addTask { await self.subscribeToShortcutEpisode() }
-            taskGroup.addTask { await self.subscribeToWatchConnection() }
-            taskGroup.addTask { await self.subscribeToFilterAttributes() }
-            taskGroup.addTask { await self.subscribeToEpisodes() }
+            taskGroup.addTask { await self.subscribeToRemotePlaying() }
+            taskGroup.addTask { await self.updateCurrentEpisode() }
+            taskGroup.addTask { await self.updatePlayingState() }
+            taskGroup.addTask { await self.subscribeToSlider() }
+            taskGroup.addTask { await self.updateProgress() }
+            taskGroup.addTask { await self.updateEnabledState() }
+            taskGroup.addTask { await self.updateTimeTexts() }
+            taskGroup.addTask { await self.subscribeToDeviceList() }
+            taskGroup.addTask { await self.subscribeToActiveDevice() }
         }
     }
 }
@@ -88,127 +103,41 @@ extension PlayerViewModel {
 // MARK: - Actions
 
 extension PlayerViewModel {
-    @MainActor
-    func playEpisode(_ episode: Episode) async {
-        do {
-            try await withThrowingTaskGroup { taskGroup in
-                taskGroup.addTask {
-                    let currentPlayingAudioInfo = try await self.audioPlayer.getCurrentPlayingAudioInfo().value
-                    if currentPlayingAudioInfo?.id == episode.id {
-                        try await self.audioPlayer.play().value
-                    } else {
-                        try await self.insertEpisode(episode, playImmediately: true)
-                    }
-                }
-
-                taskGroup.addTask {
-                    let currentEpisodeSocketData = CurrentEpisodeSocketData(episodeID: episode.id, playImmediately: true)
-                    try await self.socket.sendCurrentEpisode(currentEpisodeSocketData).value
-                }
-
-                try await taskGroup.waitForAll()
-            }
-        } catch {
-            showErrorAlert(for: error)
-        }
-    }
-
-    func downloadDeleteEpisode(_ episode: Episode) async {
-        if episode.isDownloaded {
-            try? await deleteEpisode(episode)
-        } else {
-            await downloadEpisodesIfPossible([episode])
-        }
-    }
-
-    @MainActor
-    func toggleEpisodeFavorite(_ episode: Episode) async {
-        do {
-            let isFavorite = !episode.isFavourite
-            try await withThrowingTaskGroup { taskGroup in
-                taskGroup.addTask {
-                    try await self.episodeService.setFavorite(episode, isFavorite: isFavorite).value
-                }
-
-                taskGroup.addTask {
-                    try await self.cloud.setFavorite(isFavorite, for: episode.id).value
-                }
-
-                try await taskGroup.waitForAll()
-            }
-        } catch {
-            showErrorAlert(for: error)
-        }
-    }
-
-    func toggleFilterAttribute(_ attribute: FilterAttribute) {
+    func playPlause() {
         Task {
-            var attribute = attribute
-            attribute.isActive.toggle()
-            try? await filterService.setAttribute(attribute).value
-        }
-    }
-
-    @MainActor
-    func downnloadOrDeletedEpisodes(for section: EpisodeSection) async {
-        do {
-            if section.isDownloaded {
-                try await deleteEpisodes(for: section)
-            } else {
-                try await downloadEpisodes(for: section)
+            do {
+                let isPlaying = try await audioPlayer.isPlaying().value
+                if isPlaying {
+                    try await audioPlayer.pause().value
+                    try await socket.sendPlaybackCommand(.pause).value
+                } else {
+                    try await audioPlayer.play().value
+                    try await socket.sendPlaybackCommand(.play).value
+                }
+            } catch {
+                return
             }
-        } catch {
-            showErrorAlert(for: error)
         }
     }
 
-    @MainActor
-    func downloadEpisodes(_ episodes: [Episode]) async {
-        await withTaskGroup { taskGroup in
-            episodes.forEach { episode in
-                taskGroup.addTask { try? await self.episodeService.download(episode).value }
-            }
-            await taskGroup.waitForAll()
+    func skipBackward() {
+        Task {
+            try? await audioPlayer.seekBackward().value
+            try? await socket.sendPlaybackCommand(.skipBackward).value
         }
     }
 
-    @MainActor
-    func toggleEpisodeIsOnWatch(_ episode: Episode) async {
-        do {
-            let isOnWatch = !episode.isOnWatch
-            if isOnWatch {
-                try await episodeService.sendToWatch(episode).value
-            } else {
-                try await episodeService.removeFromWatch(episode).value
-            }
-        } catch {
-            showErrorAlert(for: error)
+    func skipForward() {
+        Task {
+            try? await audioPlayer.seekForward().value
+            try? await socket.sendPlaybackCommand(.skipForward).value
         }
     }
 
-    @MainActor
-    func refresh() async {
-        try? await episodeService.refresh().value
-    }
-
-    func setSearchKeyword(_ keyword: String) {
-        if keyword.isEmpty {
-            searchKeyword = nil
-        } else {
-            searchKeyword = keyword
+    func setActiveDeviceID(_ activeDeviceID: String) {
+        Task {
+            try? await socket.sendActiveDevice(activeDeviceID).value
         }
-    }
-
-    @MainActor
-    func navigateToSettings() {
-        isPlayerWidgetVisible = false
-        navigator.navigate(to: .settings, method: .push)
-    }
-
-    @MainActor
-    func navigateToDownloads() {
-        isPlayerWidgetVisible = false
-        navigator.navigate(to: .downloads, method: .push)
     }
 }
 
@@ -216,113 +145,44 @@ extension PlayerViewModel {
 
 extension PlayerViewModel {
     @MainActor
-    private func subscribeToWatchConnection() async {
-        let availabilityPublisher = watchConnectivityService.isAvailable().prepend(false)
-        let connectedPublisher = watchConnectivityService.isConnected().prepend(false)
-        let publisher = Publishers.CombineLatest(availabilityPublisher, connectedPublisher)
-            .map { isAvailable, isConnected -> WatchConnectionStatus in
-                return switch (isAvailable, isConnected) {
-                case (false, _): .notAvailable
-                case (true, false): .available
-                case (true, true): .connected
-                }
-            }
-            .replaceError(with: .notAvailable)
+    private func subscribeToRemotePlaying() async {
+        let devicesPublisher = socket.getDeviceList().replaceError(with: [])
+        let activeDevicePublisher = socket.getActiveDevice().replaceError(with: nil)
+        let publisher = Publishers.CombineLatest(devicesPublisher, activeDevicePublisher)
 
-        for await connectionStatus in publisher.asAsyncStream() {
-            watchConnectionStatus = connectionStatus
+        for await (devices, activeDeviceID) in publisher.asAsyncStream() {
+            activeRemotePlayingDeviceText = getActiveRemotePlayingDeviceText(devices: devices, activeDeviceID: activeDeviceID)
+            activeDevicesCount = getActiveDevicesCount(devices: devices)
         }
     }
 
     @MainActor
-    private func subscribeToFilterAttributes() async {
-        let publisher = filterService.getAttributes().replaceError(with: [])
-        for await attributes in publisher.asAsyncStream() {
-            filterAttributes = attributes
-            isFilterActive = attributes.contains(where: { $0.isActive })
+    private func updateCurrentEpisode() async {
+        let publisher = currentEpisode.replaceError(with: nil)
+        for await episode in publisher.asAsyncStream() {
+            self.episode = episode
         }
     }
 
     @MainActor
-    private func subscribeToEpisodes() async {
-        let filterAttributes = ObservationTrackingPublisher(self.filterAttributes)
-        let searchKeyword = ObservationTrackingPublisher(self.searchKeyword)
-        let episodesPublisher = Publishers.CombineLatest(filterAttributes, searchKeyword)
-            .flatMapLatest { [unowned self] in getEpisodes(by: $0, keyword: $1) }
-        let openedEpisodeIDPublisher = ObservationTrackingPublisher(self.openedEpisodeID)
-        let isWatchAvailable = watchConnectivityService.isAvailable().replaceError(with: false)
-        let publisher = Publishers.CombineLatest3(episodesPublisher, openedEpisodeIDPublisher, isWatchAvailable)
-
-        for await (episodes, openedEpisodeID, isWatchAvailable) in publisher.asAsyncStream() {
-            sections = transformEpisodes(from: episodes, openedEpisodeID: openedEpisodeID, isWatchAvailable: isWatchAvailable)
+    private func updatePlayingState() async {
+        let publisher = audioPlayer.isPlaying().replaceError(with: false)
+        for await isPlaying in publisher.asAsyncStream() {
+            self.isPlaying = isPlaying
         }
     }
 
-    private func transformEpisodes(from episodes: [Episode],
-                                   openedEpisodeID: String?,
-                                   isWatchAvailable: Bool) -> [EpisodeSection] {
-        let dict = episodes.reduce(into: OrderedDictionary<DateComponents, [Episode]>(), { dictionary, episode in
-            let components = Calendar.current.dateComponents(
-                Set(Constant.splitterDateComponents),
-                from: episode.publishDate
-            )
-            if dictionary[components] == nil {
-                dictionary[components] = [episode]
-            } else {
-                dictionary[components]?.append(episode)
-            }
-        })
+    private func subscribeToSlider() async {
+        let isHighlighted = ObservationTrackingPublisher(self.isSliderHighlighted).dropFirst().filter { $0 }
+        let notHighlighted = ObservationTrackingPublisher(self.isSliderHighlighted).dropFirst().filter { !$0 }
+        let publisher = Publishers.Zip(isHighlighted, notHighlighted)
 
-        let sections = dict.reduce(into: [EpisodeSection](), { sections, item in
-            let dateComponents = item.key
-            let episodes = item.value
-
-            let sectionsToAdd = episodes.enumerated().map { offset, episode -> EpisodeSection in
-                var title: String?
-                var isDownloaded = false
-                if offset == .zero, let date = Calendar.current.date(from: dateComponents) {
-                    title = sectionTitleDateFormatte.string(from: date)
-                    isDownloaded = episodes.allSatisfy { $0.isDownloaded }
-                }
-                return EpisodeSection(
-                    episode: episode,
-                    isOpened: episode.id == openedEpisodeID,
-                    title: title,
-                    isDownloaded: isDownloaded,
-                    isWatchAvailable: isWatchAvailable
-                )
-            }
-
-            sections.append(contentsOf: sectionsToAdd)
-        })
-
-        return sections
-    }
-
-    private func showAndInsertOpenableEpisode() async {
         do {
-            let lastPlayedEpisodeID = try await episodeService.lastPlayedEpisode().value?.id
-            let episodeIDFromNotification = try await  notificationHandler.getEpisodeID().value
-            let episodeIDFromShortcut = try await  shortcutHandler.getEpisodeID().value
-
-            openedEpisodeID = lastPlayedEpisodeID
-
-            guard let episodeID = episodeIDFromNotification ?? episodeIDFromShortcut ?? lastPlayedEpisodeID,
-                  let episode = try await episodeService.episode(id: episodeID).value  else { return }
-
-            try await withThrowingTaskGroup { taskGroup in
-                taskGroup.addTask {
-                    let currentEpisodeSocketData = CurrentEpisodeSocketData(episodeID: episode.id, playImmediately: true)
-                    try await self.socket.sendCurrentEpisode(currentEpisodeSocketData).value
-                }
-                taskGroup.addTask {
-                    try await self.insertEpisode(episode, playImmediately: false)
-                }
-                taskGroup.addTask {
-                    try await self.notificationHandler.resetEpisodeID().value
-                }
-
-                try await taskGroup.waitForAll()
+            for await _ in publisher.asAsyncStream() {
+                currentProgress = currentSliderValue
+                let secondDurationPair = try await currentSecondDurationPair.value
+                try await audioPlayer.seek(to: Double(currentSliderValue) * Double(secondDurationPair.duration)).value
+                try await socket.sendPlaybackCommand(.seek(Double(currentSliderValue))).value
             }
         } catch {
             return
@@ -330,143 +190,98 @@ extension PlayerViewModel {
     }
 
     @MainActor
-    private func insertEpisode(_ episode: Episode, playImmediately: Bool) async throws {
-        defer { isLoading = false }
-        isLoading = true
-        try await audioPlayer.insert(episode, playImmediately: playImmediately).value
-    }
-
-    private func startUpdating() async {
-        try? await episodeService.startUpdating().value
-    }
-
-    private func deleteEpisode(_ episode: Episode) async throws {
-        try await episodeService.deleteDownload(for: episode).value
-    }
-
-    private func isOnlyCellularAvailable() -> Bool {
-        @OptionalInjected var reachability: Reachability?
-        return reachability?.connection == .cellular
-    }
-
-    @MainActor
-    private func presentCellularWarningAlert(for episodes: [Episode]) async {
+    private func updateProgress() async {
         do {
-            let size: Int = try await withThrowingTaskGroup { taskGroup in
-                episodes.forEach { episode in
-                    taskGroup.addTask { try await URLHelper.contentLength(of: episode.mediaURL) }
-                }
-
-                return try await taskGroup.reduce(.zero, +)
+            for try await secondDurationPair in currentSecondDurationPair.asAsyncStream() {
+                guard !isSliderHighlighted else { return }
+                let progress = getProgress(from: secondDurationPair)
+                currentProgress = progress
+                currentSliderValue = progress
             }
-            presentCellularWarningAlert(for: episodes, contentLength: size)
         } catch {
-            showErrorAlert(for: error)
+            return
         }
-    }
-
-    private func getEpisodes(by filterAttributes: [FilterAttribute],
-                             keyword: String?) -> AnyPublisher<[Episode], Never> {
-        let queryAttributes = EpisodeQueryAttributes(
-            keyword: keyword,
-            filterFavorites: filterAttributes.contains { $0.type == .favorites && $0.isActive },
-            filterDownloads: filterAttributes.contains { $0.type == .downloads && $0.isActive },
-            filterWatch: filterAttributes.contains { $0.type == .watch && $0.isActive }
-        )
-
-        return episodeService.episodes(matching: queryAttributes)
-            .replaceError(with: [])
-            .eraseToAnyPublisher()
-    }
-
-    private func dateComponents(from section: EpisodeSection) -> DateComponents {
-        Calendar.current.dateComponents(Set(Constant.splitterDateComponents), from: section.episode.publishDate)
     }
 
     @MainActor
-    private func downloadEpisodesIfPossible(_ episodes: [Episode]) async {
-        if isOnlyCellularAvailable() {
-            await presentCellularWarningAlert(for: episodes)
-        } else {
-            await downloadEpisodes(episodes)
+    private func updateEnabledState() async {
+        let publisher = audioPlayer.getCurrentPlayingAudioInfo().replaceError(with: nil)
+        for await audioInfo in publisher.asAsyncStream() {
+            isEnabled = audioInfo?.id != nil
         }
     }
 
-    private func subscribeToShortcutEpisode() async {
-        let publisher = shortcutHandler.getEpisodeID().replaceError(with: nil).unwrap()
-        for await episodeID in publisher.asAsyncStream() {
-            guard let episode = try? await episodeService.episode(id: episodeID).value else { continue }
-            try? await audioPlayer.insert(episode, playImmediately: true).value
-        }
-    }
-
-    private func episodes(for section: EpisodeSection, isDownloaded: Bool) async throws -> [Episode] {
-        let componentsToDownload = dateComponents(from: section)
-        let episodes = try await episodeService.episodes(matching: nil).value
-        return episodes.filter { episode in
-            let components = Calendar.current.dateComponents(
-                Set(Constant.splitterDateComponents),
-                from: episode.publishDate
-            )
-            return components == componentsToDownload && episode.isDownloaded == isDownloaded
-        }
-    }
-
-    private func deleteEpisodes(_ episodes: [Episode]) async throws {
-        try await withThrowingTaskGroup { taskGroup in
-            episodes.forEach { episode in
-                taskGroup.addTask {
-                    try await self.episodeService.deleteDownload(for: episode).value
-                }
+    @MainActor
+    private func updateTimeTexts() async {
+        let publisher = combinedCurrentSecondDurationPair.compactMap(\.self).replaceError(with: nil)
+        for await secondDurationPair in publisher.asAsyncStream() {
+            let (elapsed, remaining): (String, String) = if let secondDurationPair {
+                (getProgressTimeText(from: secondDurationPair, type: .elapsed), getProgressTimeText(from: secondDurationPair, type: .remaining))
+            } else {
+                (Constant.emptyProgressText, Constant.emptyProgressText)
             }
-            try await taskGroup.waitForAll()
+            elapsedTimeText = elapsed
+            remainingTimeText = remaining
         }
     }
 
-    private func presentCellularWarningAlert(for episodes: [Episode], contentLength: Int?) {
-        currentlyShowedDialogDescriptor = DialogDescriptor(
-            title: L10n.download,
-            message: getCellularWarningMessage(episodesCount: episodes.count, contentLength: contentLength),
-            type: .alert,
-            actions: [
-                DialogAction(
-                    title: L10n.laterOnWifi,
-                    type: .normal
-                ),
-                DialogAction(
-                    title: L10n.download,
-                    type: .normal,
-                    action: { [unowned self] in Task { @MainActor in await downloadEpisodes(episodes) } }
-                )
-            ]
-        )
-    }
+    @MainActor
+    private func subscribeToDeviceList() async {
+        let publisher = socket.getDeviceList().removeDuplicates().replaceError(with: [])
 
-    private func getCellularWarningMessage(episodesCount: Int, contentLength: Int?) -> String {
-        var message = ""
-        if let contentLength = contentLength {
-            message += L10n.downloadSize(
-                episodesCount,
-                NumberFormatterHelper.getFormattedContentSize(from: contentLength)
-            )
-            message += " "
+        for await devices in publisher.asAsyncStream() {
+            self.devices = devices.sorted(by: { $0.connectionTime < $1.connectionTime })
         }
-        message += L10n.downloadCellularWarningMessage
-        return message
     }
 
-    private func showErrorAlert(for error: Error) {
-        currentlyShowedDialogDescriptor = DialogDescriptor(title: L10n.error, message: error.localizedDescription)
+    @MainActor
+    private func subscribeToActiveDevice() async {
+        let publisher = socket.getActiveDevice().removeDuplicates().replaceError(with: nil)
+
+        for await activeDeviceID in publisher.asAsyncStream() {
+            self.activeDeviceID = activeDeviceID
+        }
     }
 
-    private func downloadEpisodes(for section: EpisodeSection) async throws {
-        let episodes = try await episodes(for: section, isDownloaded: false)
-        await downloadEpisodesIfPossible(episodes)
+    private func getProgress(from secondDurationPair: SecondDurationPair) -> Float {
+        Float(secondDurationPair.second) / Float(secondDurationPair.duration)
     }
 
-    private func deleteEpisodes(for section: EpisodeSection) async throws {
-        let episodes = try await episodes(for: section, isDownloaded: true)
-        try await deleteEpisodes(episodes)
+    private func getSecondDurationPair(secondDurationPair: SecondDurationPair,
+                                       isSliderHighlighted: Bool,
+                                       sliderValue: Float) -> SecondDurationPair {
+        var secondDurationPair = secondDurationPair
+        if isSliderHighlighted {
+            secondDurationPair.second = Second(Float(secondDurationPair.duration) * sliderValue)
+        }
+        return secondDurationPair
+    }
+
+    private func getProgressTimeText(from secondDurationPair: SecondDurationPair,
+                                     type: ProgressTimeTextType) -> String {
+        switch type {
+        case .elapsed:
+            return secondDurationPair.second.secondsToHoursMinutesSecondsString
+        case .remaining:
+            let remaining = Double(secondDurationPair.duration) - secondDurationPair.second
+            return ("-\(remaining.secondsToHoursMinutesSecondsString)")
+        }
+    }
+
+    private func getActiveRemotePlayingDeviceText(devices: [Device], activeDeviceID: String?) -> AttributedString? {
+        guard let activeDevice = devices.first(where: { $0.id == activeDeviceID }) else { return nil }
+        return if !DeviceHelper.isDeviceIDCurrent(activeDevice.id) {
+            try? AttributedString(markdown: L10n.listeningOn(activeDevice.name))
+        } else {
+            nil
+        }
+    }
+
+    private func getActiveDevicesCount(devices: [Device]) -> Int? {
+        if devices.count > 1 {
+            devices.count
+        } else {
+            nil
+        }
     }
 }
-

@@ -23,16 +23,21 @@ final class SettingsViewModel: ViewModel {
     @ObservationIgnored @Injected private var account: Account
     @ObservationIgnored @Injected private var socket: Socket
     @ObservationIgnored @Injected private var navigator: Navigator
+    @ObservationIgnored @Injected private var watchConnectivityService: WatchConnectivityService
 
     // MARK: Properties
 
     private(set) var isLoading = false
 
     private(set) var downloadSizeText: AttributedString?
+    private(set) var hasPendingDownloads = false
     private(set) var isDeleteDownloadsVisible = false
 
     private(set) var socketConnection: (text: String, iconColor: Color)?
     private(set) var socketActionText: String?
+
+    private(set) var watchConnection: (text: String, iconColor: Color)?
+    private(set) var pendingWatchTransfersText: AttributedString?
 
     private(set) var accountAction: (text: String, color: Color)?
 
@@ -45,6 +50,9 @@ extension SettingsViewModel {
     func subscribe() async {
         await withTaskGroup { taskGroup in
             taskGroup.addTask { await self.subscribeToDownloadSize() }
+            taskGroup.addTask { await self.subscribeToPendingDownloads() }
+            taskGroup.addTask { await self.subscribeToWatchConnection() }
+            taskGroup.addTask { await self.subscribeToPendingWatchTransfers() }
             taskGroup.addTask { await self.subscribeToSocketStatus() }
             taskGroup.addTask { await self.subscribeToAccountStatus() }
         }
@@ -54,6 +62,11 @@ extension SettingsViewModel {
 // MARK: - Actions
 
 extension SettingsViewModel {
+    @MainActor
+    func navigateToDownloadsScreen() {
+        navigator.navigate(to: .downloads, method: .push)
+    }
+
     @MainActor
     func deleteDownloads() async {
         do {
@@ -104,6 +117,58 @@ extension SettingsViewModel {
         for await downloadSize in publisher.asAsyncStream() {
             downloadSizeText = getDownloadSizeText(for: downloadSize)
             isDeleteDownloadsVisible = downloadSize > .zero
+        }
+    }
+
+    @MainActor
+    private func subscribeToPendingDownloads() async {
+        let publisher = episodeService.aggregatedDownloadEvents()
+            .map { !$0.items.isEmpty }
+            .replaceError(with: false)
+            .removeDuplicates()
+        for await hasPendingDownloads in publisher.asAsyncStream() {
+            self.hasPendingDownloads = hasPendingDownloads
+        }
+    }
+
+    @MainActor
+    private func subscribeToWatchConnection() async {
+        let availabilityPublisher = watchConnectivityService.isAvailable().prepend(false)
+        let connectedPublisher = watchConnectivityService.isConnected().prepend(false)
+        let publisher = Publishers.CombineLatest(availabilityPublisher, connectedPublisher)
+            .map { isAvailable, isConnected -> WatchConnectionStatus in
+                return switch (isAvailable, isConnected) {
+                case (false, _): .notAvailable
+                case (true, false): .available
+                case (true, true): .connected
+                }
+            }
+            .replaceError(with: .notAvailable)
+
+        for await connectionStatus in publisher.asAsyncStream() {
+            let (text, color): (String, Color) = switch connectionStatus {
+            case .notAvailable: ("Not available", Asset.Colors.error.swiftUIColor)
+            case .available: ("Available", Asset.Colors.warning.swiftUIColor)
+            case .connected: ("Running", Asset.Colors.success.swiftUIColor)
+            }
+
+            watchConnection = (text, color)
+        }
+    }
+
+    @MainActor
+    private func subscribeToPendingWatchTransfers() async {
+        let publisher = watchConnectivityService.getAggregatedFileTransferProgress().removeDuplicates()
+        do {
+            for try await progress in publisher.asAsyncStream() {
+                pendingWatchTransfersText = if !progress.isFinished, progress.numberOfItems > .zero {
+                    try? AttributedString(markdown: L10n.transferringEpisodesCountPercentage(progress.numberOfItems, Int(progress.progress * 100)))
+                } else {
+                    nil
+                }
+            }
+        } catch {
+            return
         }
     }
 

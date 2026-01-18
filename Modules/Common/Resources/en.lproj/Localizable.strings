@@ -69,3 +69,6 @@
 "noEpisodes" = "No episodes";
 "transferring" = "Transferring...";
 "transferred" = "Transferred";
+"pedingingDownloads" = "Pending downloads";
+"watchConnection" = "Apple Watch connection";
+"pendingTransfers" = "Pending transfers";

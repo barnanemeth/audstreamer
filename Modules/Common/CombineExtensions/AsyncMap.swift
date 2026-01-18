@@ -9,7 +9,7 @@ import Combine
 
 extension Publisher {
     public func asyncMap<T>(_ transform: @escaping (Output) async -> T) -> AnyPublisher<T, Never> where Failure == Never {
-        flatMap { value in
+        flatMapLatest { value in
             AsyncPublisher<T> {
                 await transform(value)
             }
@@ -20,7 +20,7 @@ extension Publisher {
 
 extension Publisher {
     public func asyncTryMap<T>(_ transform: @escaping (Output) async throws -> T) -> AnyPublisher<T, Failure> where Failure: Error {
-        flatMap { value in
+        flatMapLatest { value in
             ThrowingAsyncPublisher<T, Failure> {
                 try await transform(value)
             }

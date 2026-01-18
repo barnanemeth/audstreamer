@@ -75,7 +75,7 @@ extension LoadingViewModel {
 
     @MainActor
     private func navigateToPlayerScreen() {
-        navigator.navigate(to: .player, method: .managedCover)
+        navigator.navigate(to: .main, method: .cover)
     }
 
     @MainActor

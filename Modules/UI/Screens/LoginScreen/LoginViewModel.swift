@@ -27,16 +27,8 @@ final class LoginViewModel {
     // MARK: Properties
 
     var currentlyShowedDialogDescriptor: DialogDescriptor?
-
-    // MARK: Private properties
-
-    @ObservationIgnored private let shouldShowPlayerAtDismiss: Bool
-
-    // MARK: Init
-
-    init(shouldShowPlayerAtDismiss: Bool = false) {
-        self.shouldShowPlayerAtDismiss = shouldShowPlayerAtDismiss
-    }
+    
+    @ObservationIgnored var shouldShowPlayerAtDismiss = false
 }
 
 // MARK: - Actions
@@ -67,7 +59,7 @@ extension LoginViewModel {
     private func finishedOrCancelled() {
         navigator.dismiss()
         if shouldShowPlayerAtDismiss {
-            navigator.navigate(to: AppNavigationDestination.player, method: .managedCover)
+            navigator.navigate(to: .main, method: .cover)
         }
     }
 

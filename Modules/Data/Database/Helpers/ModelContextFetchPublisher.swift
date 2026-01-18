@@ -11,29 +11,31 @@ import SwiftData
 
 import Common
 
-final class ModelContextFetchPublisher<Model: PersistentModel>: Publisher {
+final class ModelContextFetchPublisher<DataModel: PersistentModel & DomainMappable>: Publisher {
 
     // MARK: Typealiases
 
-    typealias Output = [Model]
+    typealias Output = [DataModel.DomainModelType]
     typealias Failure = Error
 
 
     // MARK: Private properties
 
     private let contextManager: SwiftDataContextManager
-    private let descriptor: FetchDescriptor<Model>
+    private let descriptor: FetchDescriptor<DataModel>
+
+    private var task: Task<Void, Never>?
 
     // MARK: Init
 
-    init(contextManager: SwiftDataContextManager, descriptor: FetchDescriptor<Model>) {
+    init(contextManager: SwiftDataContextManager, descriptor: FetchDescriptor<DataModel>) {
         self.contextManager = contextManager
         self.descriptor = descriptor
     }
 
     // MARK: Publisher
 
-    func receive<S>(subscriber: S) where S: Subscriber, any Failure == S.Failure, [Model] == S.Input {
+    func receive<S>(subscriber: S) where S: Subscriber, any Failure == S.Failure, [DataModel.DomainModelType] == S.Input {
         let subscription = ModelContextFetchSubscription(
             subscriber: subscriber,
             contextManager: contextManager,
@@ -45,19 +47,19 @@ final class ModelContextFetchPublisher<Model: PersistentModel>: Publisher {
 
 // MARK: - ModelContextFetchSubscription
 
-final fileprivate class ModelContextFetchSubscription<Model: PersistentModel, S: Subscriber> where S.Input == [Model], S.Failure == Error {
+final fileprivate class ModelContextFetchSubscription<DataModel: PersistentModel & DomainMappable, S: Subscriber> where S.Input == [DataModel.DomainModelType], S.Failure == Error {
 
     // MARK: Private properties
 
     private let subscriber: S
     private let contextManager: SwiftDataContextManager
-    private let descriptor: FetchDescriptor<Model>
+    private let descriptor: FetchDescriptor<DataModel>
 
     private var subscription: AnyCancellable?
 
     // MARK: Init
 
-    init(subscriber: S, contextManager: SwiftDataContextManager, descriptor: FetchDescriptor<Model>) {
+    init(subscriber: S, contextManager: SwiftDataContextManager, descriptor: FetchDescriptor<DataModel>) {
         self.subscriber = subscriber
         self.contextManager = contextManager
         self.descriptor = descriptor
@@ -74,7 +76,9 @@ extension ModelContextFetchSubscription: Subscription {
             .toVoid()
             .prepend(())
             .asyncTryMap { [unowned self] in
-                try await contextManager.fetch(descriptor)
+                let models = try await contextManager.fetch(descriptor)
+                let filtered = models.filter { !$0.hasChanges && !$0.isDeleted }
+                return filtered.asDomainModels
             }
             .sink(
                 receiveCompletion: { [unowned self] completion in

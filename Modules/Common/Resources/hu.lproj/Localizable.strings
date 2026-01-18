@@ -63,8 +63,12 @@
 "downloadPaused" = "Szüneteltetve";
 "playLastPlayedEpisode" = "Legutoljára játszott lejátszása";
 "playNewestEpisode" = "Legújabb lejátszása";
+"onWatch" = "Watch";
 "transferring" = "Fájlok küldése";
 "signInWithApple" = "Bejelentkezés az Apple-lel";
 "noEpisodes" = "Nem található epizód";
 "transferring" = "Átvitel...";
 "transferred" = "Kész";
+"pedingingDownloads" = "Folyamatban lévő letöltések";
+"watchConnection" = "Apple Watch kapcsolat";
+"pendingTransfers" = "Folyamatban lévő átvitelek";

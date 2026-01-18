@@ -14,7 +14,9 @@ internal import NavigatorUI
 enum AppNavigationDestination: @MainActor NavigationDestination {
     case loading
     case login(shouldShowPlayerAtDismiss: Bool)
-    case player
+    case main
+    case player(detents: Set<PresentationDetent>)
+    case episodeList
     case settings
     case downloads
 
@@ -23,16 +25,21 @@ enum AppNavigationDestination: @MainActor NavigationDestination {
     public var body: some View {
         switch self {
         case .loading:
-            LoadingView(viewModel: Resolver.resolve())
+            LoadingView()
         case let .login(shouldShowPlayerAtDismiss):
-            LoginView(viewModel: Resolver.resolve(args: shouldShowPlayerAtDismiss))
-        case .player:
-            PlayerView(viewModel: Resolver.resolve())
+            LoginView(shouldShowPlayerAtDismiss: shouldShowPlayerAtDismiss)
+        case .main:
+            MainView()
+        case let .player(detents):
+            PlayerView()
+                .presentationDetents(detents)
+                .presentationDragIndicator(.visible)
+        case .episodeList:
+            EpisodeListView()
         case .settings:
-            SettingsView(viewModel: Resolver.resolve())
+            SettingsView()
         case .downloads:
-            DownloadsView(viewModel: Resolver.resolve())
+            DownloadsView()
         }
     }
 }
-

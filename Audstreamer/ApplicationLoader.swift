@@ -31,6 +31,7 @@ final class ApplicationLoader: NSObject {
     @LazyInjected private var notificationHandler: NotificationHandler
     @LazyInjected private var cloud: Cloud
     @LazyInjected private var shortcutHandler: ShortcutHandler
+    @LazyInjected private var watchConnectivityService: WatchConnectivityService
 
     // MARK: Private properties
 
@@ -50,6 +51,7 @@ extension ApplicationLoader {
         setupImageLoading()
         shortcutHandler.setupItems()
         resetBadge()
+        watchConnectivityService.startUpdating()
     }
 
     func startEpisdeService() {

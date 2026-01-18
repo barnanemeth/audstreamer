@@ -33,6 +33,8 @@ protocol Database {
     func deleteEpisode(with id: String) -> AnyPublisher<Void, Error>
     func deleteEpisode(_ episode: Episode) -> AnyPublisher<Void, Error>
     func resetDownloadEpisodes() -> AnyPublisher<Void, Error>
+
+    func insertPodcasts(_ podcasts: [Podcast]) -> AnyPublisher<Void, Error>
 }
 
 extension Database {

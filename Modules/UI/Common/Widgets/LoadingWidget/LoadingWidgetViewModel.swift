@@ -82,12 +82,20 @@ extension LoadingWidgetViewModel {
     }
 }
 
+// MARK: - Actions
+
+extension LoadingWidgetViewModel {
+    func dismiss() {
+        isVisible = false
+    }
+}
+
 // MARK: - Helpers
 
 extension LoadingWidgetViewModel {
     @MainActor
     private func updateState() async {
-        for await state in statePublisher.asAsyncStream() {
+        for await state in statePublisher.removeDuplicates().asAsyncStream() {
             self.state = state ?? .indeterminate
         }
     }

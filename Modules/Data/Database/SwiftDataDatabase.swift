@@ -26,7 +26,7 @@ final class SwiftDataDatabase {
 extension SwiftDataDatabase: Database {
     func insertEpisodes(_ episodes: [Episode], overwrite: Bool) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
-            let dataModels = self.mapEpisodes(episodes)
+            let dataModels = episodes.asDomainModels
             try await self.contextManager.insert(dataModels)
         }
         .eraseToAnyPublisher()
@@ -63,7 +63,6 @@ extension SwiftDataDatabase: Database {
         )
 
         return ModelContextFetchPublisher(contextManager: contextManager, descriptor: descriptor)
-            .map { [unowned self] in mapEpisodes($0) }
             .eraseToAnyPublisher()
     }
 
@@ -75,7 +74,7 @@ extension SwiftDataDatabase: Database {
         descriptor.fetchLimit = 1
 
         return ModelContextFetchPublisher(contextManager: contextManager, descriptor: descriptor)
-            .map { [unowned self] in mapEpisode(from: $0.first) }
+            .map { $0.first }
             .eraseToAnyPublisher()
     }
     
@@ -86,7 +85,7 @@ extension SwiftDataDatabase: Database {
         descriptor.fetchLimit = 1
 
         return ModelContextFetchPublisher(contextManager: contextManager, descriptor: descriptor)
-            .map { [unowned self] in mapEpisode(from: $0.first)?.publishDate }
+            .map { $0.first?.publishDate }
             .eraseToAnyPublisher()
     }
     
@@ -97,7 +96,7 @@ extension SwiftDataDatabase: Database {
         descriptor.fetchLimit = 1
 
         return ModelContextFetchPublisher(contextManager: contextManager, descriptor: descriptor)
-            .map { [unowned self] in mapEpisode(from: $0.first) }
+            .map { $0.first }
             .eraseToAnyPublisher()
     }
     
@@ -152,9 +151,11 @@ extension SwiftDataDatabase: Database {
     
     func incrementNumberOfPlays(of episode: Episode) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
+
             guard let model = await self.getEpisodeDataModel(episode.id) else { return }
-            model.numberOfPlays += 1
-            try await self.contextManager.save()
+            try await self.contextManager.transaction {
+                model.numberOfPlays += 1
+            }
         }
         .eraseToAnyPublisher()
     }
@@ -190,10 +191,19 @@ extension SwiftDataDatabase: Database {
                 predicate: #Predicate<EpisodeDataModel> { $0.isDownloaded == true }
             )
             let models = try await self.contextManager.fetch(descriptor)
-            models.forEach { model in
-                model.isDownloaded = false
+            try await self.contextManager.transaction {
+                models.forEach { model in
+                    model.isDownloaded = false
+                }
             }
-            try await self.contextManager.save()
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func insertPodcasts(_ podcasts: [Podcast]) -> AnyPublisher<Void, Error> {
+        ThrowingAsyncPublisher {
+            let dataModels = podcasts.asDomainModels
+            try await self.contextManager.insert(dataModels)
         }
         .eraseToAnyPublisher()
     }
@@ -212,58 +222,9 @@ extension SwiftDataDatabase {
 
     private func updateEpisodeDataModel<Value>(of id: String, keyPath: WritableKeyPath<EpisodeDataModel, Value>, to value: Value) async throws {
         guard var model = await getEpisodeDataModel(id) else { return }
-        model[keyPath: keyPath] = value
-        try await contextManager.save()
-    }
-
-    private func mapEpisode(from episode: Episode?) -> EpisodeDataModel? {
-        guard let episode else { return nil }
-        return EpisodeDataModel(
-            id: episode.id,
-            title: episode.title,
-            publishDate: episode.publishDate,
-            descriptionText: episode.descriptionText,
-            mediaURL: episode.mediaURL,
-            image: episode.image,
-            thumbnail: episode.thumbnail,
-            link: episode.link,
-            duration: episode.duration,
-            isFavourite: episode.isFavourite,
-            lastPosition: episode.lastPosition,
-            lastPlayed: episode.lastPlayed,
-            isDownloaded: episode.isDownloaded,
-            numberOfPlays: episode.numberOfPlays,
-            isOnWatch: episode.isOnWatch
-        )
-    }
-
-    private func mapEpisodes(_ episodes: [Episode]) -> [EpisodeDataModel] {
-        episodes.compactMap { mapEpisode(from: $0) }
-    }
-
-    private func mapEpisode(from data: EpisodeDataModel?) -> Episode? {
-        guard let data else { return nil }
-        return Episode(
-            id: data.id,
-            title: data.title,
-            publishDate: data.publishDate,
-            descriptionText: data.descriptionText,
-            mediaURL: data.mediaURL,
-            image: data.image,
-            thumbnail: data.thumbnail,
-            link: data.link,
-            duration: data.duration ?? .zero,
-            isFavourite: data.isFavourite,
-            lastPosition: data.lastPosition,
-            lastPlayed: data.lastPlayed,
-            isDownloaded: data.isDownloaded,
-            numberOfPlays: data.numberOfPlays,
-            isOnWatch: data.isOnWatch
-        )
-    }
-
-    private func mapEpisodes(_ episodes: [EpisodeDataModel]) -> [Episode] {
-        episodes.compactMap { mapEpisode(from: $0) }
+        try await contextManager.transaction {
+            model[keyPath: keyPath] = value
+        }
     }
 }
 

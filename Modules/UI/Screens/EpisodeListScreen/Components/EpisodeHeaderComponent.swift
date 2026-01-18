@@ -34,7 +34,7 @@ struct EpisodeHeaderComponent: View {
         episode.isFavourite || episode.isDownloaded || episode.isOnWatch
     }
     private var playingProgress: Float? {
-        guard let lastPosition = episode.lastPosition, lastPosition >= Constant.playedThresholdSeconds else { return nil }
+        guard let lastPosition = episode.lastPosition, episode.duration > .zero, lastPosition >= Constant.playedThresholdSeconds else { return nil }
         return Float(lastPosition) / Float(episode.duration)
     }
 
@@ -73,6 +73,7 @@ extension EpisodeHeaderComponent {
                 } else if let image = state.image {
                     image
                         .resizable()
+                        .scaledToFill()
                 }
             }
         }
@@ -86,7 +87,7 @@ extension EpisodeHeaderComponent {
             VStack {
                 HStack(spacing: 8) {
                     if episode.isFavourite {
-                        Image(systemSymbol: .heartFill)
+                        Image(systemSymbol: .bookmarkFill)
                     }
                     if episode.isDownloaded {
                         Image(systemSymbol: .arrowDownCircleFill)

@@ -61,7 +61,7 @@ struct DownloadingComponent: View {
 extension DownloadingComponent {
     private var informations: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(data.episode.title)
+            Text(data.item.title)
                 .lineLimit(1)
                 .font(.system(size: 15, weight: .semibold))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -119,19 +119,19 @@ extension DownloadingComponent {
 
 extension DownloadingComponent {
     struct Data: Identifiable, Equatable, Hashable {
-        let episode: Episode
+        let item: any Downloadable
         var isPaused: Bool
         let eventPublisher: AnyPublisher<DownloadEvent, Error>
 
-        var id: String { episode.id }
+        var id: String { item.id }
 
         static func == (_ lhs: Self, _ rhs: Self) -> Bool {
-            lhs.episode.id == rhs.episode.id &&
+            lhs.item.id == rhs.item.id &&
             lhs.isPaused == rhs.isPaused
         }
 
         func hash(into hasher: inout Hasher) {
-            hasher.combine(episode.id)
+            hasher.combine(item.id)
             hasher.combine(isPaused)
         }
     }

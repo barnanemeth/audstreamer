@@ -12,11 +12,11 @@ import UIComponentKit
 
 internal import SFSafeSymbols
 
-struct DownloadsView: ScreenView {
+struct DownloadsView: View {
 
     // MARK: Dependencies
 
-    @State var viewModel: DownloadsViewModel
+    @State private var viewModel = DownloadsViewModel()
 
     // MARK: UI
 
@@ -30,7 +30,7 @@ struct DownloadsView: ScreenView {
         .animation(.default, value: viewModel.isCompleted)
         .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
         .navigationTitle(L10n.downloads)
-        .task { await viewModel.subscribe() }
+        .task(id: "DownloadsView.SubscriptionTask") { await viewModel.subscribe() }
     }
 }
 
@@ -49,9 +49,9 @@ extension DownloadsView {
     private func swipeActions(for data: DownloadingComponent.Data) -> some View {
         AsyncButton {
             if data.isPaused {
-                await viewModel.resume(data.episode)
+                await viewModel.resume(data.item)
             } else {
-                await viewModel.pause(data.episode)
+                await viewModel.pause(data.item)
             }
         } label: {
             Image(systemSymbol: data.isPaused ? .playFill : .pauseFill)
@@ -59,7 +59,7 @@ extension DownloadsView {
         .tint(data.isPaused ? Asset.Colors.success.swiftUIColor : Asset.Colors.warning.swiftUIColor)
 
         AsyncButton {
-            await viewModel.cancel(data.episode)
+            await viewModel.cancel(data.item)
         } label: {
             Image(systemSymbol: .stopFill)
         }

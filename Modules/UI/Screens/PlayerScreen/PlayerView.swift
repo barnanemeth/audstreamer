@@ -2,7 +2,7 @@
 //  PlayerView.swift
 //  Audstreamer
 //
-//  Created by Barna Nemeth on 2025. 12. 29..
+//  Created by Barna Nemeth on 2022. 10. 18..
 //
 
 import SwiftUI
@@ -11,169 +11,207 @@ import Common
 import Domain
 import UIComponentKit
 
+internal import NukeUI
 internal import SFSafeSymbols
 
-struct PlayerView: ScreenView {
+struct PlayerView: View {
+
+    // MARK: Constants
+
+    private enum Constant {
+        static let padding: CGFloat = 20
+        static let remotePlayButtonSize: CGFloat = 24
+    }
 
     // MARK: Dependencies
 
-    @State var viewModel: PlayerViewModel
+    @State private var viewModel = PlayerViewModel()
 
     // MARK: Private properties
 
-    @FocusState private var isSearchEnabled: Bool
-    @State private var listScrollViewProxy: ScrollViewProxy?
-    private var searchTextBinding: Binding<String> {
-        Binding<String>(
-            get: { viewModel.searchKeyword ?? "" },
-            set: { viewModel.setSearchKeyword($0) }
-        )
+    private var titleText: String {
+        viewModel.title ?? L10n.mainTitle
     }
 
     // MARK: UI
 
     var body: some View {
-        ScrollViewReader { proxy in
-            List {
-                listContent
-            }
-            .overlay { emptyView }
-            .listStyle(.insetGrouped)
-            .listSectionSpacing(.compact)
-            .animation(.default, value: viewModel.sections)
-            .safeAreaInset(edge: .top) { downloadingWidget }
-            .safeAreaInset(edge: .top) { fileTransferWidget }
-            .refreshable { await viewModel.refresh() }
-            .searchable(text: searchTextBinding, placement: .toolbarPrincipal)
-            .searchFocused($isSearchEnabled)
-            .onAppear { listScrollViewProxy = proxy }
+        VStack(spacing: 16) {
+            remotePlaying
+            image
+            titleAndRemotePlayButton
+            controlButtons
+            sliderAndTimeTexts
         }
-        .toolbar { toolbar }
-        .navigationTitle(viewModel.screenTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .task { await viewModel.subscribe() }
-        .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
-        .feedbackEnabled(true)
-        .sheet(isPresented: $viewModel.isPlayerWidgetVisible) { playerWidget }
-        .onChange(of: isSearchEnabled) { viewModel.isPlayerWidgetVisible = !isSearchEnabled }
-        .onAppear { viewModel.isPlayerWidgetVisible = true }
+        .padding(Constant.padding)
+        .animation(.default, value: viewModel.activeRemotePlayingDeviceText)
+        .disabled(!viewModel.isEnabled)
+        .task(id: "PlayerViewModel.SubscriptionTask") { await viewModel.subscribe() }
+        .presentationBackgroundInteraction(.enabled)
     }
 }
 
 // MARK: - Helpers
 
 extension PlayerView {
-    @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
-        searchToolbarItem
-        watchToolbarItem
-        filterToolbarItem
-        settingsToolbarItem
-    }
-
-    private var searchToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            Button {
-                isSearchEnabled.toggle()
-            } label: {
-                Image(systemSymbol: .magnifyingglass)
+    @ViewBuilder
+    private var remotePlaying: some View {
+        if let text = viewModel.activeRemotePlayingDeviceText {
+            ZStack {
+                Text(text)
+                    .font(.system(size: 11))
+                    .foregroundStyle(Asset.Colors.white.swiftUIColor)
+                    .padding(.top, 14)
+                    .padding(.bottom, 4)
+                    .frame(maxWidth: .infinity)
             }
+            .pulsingBackground(from: Asset.Colors.primary.swiftUIColor, to: Asset.Colors.secondary.swiftUIColor)
+            .padding(.horizontal, -20)
+            .padding(.top, -Constant.padding)
+            .fixedSize(horizontal: false, vertical: true)
         }
     }
 
-    @ToolbarContentBuilder
-    private var watchToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            switch viewModel.watchConnectionStatus {
-            case .notAvailable:
-                EmptyView()
-            case .available:
-                Image(systemSymbol: .applewatch)
-            case .connected:
-                Image(systemSymbol: .applewatch)
-                    .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+    private var image: some View {
+        LazyImage(url: viewModel.episode?.image) { state in
+            if let image = state.image {
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
             }
+        }
+        .padding()
+    }
+
+    private var titleAndRemotePlayButton: some View {
+        HStack(spacing: 8) {
+            title
+            remotePlayButton
         }
     }
 
-    @ToolbarContentBuilder
-    private var filterToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .topBarTrailing) {
-            Menu {
-                ForEach(viewModel.filterAttributes, id: \.self) { attribute in
-                    let isOn = Binding<Bool>(
-                        get: { attribute.isActive },
-                        set: { _ in viewModel.toggleFilterAttribute(attribute) }
-                    )
-                    Toggle(attribute.title, systemImage: attribute.systemImage, isOn: isOn)
+    private var title: some View {
+        Text(titleText)
+            .font(.subheadline)
+            .foregroundStyle(Asset.Colors.label.swiftUIColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var remotePlayButton: some View {
+        Menu {
+            remotePlayButtonMenuContent
+        } label: {
+            Image(systemSymbol: .airplayAudio)
+                .font(.system(size: Constant.remotePlayButtonSize, weight: .semibold))
+                .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+                .overlay(alignment: .topTrailing) {
+                    if let count = viewModel.activeDevicesCount {
+                        Badge(text: count.description)
+                    }
                 }
-            } label: {
-                let systemSymbol: SFSymbol = if viewModel.isFilterActive {
-                    .line3HorizontalDecreaseCircleFill
+        }
+        .disabled(viewModel.activeDevicesCount == nil)
+        .opacity(viewModel.activeDevicesCount == nil ? 0.5 : 1)
+        .keyframeAnimator(
+            initialValue: 1,
+            trigger: viewModel.activeDevicesCount,
+            content: { $0.scaleEffect($1) },
+            keyframes: { _ in
+                if viewModel.activeDevicesCount != nil {
+                    CubicKeyframe(1.3, duration: 0.25)
+                    CubicKeyframe(1, duration: 0.25)
                 } else {
-                    .line3HorizontalDecreaseCircle
-                }
-                Image(systemSymbol: systemSymbol)
-            }
-        }
-    }
-
-    @ToolbarContentBuilder
-    private var settingsToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .topBarTrailing) {
-            Button {
-                viewModel.navigateToSettings()
-            } label: {
-                Image(systemSymbol: .gear)
-            }
-        }
-    }
-
-    @ViewBuilder
-    private var listContent: some View {
-        if let sections = viewModel.sections {
-            ForEach(sections) { section in
-                EpisodeSectionComponent(
-                    section: section,
-                    isTitleButtonVisible: !viewModel.isFilterActive,
-                    onHeaderTap: { viewModel.openedEpisodeID = section.id },
-                    onPlayTap: { await viewModel.playEpisode(section.episode) },
-                    onFavouriteTap: { await viewModel.toggleEpisodeFavorite(section.episode) },
-                    onDownloadTap: { await viewModel.downloadDeleteEpisode(section.episode) },
-                    onWatchTap: { await viewModel.toggleEpisodeIsOnWatch(section.episode) },
-                    onSectionDownloadTap: { await viewModel.downnloadOrDeletedEpisodes(for: section) }
-                )
-            }
-        }
-    }
-
-    @ViewBuilder
-    private var emptyView: some View {
-        if let sections = viewModel.sections, sections.isEmpty {
-            ContentUnavailableView("", systemSymbol: .exclamationmarkCircle, description: Text(L10n.noResults))
-                .fontWeight(.semibold)
-        }
-    }
-
-    private var playerWidget: some View {
-        PlayerWidget(
-            isLoading: viewModel.isLoading,
-            onTitleTap: { episodeID in
-                withAnimation {
-                    listScrollViewProxy?.scrollTo(episodeID, anchor: .top)
-                    viewModel.openedEpisodeID = episodeID
+                    LinearKeyframe(1, duration: 1)
                 }
             }
         )
     }
 
-    private var downloadingWidget: some View {
-        LoadingWidget(viewModel: Resolver.resolve(DownloadingWidgetViewModel.self)) {
-            viewModel.navigateToDownloads()
+    private var remotePlayButtonMenuContent: some View {
+        ForEach(viewModel.devices) { device in
+            let symbol: SFSymbol = switch device.type {
+            case .iPhone: .iphone
+            case .iPad: .ipad
+            default: .questionmarkCircle
+            }
+            let isOn = Binding<Bool>(
+                get: { viewModel.activeDeviceID == device.id },
+                set: { isOn in
+                    guard isOn else { return }
+                    viewModel.setActiveDeviceID(device.id)
+                }
+            )
+            Toggle(device.name, systemImage: symbol.rawValue, isOn: isOn)
         }
     }
 
-    private var fileTransferWidget: some View {
-        LoadingWidget(viewModel: Resolver.resolve(FileTransferWidgetViewModel.self))
+    private var controlButtons: some View {
+        HStack {
+            Button {
+                viewModel.skipBackward()
+            } label: {
+                Image(systemSymbol: ._10ArrowTriangleheadCounterclockwise)
+                    .font(.system(size: 28))
+            }
+            .frame(maxWidth: .infinity)
+
+            playPauseButton
+                .frame(maxWidth: .infinity)
+
+            Button {
+                viewModel.skipForward()
+            } label: {
+                Image(systemSymbol: ._10ArrowTriangleheadClockwise)
+                    .font(.system(size: 28))
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+    }
+
+    private var playPauseButton: some View {
+        Button {
+            viewModel.playPlause()
+        } label: {
+            let symbol: SFSymbol = if viewModel.isPlaying {
+                .pauseCircleFill
+            } else {
+                .playCircleFill
+            }
+            Image(systemSymbol: symbol)
+                .font(.system(size: 42))
+                .contentTransition(.symbolEffect(.replace))
+                .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+        }
+    }
+
+    private var sliderAndTimeTexts: some View {
+        VStack(spacing: 4) {
+            slider
+            timeTexts
+        }
+    }
+
+    @ViewBuilder
+    private var slider: some View {
+        let binding = Binding<Float>(
+            get: { viewModel.isSliderHighlighted ? viewModel.currentSliderValue : viewModel.currentProgress },
+            set: { viewModel.currentSliderValue = $0 }
+        )
+        UIComponentKit.Slider(value: binding) { isHighlighted in
+            viewModel.isSliderHighlighted = isHighlighted
+        }
+        .tint(Asset.Colors.primary.swiftUIColor)
+    }
+
+    private var timeTexts: some View {
+        HStack {
+            Text(viewModel.elapsedTimeText)
+            Spacer()
+            Text(viewModel.remainingTimeText)
+        }
+        .font(.caption2)
+        .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
     }
 }

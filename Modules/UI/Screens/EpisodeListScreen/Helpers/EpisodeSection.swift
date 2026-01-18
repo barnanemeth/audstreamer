@@ -39,6 +39,7 @@ extension EpisodeSection {
         lhs.episode.isFavourite == rhs.episode.isFavourite &&
         lhs.episode.isDownloaded == rhs.episode.isDownloaded &&
         lhs.episode.isOnWatch == rhs.episode.isOnWatch &&
+        lhs.episode.duration == rhs.episode.duration &&
         lhs.isDownloaded == rhs.isDownloaded &&
         lhs.isOpened == rhs.isOpened
     }

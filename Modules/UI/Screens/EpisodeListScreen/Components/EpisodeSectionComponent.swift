@@ -75,7 +75,7 @@ extension EpisodeSectionComponent {
                         await onSectionDownloadTap()
                     } label: {
                         let symbol: SFSymbol = if section.isDownloaded {
-                            .trashFill
+                            .arrowDownCircleBadgeXmarkFill
                         } else {
                             .arrowDownCircleFill
                         }

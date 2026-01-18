@@ -23,6 +23,8 @@ struct LoadingWidget: View {
         static let finishedAnimationFrame: CGFloat = 0.8
         static let dismissOffset: CGFloat = 178
         static let animation: Animation = .spring(duration: 0.3, bounce: 0.6, blendDuration: .zero)
+        static let minimumDragDistance: CGFloat = 32
+        static let minimumDismissVelocity: CGFloat = 200
     }
 
     // MARK: Dependencies
@@ -51,14 +53,15 @@ struct LoadingWidget: View {
                     .clipShape(Capsule())
                     .shadow(color: Asset.Colors.shadow.swiftUIColor, radius: 10)
                 }
-                .buttonStyle(.plain)
+                .disabled(onTap == nil) // TODO: button style
+                .buttonStyle(.borderless)
                 .transition(
                     .asymmetric(
                         insertion: .move(edge: .top),
                         removal: .offset(y: -Constant.dismissOffset).combined(with: .opacity)
                     )
                 )
-                .allowsHitTesting(onTap != nil)
+                .highPriorityGesture(dragGesture)
             }
         }
         .animation(Constant.animation, value: viewModel.isVisible)
@@ -113,6 +116,19 @@ extension LoadingWidget {
         .padding(.vertical, 4)
         .padding(.trailing, 16)
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var dragGesture: some Gesture {
+        DragGesture(minimumDistance: Constant.minimumDragDistance)
+            .onEnded { handleDragGestureEnd($0) }
+    }
+
+    private func handleDragGestureEnd(_ value: DragGesture.Value) {
+        guard value.startLocation.y > value.location.y &&
+                value.velocity.height < -Constant.minimumDismissVelocity else {
+            return
+        }
+        viewModel.dismiss()
     }
 }
 

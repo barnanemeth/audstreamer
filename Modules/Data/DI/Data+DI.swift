@@ -37,7 +37,7 @@ extension Resolver {
 
         register {
             do {
-                let schema = Schema([EpisodeDataModel.self])
+                let schema = Schema([EpisodeDataModel.self, PodcastDataModel.self])
 
                 let configuration = ModelConfiguration(
                     schema: schema,

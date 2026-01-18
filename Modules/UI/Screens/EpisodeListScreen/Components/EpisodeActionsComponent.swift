@@ -48,8 +48,8 @@ extension EpisodeActionsComponent {
     private var buttons: some View {
         HStack {
             button(symbol: .playFill, action: onPlayTap)
-            button(symbol: episode.isFavourite ? .heartSlashFill : .heartFill, action: onFavouriteTap)
-            button(symbol: episode.isDownloaded ? .trashFill : .arrowDownCircleFill, action: onDownloadTap)
+            button(symbol: episode.isFavourite ? .bookmarkSlashFill : .bookmarkFill, action: onFavouriteTap)
+            button(symbol: episode.isDownloaded ? .arrowDownCircleBadgeXmarkFill : .arrowDownCircleFill, action: onDownloadTap)
             if isWatchAvailable {
                 button(symbol: episode.isOnWatch ? .applewatchSlash : .applewatch, action: onWatchTap)
             }

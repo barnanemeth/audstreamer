@@ -20,11 +20,18 @@ struct LoginView: View {
 
     // MARK: - Dependencies
 
-    @State var viewModel: LoginViewModel
+    @State private var viewModel = LoginViewModel()
 
     // MARK: Private properties
 
+    private let shouldShowPlayerAtDismiss: Bool
     @Environment(\.colorScheme) private var colorScheme
+
+    // MARK: Init
+
+    init(shouldShowPlayerAtDismiss: Bool) {
+        self.shouldShowPlayerAtDismiss = shouldShowPlayerAtDismiss
+    }
 
     // MARK: UI
 
@@ -41,6 +48,7 @@ struct LoginView: View {
         .padding([.horizontal, .bottom])
         .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
         .interactiveDismissDisabled()
+        .onAppear { viewModel.shouldShowPlayerAtDismiss = shouldShowPlayerAtDismiss }
     }
 }
 

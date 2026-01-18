@@ -124,8 +124,12 @@ public enum L10n {
   public static let ok = L10n.tr("Localizable", "ok", fallback: "OK")
   /// On Watch
   public static let onWatch = L10n.tr("Localizable", "onWatch", fallback: "On Watch")
+  /// Pending downloads
+  public static let pedingingDownloads = L10n.tr("Localizable", "pedingingDownloads", fallback: "Pending downloads")
   /// Pending
   public static let pending = L10n.tr("Localizable", "pending", fallback: "Pending")
+  /// Pending transfers
+  public static let pendingTransfers = L10n.tr("Localizable", "pendingTransfers", fallback: "Pending transfers")
   /// Play
   public static let play = L10n.tr("Localizable", "play", fallback: "Play")
   /// Play last played episode
@@ -165,6 +169,8 @@ public enum L10n {
   public static func version(_ p1: Any, _ p2: Any) -> String {
     return L10n.tr("Localizable", "version", String(describing: p1), String(describing: p2), fallback: "Version %@ (%@)")
   }
+  /// Apple Watch connection
+  public static let watchConnection = L10n.tr("Localizable", "watchConnection", fallback: "Apple Watch connection")
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces
