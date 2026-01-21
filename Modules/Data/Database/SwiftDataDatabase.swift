@@ -24,15 +24,14 @@ final class SwiftDataDatabase {
 // MARK: - Database
 
 extension SwiftDataDatabase: Database {
-    func insertEpisodes(_ episodes: [Episode], overwrite: Bool) -> AnyPublisher<Void, Error> {
+    func insertEpisodes(_ episodes: [EpisodeDataModel], overwrite: Bool) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
-            let dataModels = episodes.asDomainModels
-            try await self.contextManager.insert(dataModels)
+            try await self.contextManager.insert(episodes)
         }
         .eraseToAnyPublisher()
     }
 
-    func getEpisodes(filterFavorites: Bool, filterDownloads: Bool, filterWatch: Bool, keyword: String?) -> AnyPublisher<[Episode], Error> {
+    func getEpisodes(filterFavorites: Bool, filterDownloads: Bool, filterWatch: Bool, keyword: String?) -> AnyPublisher<[EpisodeDataModel], Error> {
         var predicates = [Predicate<EpisodeDataModel>]()
 
         if let keyword = keyword?.lowercased() {
@@ -66,7 +65,7 @@ extension SwiftDataDatabase: Database {
             .eraseToAnyPublisher()
     }
 
-    func getEpisode(id: String) -> AnyPublisher<Episode?, Error> {
+    func getEpisode(id: String) -> AnyPublisher<EpisodeDataModel?, Error> {
         let targetId = id
         var descriptor = FetchDescriptor<EpisodeDataModel>(
             predicate: #Predicate { $0.id == targetId }
@@ -89,7 +88,7 @@ extension SwiftDataDatabase: Database {
             .eraseToAnyPublisher()
     }
     
-    func getLastPlayedEpisode() -> AnyPublisher<Episode?, Error> {
+    func getLastPlayedEpisode() -> AnyPublisher<EpisodeDataModel?, Error> {
         var descriptor = FetchDescriptor<EpisodeDataModel>(
             sortBy: [.init(\.lastPlayed, order: .reverse)]
         )
@@ -100,69 +99,64 @@ extension SwiftDataDatabase: Database {
             .eraseToAnyPublisher()
     }
     
-    func updateEpisode(_ episode: Episode, isFavorite: Bool) -> AnyPublisher<Void, Error> {
+    func updateEpisode(_ episode: EpisodeDataModel.ID, isFavorite: Bool) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
-            try await self.updateEpisodeDataModel(of: episode.id, keyPath: \.isFavourite, to: isFavorite)
+            try await self.updateEpisodeDataModel(of: episode, keyPath: \.isFavourite, to: isFavorite)
         }
         .eraseToAnyPublisher()
     }
     
-    func updateEpisode(_ episode: Episode, isOnWatch: Bool) -> AnyPublisher<Void, Error> {
+    func updateEpisode(_ episode: EpisodeDataModel.ID, isOnWatch: Bool) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
-            try await self.updateEpisodeDataModel(of: episode.id, keyPath: \.isOnWatch, to: isOnWatch)
+            try await self.updateEpisodeDataModel(of: episode, keyPath: \.isOnWatch, to: isOnWatch)
         }
         .eraseToAnyPublisher()
     }
 
-    func updateLastPlayedDate(for episode: Episode, date: Date) -> AnyPublisher<Void, Error> {
+    func updateLastPlayedDate(for episode: EpisodeDataModel.ID, date: Date) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
-            try await self.updateEpisodeDataModel(of: episode.id, keyPath: \.lastPlayed, to: date)
+            try await self.updateEpisodeDataModel(of: episode, keyPath: \.lastPlayed, to: date)
         }
         .eraseToAnyPublisher()
     }
 
-    func updateLastPosition(_ lastPosition: Int?, for episode: Episode) -> AnyPublisher<Void, Error> {
+    func updateLastPosition(_ lastPosition: Int?, for episode: EpisodeDataModel.ID) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
-            try await self.updateEpisodeDataModel(of: episode.id, keyPath: \.lastPosition, to: lastPosition)
+            try await self.updateEpisodeDataModel(of: episode, keyPath: \.lastPosition, to: lastPosition)
         }
         .eraseToAnyPublisher()
     }
     
-    func updateDuration(_ duration: Int, for episode: Episode) -> AnyPublisher<Void, Error> {
+    func updateDuration(_ duration: Int, for episode: EpisodeDataModel.ID) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
-            try await self.updateEpisodeDataModel(of: episode.id, keyPath: \.duration, to: duration)
+            try await self.updateEpisodeDataModel(of: episode, keyPath: \.duration, to: duration)
         }
         .eraseToAnyPublisher()
     }
     
-    func updateEpisode(_ episode: Episode, isDownloaded: Bool) -> AnyPublisher<Void, Error> {
+    func updateEpisode(_ episode: EpisodeDataModel.ID, isDownloaded: Bool) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
-            try await self.updateEpisodeDataModel(of: episode.id, keyPath: \.isDownloaded, to: isDownloaded)
+            try await self.updateEpisodeDataModel(of: episode, keyPath: \.isDownloaded, to: isDownloaded)
         }
         .eraseToAnyPublisher()
     }
     
-    func updateNumberOfPlays(_ episode: Episode, numberOfPlays: Int) -> AnyPublisher<Void, Error> {
+    func updateNumberOfPlays(_ episode: EpisodeDataModel.ID, numberOfPlays: Int) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
-            try await self.updateEpisodeDataModel(of: episode.id, keyPath: \.numberOfPlays, to: numberOfPlays)
+            try await self.updateEpisodeDataModel(of: episode, keyPath: \.numberOfPlays, to: numberOfPlays)
         }
         .eraseToAnyPublisher()
     }
     
-    func incrementNumberOfPlays(of episode: Episode) -> AnyPublisher<Void, Error> {
+    func incrementNumberOfPlays(of episode: EpisodeDataModel.ID) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
 
-            guard let model = await self.getEpisodeDataModel(episode.id) else { return }
+            guard let model = await self.getEpisodeDataModel(episode) else { return }
             try await self.contextManager.transaction {
                 model.numberOfPlays += 1
             }
         }
         .eraseToAnyPublisher()
-    }
-    
-    func deleteDuplicates() -> AnyPublisher<Void, Error> {
-        // TODO: necessary?!
-        Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
     
     func deleteAll() -> AnyPublisher<Void, Error> {
@@ -181,7 +175,7 @@ extension SwiftDataDatabase: Database {
         .eraseToAnyPublisher()
     }
     
-    func deleteEpisode(_ episode: Episode) -> AnyPublisher<Void, Error> {
+    func deleteEpisode(_ episode: EpisodeDataModel) -> AnyPublisher<Void, Error> {
         deleteEpisode(with: episode.id)
     }
     
@@ -196,14 +190,6 @@ extension SwiftDataDatabase: Database {
                     model.isDownloaded = false
                 }
             }
-        }
-        .eraseToAnyPublisher()
-    }
-
-    func insertPodcasts(_ podcasts: [Podcast]) -> AnyPublisher<Void, Error> {
-        ThrowingAsyncPublisher {
-            let dataModels = podcasts.asDomainModels
-            try await self.contextManager.insert(dataModels)
         }
         .eraseToAnyPublisher()
     }

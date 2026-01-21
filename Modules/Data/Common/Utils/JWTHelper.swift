@@ -12,9 +12,8 @@ enum JWTError: Error {
 }
 
 enum JWTHelper {
-    static func getPayload(from data: Data) throws -> [String: Any] {
-        guard let tokenString = String(data: data, encoding: .utf8) else { throw JWTError.badFormat }
-        let components = tokenString.components(separatedBy: ".")
+    static func getPayload(from jwt: String) throws -> [String: Any] {
+        let components = jwt.components(separatedBy: ".")
         guard components.indices.contains(1),
               let middleData = Data(base64Encoded: components[1]),
               let dictionary = try JSONSerialization.jsonObject(with: middleData, options: []) as? [String: Any] else {
@@ -23,7 +22,7 @@ enum JWTHelper {
         return dictionary
     }
 
-    static func getSubject(from data: Data) throws -> String? {
-        try getPayload(from: data)["sub"] as? String
+    static func getSubject(from jwt: String) throws -> String? {
+        try getPayload(from: jwt)["sub"] as? String
     }
 }

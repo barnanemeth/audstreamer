@@ -72,3 +72,6 @@
 "pedingingDownloads" = "Folyamatban lévő letöltések";
 "watchConnection" = "Apple Watch kapcsolat";
 "pendingTransfers" = "Folyamatban lévő átvitelek";
+"notAvailable" = "Nem elérhető";
+"available" = "Elérhető";
+"active" = "Aktív";

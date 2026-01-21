@@ -29,6 +29,8 @@ final class DefaultSocketUpdater {
     @Injected private var socket: Socket
     @Injected private var audioPlayer: AudioPlayer
     @Injected private var database: Database
+    @Injected private var secureStore: SecureStore
+    @Injected private var contextManager: SwiftDataContextManager
 
     // MARK: Private properties
 
@@ -57,7 +59,7 @@ extension DefaultSocketUpdater: SocketUpdater {
 extension DefaultSocketUpdater {
     private func start() {
         guard cancellables.isEmpty else { return }
-        connect()
+        connectSocketIfPossible()
         setupActiveDeviceSubscription()
         setupCurrentEpisodeSubscription()
         setupPlaybackStateSubsciption()
@@ -73,7 +75,8 @@ extension DefaultSocketUpdater {
             .store(in: &cancellables)
     }
 
-    private func connect() {
+    private func connectSocketIfPossible() {
+        guard (try? secureStore.getToken()) != nil else { return }
         socket.connect().sink().store(in: &cancellables)
     }
 
@@ -87,10 +90,10 @@ extension DefaultSocketUpdater {
 
     private func setupCurrentEpisodeSubscription() {
         socket.getCurrentEpisode()
-            .flatMap { [unowned self] in self.database.getEpisode(id: $0.episodeID).unwrap().first() }
+            .flatMap { [unowned self] in episode(with: $0.episodeID).unwrap().first() }
             .flatMap { [unowned self] episode in
                 let play = self.audioPlayer.insert(episode, playImmediately: true)
-                let databaseUpdate = self.database.updateLastPlayedDate(for: episode)
+                let databaseUpdate = self.database.updateLastPlayedDate(for: episode.id, date: .now)
 
                 return Publishers.Zip(play, databaseUpdate).toVoid()
             }
@@ -202,12 +205,18 @@ extension DefaultSocketUpdater {
     }
 
     private func insertEpisode(with id: String) -> AnyPublisher<Void, Error> {
-        database.getEpisode(id: id)
+        episode(with: id)
             .first()
             .flatMap { [unowned self] episode -> AnyPublisher<Void, Error> in
-                guard let episode = episode else { return Just.void() }
+                guard let episode else { return Just.void() }
                 return self.audioPlayer.insert(episode, playImmediately: false)
             }
+            .eraseToAnyPublisher()
+    }
+
+    private func episode(with id: String) -> AnyPublisher<Episode?, Error> {
+        database.getEpisode(id: id)
+            .asyncTryMap { [unowned self] in await contextManager.mapDataModel($0) }
             .eraseToAnyPublisher()
     }
 }

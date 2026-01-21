@@ -18,7 +18,7 @@ extension Episode: DataMappable {
             descriptionText: descriptionText,
             mediaURL: mediaURL,
             image: image,
-            thumbnail: thumbnail,
+            thumbnail: image,
             link: link,
             duration: duration,
             isFavourite: isFavourite,

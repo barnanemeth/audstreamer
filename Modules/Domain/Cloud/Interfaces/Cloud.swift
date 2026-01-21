@@ -17,10 +17,7 @@ public protocol Cloud {
     func setLastPosition(_ lastPosition: Int, for episodeID: String) -> AnyPublisher<Void, Error>
     func getNumberOfPlays() -> AnyPublisher<[String: Int], Error>
     func setNumberOfPlays(_ numberOfPlays: Int, for episodeID: String) -> AnyPublisher<Void, Error>
-    func getUserRatings() -> AnyPublisher<[UserRating], Error>
     func synchronizePrivateData() -> AnyPublisher<Void, Error>
-    func synchronizePublicData() -> AnyPublisher<Void, Error>
     func resetPrivateData() -> AnyPublisher<Void, Error>
-    func resetPublicData() -> AnyPublisher<Void, Error>
     func updateFromLocal() -> AnyPublisher<Void, Error>
 }

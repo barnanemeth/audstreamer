@@ -147,9 +147,9 @@ extension SettingsViewModel {
 
         for await connectionStatus in publisher.asAsyncStream() {
             let (text, color): (String, Color) = switch connectionStatus {
-            case .notAvailable: ("Not available", Asset.Colors.error.swiftUIColor)
-            case .available: ("Available", Asset.Colors.warning.swiftUIColor)
-            case .connected: ("Running", Asset.Colors.success.swiftUIColor)
+            case .notAvailable: (L10n.notAvailable, Asset.Colors.error.swiftUIColor)
+            case .available: (L10n.available, Asset.Colors.warning.swiftUIColor)
+            case .connected: (L10n.active, Asset.Colors.success.swiftUIColor)
             }
 
             watchConnection = (text, color)

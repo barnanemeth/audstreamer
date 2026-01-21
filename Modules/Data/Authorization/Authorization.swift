@@ -9,5 +9,5 @@ import Foundation
 import Combine
 
 protocol Authorization {
-    func authorize() -> AnyPublisher<Data, Error>
+    func authorize() -> AnyPublisher<String, Error>
 }

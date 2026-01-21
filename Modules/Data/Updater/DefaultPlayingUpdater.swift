@@ -20,6 +20,7 @@ final class DefaultPlayingUpdater {
     @Injected private var remotePlayer: RemotePlayer
     @Injected private var socket: Socket
     @Injected private var downloadService: DownloadService
+    @Injected private var contextManager: SwiftDataContextManager
 
     // MARK: Private properties
 
@@ -58,7 +59,7 @@ extension DefaultPlayingUpdater {
             .unwrap()
             .removeDuplicates()
             .flatMap { [unowned self] audioInfo -> AnyPublisher<(Episode, Int), Error> in
-                let episode = self.database.getEpisode(id: audioInfo.id).first().unwrap()
+                let episode = episode(with: audioInfo.id).first().unwrap()
                 let durationPublisher = Just(audioInfo.duration).setFailureType(to: Error.self)
 
                 return Publishers.Zip(episode, durationPublisher).eraseToAnyPublisher()
@@ -117,10 +118,10 @@ extension DefaultPlayingUpdater {
         switch event {
         case .finished(let item), .deleted(let item):
             guard item.id == currentAudioID else { return Just.void() }
-            return database.getEpisode(id: currentAudioID)
+            return episode(with: currentAudioID)
                 .first()
                 .flatMap { [unowned self] episode -> AnyPublisher<Episode, Error> in
-                    guard let episode = episode else { return Empty(completeImmediately: true).eraseToAnyPublisher() }
+                    guard let episode else { return Empty(completeImmediately: true).eraseToAnyPublisher() }
 
                     let episodePublisher = Just(episode).setFailureType(to: Error.self)
                     let pause = self.audioPlayer.pause()
@@ -132,5 +133,11 @@ extension DefaultPlayingUpdater {
         default:
             return Just.void()
         }
+    }
+
+    private func episode(with id: String) -> AnyPublisher<Episode?, Error> {
+        database.getEpisode(id: id)
+            .asyncTryMap { [unowned self] in await contextManager.mapDataModel($0) }
+            .eraseToAnyPublisher()
     }
 }

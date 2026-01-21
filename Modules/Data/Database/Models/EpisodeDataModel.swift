@@ -9,7 +9,10 @@ import Foundation
 import SwiftData
 
 @Model
-final class EpisodeDataModel {
+final class EpisodeDataModel: Identifiable {
+
+    // MARK: Properties
+
     @Attribute(.unique) var id: String
     var title: String
     var publishDate: Date
@@ -27,7 +30,9 @@ final class EpisodeDataModel {
     var numberOfPlays = 0
     var isOnWatch = false
 
-    @Relationship(inverse: \PodcastDataModel.episodes) var podcast: PodcastDataModel?
+//    @Relationship(inverse: \PodcastDataModel.episodes) var podcast: PodcastDataModel?
+
+    // MARK: Init
 
     init(id: String,
          title: String,

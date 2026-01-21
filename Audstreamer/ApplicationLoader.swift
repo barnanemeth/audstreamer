@@ -45,7 +45,6 @@ extension ApplicationLoader {
     @MainActor
     func load() {
         Resolver.registerDependencies()
-        startEpisdeService()
         setupBackgroundRefresh()
         notificationHandler.setupNotifications()
         setupImageLoading()
@@ -54,20 +53,8 @@ extension ApplicationLoader {
         watchConnectivityService.startUpdating()
     }
 
-    func startEpisdeService() {
-        episodeService.startUpdating().sink().store(in: &cancellables)
-    }
-
     func synchronizePrivateCloud() {
         cloud.synchronizePrivateData().sink().store(in: &cancellables)
-    }
-
-    func synchronizePublicCloud() {
-        let backgroundTask = BackgroundTask(id: Constant.databaseSyncBackgroundTaskIdentifier)
-        let expirationHandler: (() -> Void) = { [unowned self] in self.publicCloudSynchronizationCancellable?.cancel() }
-        publicCloudSynchronizationCancellable = cloud.synchronizePublicData()
-            .handleEvents(receiveSubscription: { _ in backgroundTask.begin(expirationHandler: expirationHandler) })
-            .sink(receiveCompletion: { _ in backgroundTask.end() }, receiveValue: { })
     }
 }
 

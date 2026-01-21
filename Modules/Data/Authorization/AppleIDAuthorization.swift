@@ -16,13 +16,13 @@ final class AppleIDAuthorization: NSObject {
 
     // MARK: Private properties
 
-    private var authorizationSubject = PassthroughSubject<Data, Error>()
+    private var authorizationSubject = PassthroughSubject<String, Error>()
 }
 
 // MARK: - Authorization
 
 extension AppleIDAuthorization: Authorization {
-    func authorize() -> AnyPublisher<Data, Error> {
+    func authorize() -> AnyPublisher<String, Error> {
         defer {
             let appleIDProvider = ASAuthorizationAppleIDProvider()
             let request = appleIDProvider.createRequest()
@@ -33,7 +33,7 @@ extension AppleIDAuthorization: Authorization {
             authorizationController.performRequests()
         }
 
-        authorizationSubject = PassthroughSubject<Data, Error>()
+        authorizationSubject = PassthroughSubject<String, Error>()
         return authorizationSubject.eraseToAnyPublisher()
     }
 }
@@ -42,10 +42,11 @@ extension AppleIDAuthorization: Authorization {
 
 extension AppleIDAuthorization: ASAuthorizationControllerPresentationContextProviding {
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else {
-            return ASPresentationAnchor()
-        }
-        return window
+        // swiftlint:disable force_unwrapping
+        UIApplication.shared.connectedScenes.first { scene in
+            scene.activationState == .foregroundActive
+        }!.inputView!.window!
+        // swiftlint:enable force_unwrapping
     }
 }
 
@@ -63,9 +64,10 @@ extension AppleIDAuthorization: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController,
                                  didCompleteWithAuthorization authorization: ASAuthorization) {
         guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
-              let identityToken = appleIDCredential.identityToken else {
+              let identityToken = appleIDCredential.identityToken,
+              let identityTokenString = String(data: identityToken, encoding: .utf8) else {
             return authorizationSubject.send(completion: .failure(AuthorizationError.missingCredential))
         }
-        authorizationSubject.send(identityToken)
+        authorizationSubject.send(identityTokenString)
     }
 }

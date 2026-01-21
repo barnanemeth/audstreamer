@@ -30,6 +30,7 @@ final class DefaultWatchConnectivityService: NSObject {
 
     @Injected private var database: Database
     @Injected private var downloadService: DownloadService
+    @Injected private var contextManager: SwiftDataContextManager
 
     // MARK: Private properties
 
@@ -73,7 +74,8 @@ extension DefaultWatchConnectivityService: WatchConnectivityService {
     func startUpdating() {
         guard cancellables.isEmpty else { return }
 
-        database.getEpisodes(filterWatch: true)
+        database.getEpisodes(filterFavorites: false, filterDownloads: false, filterWatch: true, keyword: nil)
+            .asyncTryMap { [unowned self] in await contextManager.mapDataModels($0) }
             .removeDuplicates()
             .map { [unowned self] in self.mapEpisodes($0) }
             .replaceError(with: [:])
@@ -131,6 +133,7 @@ extension DefaultWatchConnectivityService: WatchConnectivityService {
 
     func transferEpisode(_ episodeID: String) -> AnyPublisher<Void, Error> {
         database.getEpisode(id: episodeID)
+            .asyncTryMap { [unowned self] in await contextManager.mapDataModel($0) }
             .first()
             .tryMap { episode in
                 guard let episode else {
@@ -240,6 +243,7 @@ extension DefaultWatchConnectivityService {
 
     private func getEpisode(for episodeBasedMessage: WatchConnectivityEpisodeBasedMessage) -> AnyPublisher<Episode?, Error> {
         database.getEpisode(id: episodeBasedMessage.episodeID)
+            .asyncTryMap { [unowned self] in await contextManager.mapDataModel($0) }
             .first()
             .eraseToAnyPublisher()
     }
@@ -248,7 +252,7 @@ extension DefaultWatchConnectivityService {
         getEpisode(for: lastPlayedDateMessage)
             .flatMap { [unowned self] episode -> AnyPublisher<Void, Error> in
                 guard let episode else { return Just.void() }
-                return self.database.updateLastPlayedDate(for: episode, date: lastPlayedDateMessage.date)
+                return self.database.updateLastPlayedDate(for: episode.id, date: lastPlayedDateMessage.date)
             }
             .sink()
             .store(in: &cancellables)
@@ -258,7 +262,7 @@ extension DefaultWatchConnectivityService {
         getEpisode(for: lastPositionMessage)
             .flatMap { [unowned self] episode -> AnyPublisher<Void, Error> in
                 guard let episode else { return Just.void() }
-                return self.database.updateLastPosition(lastPositionMessage.position, for: episode)
+                return self.database.updateLastPosition(lastPositionMessage.position, for: episode.id)
             }
             .sink()
             .store(in: &cancellables)

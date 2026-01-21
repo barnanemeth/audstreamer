@@ -11,94 +11,41 @@ import Common
 import Domain
 
 internal import Reachability
+internal import AudstreamerAPIClient
+internal import OpenAPIURLSession
 
 extension Resolver {
     public static func registerDataServices() {
-        registerEpisodeService()
-        registerApplicationStateHandler()
-        registerAPIClient()
-        registerDatabase()
-        registerCloud()
-        registerAuthorization()
-        registerSecureStore()
-        registerSocket()
-        registerAudioPlayer()
-        registerRemotePlayer()
-        registerPlayingUpdater()
-        registerSocketUpdater()
-        registerDatabaseUpdater()
-        registerNotificationHandler()
-        registerAccount()
-        registerDownloadService()
-        registerReachability()
-        registerFilterService()
-        registerShortcutHandler()
-        registerWatchConnectivityService()
-
-        register {
-            do {
-                let schema = Schema([EpisodeDataModel.self, PodcastDataModel.self])
-
-                let configuration = ModelConfiguration(
-                    schema: schema,
-                    isStoredInMemoryOnly: false,
-                    cloudKitDatabase: .none
-                )
-
-                let container = try ModelContainer(
-                    for: schema,
-                    configurations: [configuration]
-                )
-
-                return SwiftDataContextManager(modelContainer: container)
-            } catch {
-                fatalError("Cannot create ModelContainer")
-            }
-        }
-        .scope(.cached)
+        registerInternalServices()
+        registerPublicServices()
     }
 }
 
+// MARK: - Public services
+
 extension Resolver {
+    private static func registerPublicServices() {
+        registerEpisodeService()
+        registerCloud()
+        registerSocket()
+        registerAudioPlayer()
+        registerRemotePlayer()
+        registerReachability()
+        registerShortcutHandler()
+        registerWatchConnectivityService()
+        registerNotificationHandler()
+        registerAccount()
+    }
+
     private static func registerEpisodeService() {
         register { DefaultEpisodeService() }
             .implements(EpisodeService.self)
             .scope(.cached)
     }
 
-    private static func registerApplicationStateHandler() {
-        register { DefaultApplicationStateHandler() }
-            .implements(ApplicationStateHandler.self)
-            .scope(.cached)
-    }
-
-    private static func registerAPIClient() {
-        register { DefaultAPIClient() }
-            .implements(APIClient.self)
-            .scope(.cached)
-    }
-
-    private static func registerDatabase() {
-        register { SwiftDataDatabase() }
-            .implements(Database.self)
-            .scope(.cached)
-    }
-
     private static func registerCloud() {
         register { CloudKitCloud() }
             .implements(Cloud.self)
-            .scope(.cached)
-    }
-
-    private static func registerAuthorization() {
-        register { AppleIDAuthorization() }
-            .implements(Authorization.self)
-            .scope(.unique)
-    }
-
-    private static func registerSecureStore() {
-        register { KeychainSecureStore() }
-            .implements(SecureStore.self)
             .scope(.cached)
     }
 
@@ -120,6 +67,92 @@ extension Resolver {
             .scope(.cached)
     }
 
+    private static func registerReachability() {
+        register { try? Reachability() }
+            .scope(.unique)
+    }
+
+    private static func registerShortcutHandler() {
+        register { DefaultShortcutHandler() }
+            .implements(ShortcutHandler.self)
+            .scope(.cached)
+    }
+
+    private static func registerWatchConnectivityService() {
+        register { DefaultWatchConnectivityService() }
+            .implements(WatchConnectivityService.self)
+            .scope(.cached)
+    }
+
+    private static func registerNotificationHandler() {
+        register { DefaultNotificationHandler() }
+            .implements(NotificationHandler.self)
+            .scope(.cached)
+    }
+
+    private static func registerAccount() {
+        register { DefaultAccount() }
+            .implements(Account.self)
+            .scope(.cached)
+    }
+}
+
+// MARK: - Internal services
+
+extension Resolver {
+    private static func registerInternalServices() {
+        registerClient()
+        registerSwiftDataConextManager()
+        registerDatabase()
+        registerApplicationStateHandler()
+        registerAuthorization()
+        registerSecureStore()
+        registerPlayingUpdater()
+        registerSocketUpdater()
+        registerDatabaseUpdater()
+        registerDownloadService()
+    }
+
+    private static func registerClient() {
+        register {
+            Client(
+                serverURL: AppSettings.apiURL,
+                transport: URLSessionTransport(),
+                middlewares: [APIClientMiddleware()]
+            )
+        }
+        .scope(.unique)
+    }
+
+    private static func registerSwiftDataConextManager() {
+        register { SwiftDataContextManager.instantiate() }
+        .scope(.cached)
+    }
+
+    private static func registerDatabase() {
+        register { SwiftDataDatabase() }
+            .implements(Database.self)
+            .scope(.cached)
+    }
+
+    private static func registerApplicationStateHandler() {
+        register { DefaultApplicationStateHandler() }
+            .implements(ApplicationStateHandler.self)
+            .scope(.cached)
+    }
+
+    private static func registerAuthorization() {
+        register { AppleIDAuthorization() }
+            .implements(Authorization.self)
+            .scope(.unique)
+    }
+
+    private static func registerSecureStore() {
+        register { KeychainSecureStore() }
+            .implements(SecureStore.self)
+            .scope(.unique)
+    }
+
     private static func registerPlayingUpdater() {
         register { DefaultPlayingUpdater() }
             .implements(PlayingUpdater.self)
@@ -138,44 +171,9 @@ extension Resolver {
             .scope(.cached)
     }
 
-    private static func registerNotificationHandler() {
-        register { DefaultNotificationHandler() }
-            .implements(NotificationHandler.self)
-            .scope(.cached)
-    }
-
-    private static func registerAccount() {
-        register { DefaultAccount() }
-            .implements(Account.self)
-            .scope(.cached)
-    }
-
     private static func registerDownloadService() {
         register { DefaultDownloadService() }
             .implements(DownloadService.self)
-            .scope(.cached)
-    }
-
-    private static func registerReachability() {
-        register { try? Reachability() }
-            .scope(.unique)
-    }
-
-    private static func registerFilterService() {
-        register { DefaultFilterService() }
-            .implements(FilterService.self)
-            .scope(.cached)
-    }
-
-    private static func registerShortcutHandler() {
-        register { DefaultShortcutHandler() }
-            .implements(ShortcutHandler.self)
-            .scope(.cached)
-    }
-
-    private static func registerWatchConnectivityService() {
-        register { DefaultWatchConnectivityService() }
-            .implements(WatchConnectivityService.self)
             .scope(.cached)
     }
 }

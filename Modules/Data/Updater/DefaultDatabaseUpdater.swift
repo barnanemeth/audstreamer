@@ -25,6 +25,7 @@ final class DefaultDatabaseUpdater {
     @Injected private var database: Database
     @Injected private var cloud: Cloud
     @Injected private var downloadService: DownloadService
+    @Injected private var contextManager: SwiftDataContextManager
 
     // MARK: Private properties
 
@@ -32,7 +33,7 @@ final class DefaultDatabaseUpdater {
     private lazy var currentPlayingEpisode: AnyPublisher<Episode, Error> = {
         audioPlayer.getCurrentPlayingAudioInfo()
             .compactMap { $0?.id }
-            .flatMap { [unowned self] in self.database.getEpisode(id: $0).unwrap().first() }
+            .flatMap { [unowned self] in episode(with: $0).unwrap().first() }
             .shareReplay()
             .eraseToAnyPublisher()
     }()
@@ -69,8 +70,8 @@ extension DefaultDatabaseUpdater {
     private func subscribeToCurrentPlayingEpisode() {
         currentPlayingEpisode
             .flatMap { [unowned self] episode in
-                let lastPlayedDateDatabaseUpdate = self.database.updateLastPlayedDate(for: episode)
-                let numberOfPlaysDatabaseUpdate = self.database.incrementNumberOfPlays(of: episode)
+                let lastPlayedDateDatabaseUpdate = self.database.updateLastPlayedDate(for: episode.id, date: Date())
+                let numberOfPlaysDatabaseUpdate = self.database.incrementNumberOfPlays(of: episode.id)
                 let lastPlayedDateCloudUpdate = self.cloud.setLastPlayedDate(Date(), for: episode.id)
                 let numberOfPlaysCloudUpdate = self.cloud.setNumberOfPlays(episode.numberOfPlays + 1, for: episode.id)
 
@@ -99,7 +100,7 @@ extension DefaultDatabaseUpdater {
                 guard second.isNormal else { return Just.void() }
                 let intSecond = Int(second)
 
-                let databaseUpdate = self.database.updateLastPosition(intSecond, for: episode)
+                let databaseUpdate = self.database.updateLastPosition(intSecond, for: episode.id)
                 let cloudUpdate = self.cloud.setLastPosition(intSecond, for: episode.id)
 
                 return Publishers.Zip(databaseUpdate, cloudUpdate).toVoid()
@@ -113,13 +114,13 @@ extension DefaultDatabaseUpdater {
             .unwrap()
             .flatMap { [unowned self] audioInfo -> AnyPublisher<(Int, Episode?), Error> in
                 let durationPublisher = Just(audioInfo.duration).setFailureType(to: Error.self)
-                let episode = self.database.getEpisode(id: audioInfo.id).first()
+                let episode = episode(with: audioInfo.id).first()
 
                 return Publishers.Zip(durationPublisher, episode).eraseToAnyPublisher()
             }
             .flatMap { [unowned self] duration, episode -> AnyPublisher<Void, Error> in
                 guard let episode = episode, episode.duration != duration else { return Just.void() }
-                return self.database.updateDuration(duration, for: episode)
+                return self.database.updateDuration(duration, for: episode.id)
             }
             .sink()
             .store(in: &cancellables)
@@ -128,7 +129,7 @@ extension DefaultDatabaseUpdater {
     private func setupPlayingFinishedSubscription() {
         audioPlayer.getPlayingFinishedAudioInfo()
             .flatMap { [unowned self] audioInfo -> AnyPublisher<(Episode?, Int), Error> in
-                let episode = self.database.getEpisode(id: audioInfo.id).first()
+                let episode = episode(with: audioInfo.id).first()
                 let duration = Just(audioInfo.duration).setFailureType(to: Error.self)
 
                 return Publishers.Zip(episode, duration).eraseToAnyPublisher()
@@ -136,7 +137,7 @@ extension DefaultDatabaseUpdater {
             .flatMap { [unowned self] episode, duration -> AnyPublisher<Void, Error> in
                 guard let episode = episode else { return Just.void() }
 
-                let databaseUpdate = self.database.updateLastPosition(duration, for: episode)
+                let databaseUpdate = self.database.updateLastPosition(duration, for: episode.id)
                 let cloudUpdate = self.cloud.setLastPosition(duration, for: episode.id)
 
                 return Publishers.Zip(databaseUpdate, cloudUpdate).toVoid()
@@ -152,9 +153,15 @@ extension DefaultDatabaseUpdater {
                       case .finished = event else { return false }
                 return true
             }
-            .flatMap { [unowned self] in self.database.getEpisode(id: $0.item.id).unwrap().first() }
-            .flatMap { [unowned self] in self.database.updateEpisode($0, isDownloaded: true) }
+            .flatMap { [unowned self] in episode(with: $0.item.id).unwrap().first() }
+            .flatMap { [unowned self] in database.updateEpisode($0.id, isDownloaded: true) }
             .sink()
             .store(in: &cancellables)
+    }
+
+    private func episode(with id: String) -> AnyPublisher<Episode?, Error> {
+        database.getEpisode(id: id)
+            .asyncTryMap { [unowned self] in await contextManager.mapDataModel($0) }
+            .eraseToAnyPublisher()
     }
 }

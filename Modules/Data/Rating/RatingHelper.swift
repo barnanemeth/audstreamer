@@ -25,8 +25,10 @@ enum RatingHelper {
 extension RatingHelper {
     static func getEpisodeRatings() -> AnyPublisher<[RatingData], Error> {
         @Injected var database: Database
+        @Injected var contextManager: SwiftDataContextManager
 
-        return database.getEpisodes()
+        return database.getEpisodes(filterFavorites: false, filterDownloads: false, filterWatch: false, keyword: nil)
+            .asyncTryMap { await contextManager.mapDataModels($0) }
             .first()
             .map { $0.map { RatingData(episode: $0) } }
             .flatMap { calculateRatings(for: $0) }

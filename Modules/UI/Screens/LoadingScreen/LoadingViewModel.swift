@@ -69,7 +69,7 @@ extension LoadingViewModel {
                 navigateToLoginScreen()
             }
         } catch {
-            NSLog("Cancellation error")
+            presentErrorAlert(for: error)
         }
     }
 

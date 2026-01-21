@@ -49,9 +49,8 @@ struct LoadingWidget: View {
                     }
                     .frame(height: Constant.height)
                     .frame(maxWidth: Constant.maxWidth)
-                    .background(Asset.Colors.background.swiftUIColor)
                     .clipShape(Capsule())
-                    .shadow(color: Asset.Colors.shadow.swiftUIColor, radius: 10)
+                    .glassEffect(.regular, in: .capsule)
                 }
                 .disabled(onTap == nil) // TODO: button style
                 .buttonStyle(.borderless)

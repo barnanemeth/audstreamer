@@ -11,6 +11,7 @@ extension Resolver {
     @MainActor
     public static func registerUI() {
         registerNavigator()
+        registerFilterHelper()
     }
 }
 
@@ -21,5 +22,11 @@ extension Resolver {
             .implements(NavigatorPublic.self)
             .implements(Navigator.self)
             .scope(.cached)
+    }
+
+    @MainActor
+    private static func registerFilterHelper() {
+        register { FilterHelper() }
+            .scope(.unique)
     }
 }

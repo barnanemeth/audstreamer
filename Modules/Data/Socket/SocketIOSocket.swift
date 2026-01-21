@@ -33,14 +33,8 @@ final class SocketIOSocket {
 
     // MARK: Private properties
 
-    private lazy var url: URL = {
-        guard let baseURL = URL(string: "https://audstreamer-backend-4cec188f37db.herokuapp.com/") else {
-            preconditionFailure("Cannot init URL")
-        }
-        return baseURL
-    }()
     private lazy var manager: SocketManager = {
-        SocketManager(socketURL: url, config: configuration)
+        SocketManager(socketURL: AppSettings.socketBaseURL, config: configuration)
     }()
     private var client: SocketIOClient { manager.defaultSocket }
     private var settedCallbacks = Set<SocketEvent>()
@@ -50,10 +44,9 @@ final class SocketIOSocket {
             Constant.deviceIDHeaderKey: DeviceHelper.deviceID,
             Constant.deviceTypeHeaderKey: DeviceHelper.deviceModel
         ]
-        if let authorizationToken = try? secureStore.getToken(),
-           let authorizationTokenString = String(data: authorizationToken, encoding: .utf8) {
+        if let authorizationToken = try? secureStore.getToken() {
             headers[Constant.authorizationHeaderKey] = String(
-                format: Constant.authorizationHeaderFormat, authorizationTokenString
+                format: Constant.authorizationHeaderFormat, authorizationToken
             )
         }
         return headers
@@ -61,6 +54,7 @@ final class SocketIOSocket {
     private var configuration: SocketIOClientConfiguration {
         // swiftlint:disable vertical_parameter_alignment_on_call
         SocketIOClientConfiguration(arrayLiteral:
+                .path(AppSettings.socketPath),
                 .log(false),
                 .compress,
                 .extraHeaders(headers),
@@ -131,13 +125,15 @@ extension SocketIOSocket: Socket {
 
     func disconnect() -> AnyPublisher<Void, Error> {
         guard client.status == .connected || client.status == .connecting else { return Just.void() }
-        return Promise<Void, Error> { [unowned self] promise in
-            self.client.on(clientEvent: .disconnect) { _, _ in promise(.success(())) }
+        return Just(self.manager.disconnect()).setFailureType(to: Error.self).eraseToAnyPublisher()
 
-            self.manager.disconnect()
-        }
-        .handleEvents(receiveCompletion: { [unowned self] _ in self.removeHandlers(for: .disconnect) })
-        .eraseToAnyPublisher()
+//        return Promise<Void, Error> { [unowned self] promise in
+//            self.client.on(clientEvent: .disconnect) { _, _ in promise(.success(())) }
+//
+//            self.manager.disconnect()
+//        }
+//        .handleEvents(receiveCompletion: { [unowned self] _ in self.removeHandlers(for: .disconnect) })
+//        .eraseToAnyPublisher()
     }
 
     func getStatus() -> AnyPublisher<SocketStatus, Error> {

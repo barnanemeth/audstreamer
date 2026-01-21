@@ -5,7 +5,7 @@
 //  Created by Barna Nemeth on 2026. 01. 02..
 //
 
-public enum FilterAttributeType: CaseIterable {
+enum FilterAttributeType: CaseIterable {
     case favorites
     case downloads
     case watch

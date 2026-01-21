@@ -12,12 +12,16 @@ import Foundation
 public enum L10n {
   /// Account
   public static let account = L10n.tr("Localizable", "account", fallback: "Account")
+  /// Active
+  public static let active = L10n.tr("Localizable", "active", fallback: "Active")
   /// All downloads are completed
   public static let allDownloadsCompleted = L10n.tr("Localizable", "allDownloadsCompleted", fallback: "All downloads are completed")
   /// Sign in to your Apple ID if you want to use cross-device synchronization
   public static let appleIDRequired = L10n.tr("Localizable", "appleIDRequired", fallback: "Sign in to your Apple ID if you want to use cross-device synchronization")
   /// Barna Nemeth
   public static let authorName = L10n.tr("Localizable", "authorName", fallback: "Barna Nemeth")
+  /// Available
+  public static let available = L10n.tr("Localizable", "available", fallback: "Available")
   /// Bad API status
   public static let badAPIStatus = L10n.tr("Localizable", "badAPIStatus", fallback: "Bad API status")
   /// Bad response format
@@ -117,6 +121,8 @@ public enum L10n {
   public static let noEpisodes = L10n.tr("Localizable", "noEpisodes", fallback: "No episodes")
   /// No results
   public static let noResults = L10n.tr("Localizable", "noResults", fallback: "No results")
+  /// Not Available
+  public static let notAvailable = L10n.tr("Localizable", "notAvailable", fallback: "Not Available")
   /// Localizable.strings
   ///   Audstreamer
   /// 

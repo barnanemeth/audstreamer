@@ -26,7 +26,7 @@ final class DefaultShortcutHandler {
 
     // MARK: Dependencies
 
-    @LazyInjected private var database: Database
+    @LazyInjected private var episodeService: EpisodeService
 
     // MARK: Private properties
 
@@ -38,8 +38,9 @@ final class DefaultShortcutHandler {
 
 extension DefaultShortcutHandler: ShortcutHandler {
     func setupItems() {
-        let lastPlayedEpisode = database.getLastPlayedEpisode()
-        let newestEpisode = database.getEpisodes().map { $0.max(by: { $0.publishDate < $1.publishDate }) }
+        let lastPlayedEpisode = episodeService.lastPlayedEpisode()
+        let newestEpisode = episodeService.episodes(matching: nil)
+            .map { $0.max(by: { $0.publishDate < $1.publishDate }) }
 
         Publishers.CombineLatest(lastPlayedEpisode, newestEpisode)
             .receive(on: DispatchQueue.main)

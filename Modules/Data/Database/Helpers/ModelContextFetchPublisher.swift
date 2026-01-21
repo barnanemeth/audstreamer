@@ -11,11 +11,11 @@ import SwiftData
 
 import Common
 
-final class ModelContextFetchPublisher<DataModel: PersistentModel & DomainMappable>: Publisher {
+final class ModelContextFetchPublisher<DataModel: PersistentModel>: Publisher {
 
     // MARK: Typealiases
 
-    typealias Output = [DataModel.DomainModelType]
+    typealias Output = [DataModel]
     typealias Failure = Error
 
 
@@ -35,7 +35,7 @@ final class ModelContextFetchPublisher<DataModel: PersistentModel & DomainMappab
 
     // MARK: Publisher
 
-    func receive<S>(subscriber: S) where S: Subscriber, any Failure == S.Failure, [DataModel.DomainModelType] == S.Input {
+    func receive<S>(subscriber: S) where S: Subscriber, any Failure == S.Failure, [DataModel] == S.Input {
         let subscription = ModelContextFetchSubscription(
             subscriber: subscriber,
             contextManager: contextManager,
@@ -47,7 +47,7 @@ final class ModelContextFetchPublisher<DataModel: PersistentModel & DomainMappab
 
 // MARK: - ModelContextFetchSubscription
 
-final fileprivate class ModelContextFetchSubscription<DataModel: PersistentModel & DomainMappable, S: Subscriber> where S.Input == [DataModel.DomainModelType], S.Failure == Error {
+final fileprivate class ModelContextFetchSubscription<DataModel: PersistentModel, S: Subscriber> where S.Input == [DataModel], S.Failure == Error {
 
     // MARK: Private properties
 
@@ -78,7 +78,7 @@ extension ModelContextFetchSubscription: Subscription {
             .asyncTryMap { [unowned self] in
                 let models = try await contextManager.fetch(descriptor)
                 let filtered = models.filter { !$0.hasChanges && !$0.isDeleted }
-                return filtered.asDomainModels
+                return filtered
             }
             .sink(
                 receiveCompletion: { [unowned self] completion in

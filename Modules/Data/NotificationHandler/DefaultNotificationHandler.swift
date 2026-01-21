@@ -13,6 +13,8 @@ import UniformTypeIdentifiers
 import Common
 import Domain
 
+internal import AudstreamerAPIClient
+
 final class DefaultNotificationHandler: NSObject {
 
     // MARK: Constants
@@ -25,8 +27,8 @@ final class DefaultNotificationHandler: NSObject {
     // MARK: Dependencies
 
     @LazyInjected private var secureStore: SecureStore
-    @LazyInjected private var apiClient: APIClient
     @LazyInjected private var database: Database
+    @LazyInjected private var client: Client
 
     // MARK: Private properties
 
@@ -59,32 +61,38 @@ extension DefaultNotificationHandler: NotificationHandler {
         let hexString = token.hexString
         let userDefaults = UserDefaults.standard
         userDefaults.set(hexString, forKey: Constant.notificationTokenUserDefaultsKey)
-        apiClient.addDevice(with: hexString).sink().store(in: &cancellables)
+        AsyncPublisher {
+            try? await self.client.updateNotificationToken(.init(body: .json(.init(token: hexString))))
+        }
+        .sink()
+        .store(in: &cancellables)
     }
 
     func handleFetchNotification(completion: @escaping (UIBackgroundFetchResult) -> Void) {
-        database.getLastEpisodePublishDate()
-            .first()
-            .flatMap { [unowned self] in self.apiClient.getEpisodes(from: $0) }
-            .flatMap { [unowned self] episodes -> AnyPublisher<[Episode], Error> in
-                let episodesPublisher = Just(episodes).setFailureType(to: Error.self)
-                let insert = self.database.insertEpisodes(episodes)
+        // TODO: implement
 
-                return Publishers.Zip(episodesPublisher, insert).map { $0.0 }.eraseToAnyPublisher()
-            }
-            .sink(receiveCompletion: { subscriptionCompletion in
-                guard case .failure = subscriptionCompletion else { return }
-                completion(.failed)
-            }, receiveValue: { [unowned self] episodes in
-                if episodes.isEmpty {
-                    completion(.noData)
-                } else {
-                    self.postNotifications(for: episodes)
-                    self.setBadge(to: episodes.count)
-                    completion(.newData)
-                }
-            })
-            .store(in: &cancellables)
+//        database.getLastEpisodePublishDate()
+//            .first()
+//            .flatMap { [unowned self] in self.apiClient.getEpisodes(from: $0) }
+//            .flatMap { [unowned self] episodes -> AnyPublisher<[Episode], Error> in
+//                let episodesPublisher = Just(episodes).setFailureType(to: Error.self)
+//                let insert = self.database.insertEpisodes(episodes)
+//
+//                return Publishers.Zip(episodesPublisher, insert).map { $0.0 }.eraseToAnyPublisher()
+//            }
+//            .sink(receiveCompletion: { subscriptionCompletion in
+//                guard case .failure = subscriptionCompletion else { return }
+//                completion(.failed)
+//            }, receiveValue: { [unowned self] episodes in
+//                if episodes.isEmpty {
+//                    completion(.noData)
+//                } else {
+//                    self.postNotifications(for: episodes)
+//                    self.setBadge(to: episodes.count)
+//                    completion(.newData)
+//                }
+//            })
+//            .store(in: &cancellables)
     }
 
     func getEpisodeID() -> AnyPublisher<String?, Error> {

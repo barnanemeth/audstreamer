@@ -7,8 +7,8 @@
 
 import Foundation
 
-protocol SecureStore {
-    func storeToken(_ token: Data) throws
-    func getToken() throws -> Data
+protocol SecureStore: Sendable {
+    func storeToken(_ token: String) throws
+    func getToken() throws -> String
     func deleteToken() throws
 }

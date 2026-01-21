@@ -9,11 +9,17 @@ import Foundation
 
 import Domain
 
-final class KeychainSecureStore: SecureStore {
+struct KeychainSecureStore: SecureStore {
+
+    // MARK: Inner types
+
+    enum Error: Swift.Error {
+        case invalidFormat
+    }
 
     // MARK: - Properties
 
-    private let tokenApplicationTag = "hu.barnanemeth.dev.Audstreamer.userToken"
+    private let tokenApplicationTag = "hu.barnanemeth.dev.Audstreamer.authToken"
 
     // MARK: - Private methods
 
@@ -83,16 +89,23 @@ final class KeychainSecureStore: SecureStore {
 
     // MARK: - Public methods
 
-    func storeToken(_ token: Data) throws {
+    func storeToken(_ token: String) throws {
+        guard let data = token.data(using: .utf8) else {
+            throw Error.invalidFormat
+        }
         do {
-            try saveKey(token, applicationTag: tokenApplicationTag)
+            try saveKey(data, applicationTag: tokenApplicationTag)
         } catch {
-            try updateKey(token, applicationTag: tokenApplicationTag)
+            try updateKey(data, applicationTag: tokenApplicationTag)
         }
     }
 
-    func getToken() throws -> Data {
-        try getKey(applicationTag: tokenApplicationTag)
+    func getToken() throws -> String {
+        let data = try getKey(applicationTag: tokenApplicationTag)
+        guard let string = String(data: data, encoding: .utf8) else {
+            throw Error.invalidFormat
+        }
+        return string
     }
 
     func deleteToken() throws {

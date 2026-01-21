@@ -33,7 +33,7 @@ final class EpisodeListViewModel: ViewModel {
     @ObservationIgnored @Injected private var socket: Socket
     @ObservationIgnored @Injected private var cloud: Cloud
     @ObservationIgnored @Injected private var notificationHandler: NotificationHandler
-    @ObservationIgnored @Injected private var filterService: FilterService
+    @ObservationIgnored @Injected private var filterHelper: FilterHelper
     @ObservationIgnored @Injected private var shortcutHandler: ShortcutHandler
     @ObservationIgnored @Injected private var watchConnectivityService: WatchConnectivityService
     @ObservationIgnored @Injected private var navigator: Navigator
@@ -132,7 +132,7 @@ extension EpisodeListViewModel {
         Task {
             var attribute = attribute
             attribute.isActive.toggle()
-            try? await filterService.setAttribute(attribute).value
+            try? await filterHelper.setAttribute(attribute).value
         }
     }
 
@@ -202,7 +202,7 @@ extension EpisodeListViewModel {
 extension EpisodeListViewModel {
     @MainActor
     private func subscribeToFilterAttributes() async {
-        let publisher = filterService.getAttributes().replaceError(with: [])
+        let publisher = filterHelper.getAttributes().replaceError(with: [])
         for await attributes in publisher.asAsyncStream() {
             filterAttributes = attributes
             isFilterActive = attributes.contains(where: { $0.isActive })

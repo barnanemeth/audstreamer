@@ -14,12 +14,13 @@ import Domain
 
 internal import FeedKit
 internal import XMLKit
+internal import AudstreamerAPIClient
 
 final class DefaultEpisodeService {
 
     // MARK: Dependencies
 
-    @Injected private var apiClient: APIClient
+    @Injected private var client: Client
     @Injected private var database: Database
     @Injected private var downloadService: DownloadService
     @Injected private var watchConnectivityService: WatchConnectivityService
@@ -28,6 +29,7 @@ final class DefaultEpisodeService {
     @Injected private var playingUpdater: PlayingUpdater
     @Injected private var socketUpdater: SocketUpdater
     @Injected private var databaseUpdater: DatabaseUpdater
+    @Injected private var contextManager: SwiftDataContextManager
 }
 
 // MARK: - EpisodeService
@@ -40,14 +42,18 @@ extension DefaultEpisodeService: EpisodeService {
             filterWatch: attributes.filterWatch,
             keyword: attributes.keyword
         )
+        .asyncTryMap { [unowned self] in await contextManager.mapDataModels($0) }
+        .eraseToAnyPublisher()
     }
     
     func episode(id: String) -> AnyPublisher<Episode?, Error> {
         database.getEpisode(id: id)
+            .asyncTryMap { [unowned self] in await contextManager.mapDataModel($0) }
     }
     
     func lastPlayedEpisode() -> AnyPublisher<Episode?, Error> {
         database.getLastPlayedEpisode()
+            .asyncTryMap { [unowned self] in await contextManager.mapDataModel($0) }
     }
     
     func downloadEvents() -> AnyPublisher<DownloadEvent, Error> {
@@ -88,51 +94,53 @@ extension DefaultEpisodeService: EpisodeService {
 //            .replaceEmpty(with: ())
 //            .eraseToAnyPublisher()
 
-        let feedURL = URL(string: "https://omny.fm/shows/borizuhang/playlists/podcast.rss?accessToken=eyJraWQiOiJMQVpfcFBpLVUwV2dxYTZ2QU02UWxnIiwiYWxnIjoiSFMyNTYiLCJ0eXAiOiJKV1QifQ.eyJwbGF5bGlzdCI6IjMxZDBlZmVhLTQ1OTEtNDQwYS04MDg4LWFlYWQwMGQ1NjFmZCIsImtleSI6IlhmZXBlQ3BGd2txTDhaYlhRa2xESHcifQ.ccWmOqSda8HhBbhpjInj8_mdz8ehPvQ_MhEsZ5QiOso")!
-        return URLSession.shared.dataTaskPublisher(for: feedURL)
-            .tryMap { data, _ -> RSSFeed in
-                try RSSFeed(data: data)
-            }
-            .tryMap { rssFeed -> Podcast in
-                guard let channel = rssFeed.channel, let title = channel.title else { throw URLError(.unknown) }
-                let episodes = channel.items?.compactMap { (item: RSSFeedItem) -> Episode? in
-                    guard let title = item.title else { return nil }
-                    return Episode(
-                        id: item.guid?.text ?? UUID().uuidString,
-                        title: title,
-                        publishDate: item.pubDate ?? .now,
-                        descriptionText: item.description,
-                        mediaURL: {
-                            if let string = item.enclosure?.attributes?.url {
-                                URL(string: string)!
-                            } else {
-                                URL(string: "")!
-                            }
-                        }(),
-                        image: {
-                            if let string = item.iTunes?.image?.attributes?.href ?? channel.image?.link {
-                                URL(string: string)!
-                            } else {
-                                nil
-                            }
-                        }(),
-                        thumbnail: {
-                            if let string = item.iTunes?.image?.attributes?.href ?? channel.image?.link {
-                                URL(string: string)!
-                            } else {
-                                nil
-                            }
-                        }(),
-                        link: nil,
-                        duration: Int(item.iTunes?.duration ?? .zero)
-                    )
-                }
-                return Podcast(id: feedURL.absoluteString, name: title, rssFeedURL: feedURL, episodes: episodes ?? [])
-            }
-            .flatMap { [unowned self] podcast in
-                database.insertPodcasts([podcast])
-            }
-            .eraseToAnyPublisher()
+//        let feedURL = URL(string: "https://jolvanez-feed-079292.gitlab.io/rss.xml")!
+//        return URLSession.shared.dataTaskPublisher(for: feedURL)
+//            .tryMap { data, _ -> RSSFeed in
+//                try RSSFeed(data: data)
+//            }
+//            .tryMap { rssFeed -> Podcast in
+//                guard let channel = rssFeed.channel, let title = channel.title else { throw URLError(.unknown) }
+//                let episodes = channel.items?.compactMap { (item: RSSFeedItem) -> Episode? in
+//                    guard let title = item.title else { return nil }
+//                    return Episode(
+//                        id: item.guid?.text ?? UUID().uuidString,
+//                        title: title,
+//                        publishDate: item.pubDate ?? .now,
+//                        descriptionText: item.description,
+//                        mediaURL: {
+//                            if let string = item.enclosure?.attributes?.url {
+//                                URL(string: string)!
+//                            } else {
+//                                URL(string: "")!
+//                            }
+//                        }(),
+//                        image: {
+//                            if let string = item.iTunes?.image?.attributes?.href ?? channel.image?.url ?? channel.iTunes?.image?.attributes?.href {
+//                                URL(string: string)!
+//                            } else {
+//                                nil
+//                            }
+//                        }(),
+//                        thumbnail: {
+//                            if let string = item.iTunes?.image?.attributes?.href ?? channel.image?.link {
+//                                URL(string: string)!
+//                            } else {
+//                                nil
+//                            }
+//                        }(),
+//                        link: nil,
+//                        duration: Int(item.iTunes?.duration ?? .zero)
+//                    )
+//                }
+//                return Podcast(id: feedURL.absoluteString, name: title, rssFeedURL: feedURL, episodes: episodes ?? [])
+//            }
+//            .flatMap { [unowned self] podcast in
+//                database.insertPodcasts([podcast])
+//            }
+//            .eraseToAnyPublisher()
+
+        return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
     func startUpdating() -> AnyPublisher<Void, any Error> {
@@ -158,15 +166,15 @@ extension DefaultEpisodeService: EpisodeService {
     }
 
     func updateLastPlayedDate(_ lastPlayedDate: Date, for episode: Episode) -> AnyPublisher<Void, Error> {
-        database.updateLastPlayedDate(for: episode, date: lastPlayedDate)
+        database.updateLastPlayedDate(for: episode.id, date: lastPlayedDate)
     }
     
     func updateLastPosition(_ lastPosition: Int, for episode: Episode) -> AnyPublisher<Void, Error> {
-        database.updateLastPosition(lastPosition, for: episode)
+        database.updateLastPosition(lastPosition, for: episode.id)
     }
     
     func setFavorite(_ episode: Episode, isFavorite: Bool) -> AnyPublisher<Void, Error> {
-        database.updateEpisode(episode, isFavorite: isFavorite)
+        database.updateEpisode(episode.id, isFavorite: isFavorite)
     }
     
     func download(_ episode: Episode) -> AnyPublisher<Void, Error> {
@@ -175,7 +183,7 @@ extension DefaultEpisodeService: EpisodeService {
     
     func deleteDownload(for episode: Episode) -> AnyPublisher<Void, Error> {
         downloadService.delete(episode)
-            .flatMap { [unowned self] in database.updateEpisode(episode, isDownloaded: false) }
+            .flatMap { [unowned self] in database.updateEpisode(episode.id, isDownloaded: false) }
             .eraseToAnyPublisher()
     }
     
@@ -203,7 +211,7 @@ extension DefaultEpisodeService: EpisodeService {
 
     func sendToWatch(_ episode: Episode) -> AnyPublisher<Void, Error> {
         Publishers.Zip(
-            database.updateEpisode(episode, isOnWatch: true),
+            database.updateEpisode(episode.id, isOnWatch: true),
             watchConnectivityService.transferEpisode(episode.id)
         )
         .toVoid()
@@ -211,7 +219,7 @@ extension DefaultEpisodeService: EpisodeService {
     
     func removeFromWatch(_ episode: Episode) -> AnyPublisher<Void, Error> {
         Publishers.Zip(
-            database.updateEpisode(episode, isOnWatch: false),
+            database.updateEpisode(episode.id, isOnWatch: false),
             watchConnectivityService.cancelFileTransferForEpisode(episode.id)
         )
         .toVoid()
@@ -239,7 +247,7 @@ extension DefaultEpisodeService {
                         .first()
                         .flatMap { episode -> AnyPublisher<Void, Error> in
                             guard let episode = episode else { return Just.void() }
-                            return self.database.updateEpisode(episode, isFavorite: true)
+                            return self.database.updateEpisode(episode.id, isFavorite: true)
                         }
                 }
                 .zip()
@@ -258,7 +266,7 @@ extension DefaultEpisodeService {
                         .first()
                         .flatMap { episode -> AnyPublisher<Void, Error> in
                             guard let episode = episode else { return Just.void() }
-                            return self.database.updateLastPlayedDate(for: episode, date: date)
+                            return self.database.updateLastPlayedDate(for: episode.id, date: date)
                         }
                 }
                 .zip()
@@ -277,7 +285,7 @@ extension DefaultEpisodeService {
                         .first()
                         .flatMap { episode -> AnyPublisher<Void, Error> in
                             guard let episode = episode else { return Just.void() }
-                            return self.database.updateLastPosition(lastPosition, for: episode)
+                            return self.database.updateLastPosition(lastPosition, for: episode.id)
                         }
                 }
                 .zip()
@@ -287,7 +295,7 @@ extension DefaultEpisodeService {
     }
 
     private func getEpisodesCount() -> AnyPublisher<Int, Error> {
-        database.getEpisodes()
+        database.getEpisodes(filterFavorites: false, filterDownloads: false, filterWatch: false, keyword: nil)
             .first()
             .map { $0.count }
             .eraseToAnyPublisher()

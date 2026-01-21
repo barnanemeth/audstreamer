@@ -44,22 +44,11 @@ final class CloudKitCloud {
     private var cancellables = Set<AnyCancellable>()
     private let container = CKContainer(identifier: Constant.containerIdentifier)
     private lazy var privateDatabase = container.privateCloudDatabase
-    private lazy var publicDatabase = container.publicCloudDatabase
-    private lazy var userID: String? = {
-        do {
-            let token = try secureStore.getToken()
-            return try JWTHelper.getSubject(from: token)
-        } catch {
-            return nil
-        }
-    }()
 
     // MARK: Init
 
     init() {
         subscribeToChanges()
-
-        uploadUserRatingsIfPossible().sink().store(in: &cancellables)
     }
 }
 
@@ -140,10 +129,6 @@ extension CloudKitCloud: Cloud {
             .eraseToAnyPublisher()
     }
 
-    func synchronizePublicData() -> AnyPublisher<Void, Error> {
-        uploadUserRatingsIfPossible()
-    }
-
     func resetPrivateData() -> AnyPublisher<Void, Error> {
         RecordType.allCases.map { fetchData(recordType: $0) }
             .zip()
@@ -157,12 +142,11 @@ extension CloudKitCloud: Cloud {
             .eraseToAnyPublisher()
     }
 
-    func resetPublicData() -> AnyPublisher<Void, Error> {
-        deleteUserRatingsIfPossible()
-    }
-
     func updateFromLocal() -> AnyPublisher<Void, Error> {
-        Publishers.Zip(resetPrivateData(), database.getEpisodes().first())
+        let resetPrivateData = resetPrivateData()
+        let episodes = database.getEpisodes(filterFavorites: false, filterDownloads: false, filterWatch: false, keyword: nil).first()
+
+        return Publishers.Zip(resetPrivateData, episodes)
             .receive(on: DispatchQueue.main)
             .map { _, episodes -> [CKRecord] in
                 let favorites = episodes.filter { $0.isFavourite }.map { episode in
@@ -204,7 +188,7 @@ extension CloudKitCloud {
                    predicate: NSPredicate? = nil,
                    sortDescriptors: [NSSortDescriptor]? = nil) -> AnyPublisher<[CKRecord], Error> {
         let fetchPublisher = CloudKitFetchPublisher(
-            database: database(for: recordType),
+            database: privateDatabase,
             recordType: recordType.rawValue,
             predicate: predicate,
             sortDescriptors: sortDescriptors
@@ -222,54 +206,9 @@ extension CloudKitCloud {
         }
     }
 
-    private func uploadUserRatingsIfPossible() -> AnyPublisher<Void, Error> {
-        guard let userID = userID else { return Just.void() }
-        return RatingHelper.getEpisodeRatings()
-            .flatMap { [unowned self] ratings -> AnyPublisher<([CKRecord], [RatingData]), Error> in
-                let predicate = NSPredicate(format: "\(Key.userIDKey) == %@", userID)
-                let records = self.fetchData(recordType: .userRating, predicate: predicate)
-
-                let ratingsPublisher = Just(ratings).setFailureType(to: Error.self)
-
-                return Publishers.Zip(records, ratingsPublisher).eraseToAnyPublisher()
-            }
-            .map { records, ratings in
-                ratings.reduce(into: [CKRecord](), { recordsToSave, rating in
-                    let record = records.first(where: { record in
-                        (record.value(forKey: Key.episodeIDKey) as? String) == rating.episodeID
-                    })
-
-                    if let record = record {
-                        let recordRating = record.object(forKey: Key.ratingKey) as? Double
-                        if recordRating != rating.rating {
-                            record.setValue(rating.rating, forKey: Key.ratingKey)
-                            recordsToSave.append(record)
-                        }
-                    } else {
-                        let record = CKRecord(recordType: RecordType.userRating.rawValue)
-                        record.setValue(userID, forKey: Key.userIDKey)
-                        record.setValue(rating.episodeID, forKey: Key.episodeIDKey)
-                        record.setValue(rating.rating, forKey: Key.ratingKey)
-                        recordsToSave.append(record)
-                    }
-                })
-            }
-            .flatMap { [unowned self] in self.modifyRecords($0, databaseType: .public) }
-            .eraseToAnyPublisher()
-    }
-
-    private func deleteUserRatingsIfPossible() -> AnyPublisher<Void, Error> {
-        guard let userID = userID else { return Just.void() }
-
-        let predicate = NSPredicate(format: "\(Key.userIDKey) == %@", userID)
-        return fetchData(recordType: .userRating, predicate: predicate)
-            .flatMap { [unowned self] in self.deleteRecords($0, databaseType: .public) }
-            .eraseToAnyPublisher()
-    }
-
     private func modifyRecords(_ records: [CKRecord], databaseType: DatabaseType) -> AnyPublisher<Void, Error> {
         let modifyPublisher = CloudKitModifyPublisher(
-            database: database(for: databaseType),
+            database: privateDatabase,
             records: records,
             type: .save
         )
@@ -283,7 +222,7 @@ extension CloudKitCloud {
 
     private func deleteRecords(_ records: [CKRecord], databaseType: DatabaseType) -> AnyPublisher<Void, Error> {
         let modifyPublisher = CloudKitModifyPublisher(
-            database: database(for: databaseType),
+            database: privateDatabase,
             records: records,
             type: .delete
         )
@@ -319,21 +258,5 @@ extension CloudKitCloud {
             .flatMap { [unowned self] in self.synchronizePrivateData().catch { _ in Just.void() } }
             .sink()
             .store(in: &cancellables)
-    }
-
-    private func database(for recordType: RecordType) -> CKDatabase {
-        switch recordType {
-        case .userRating:
-            return publicDatabase
-        case .favoriteRecordType, .lastPlayedDateRecordType, .lastPositionRecordType, .numberOfPlaysRecordType:
-            return privateDatabase
-        }
-    }
-
-    private func database(for databaseType: DatabaseType) -> CKDatabase {
-        switch databaseType {
-        case .private: return privateDatabase
-        case .public: return publicDatabase
-        }
     }
 }

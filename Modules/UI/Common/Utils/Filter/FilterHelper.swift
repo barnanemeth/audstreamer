@@ -1,8 +1,8 @@
 //
-//  DefaultFilterService.swift
-//  Audstreamer
+//  FilterHelper.swift
+//  UI
 //
-//  Created by Barna Nemeth on 2022. 11. 13..
+//  Created by Barna Nemeth on 2026. 01. 21..
 //
 
 import Foundation
@@ -11,7 +11,7 @@ import Combine
 import Common
 import Domain
 
-final class DefaultFilterService {
+final class FilterHelper {
 
     // MARK: Dependencies
 
@@ -30,9 +30,9 @@ final class DefaultFilterService {
     }
 }
 
-// MARK: - FilterService
+// MARK: - Internal methods
 
-extension DefaultFilterService: FilterService {
+extension FilterHelper {
     func getAttributes() -> AnyPublisher<[FilterAttribute], Error> {
         currentAttributesSubject.eraseToAnyPublisher()
     }
@@ -53,7 +53,7 @@ extension DefaultFilterService: FilterService {
 
 // MARK: - Helpers
 
-extension DefaultFilterService {
+extension FilterHelper {
     private func initCurrentAttributes() {
         let defaultAttributeTypes: [FilterAttributeType] = [.favorites, .downloads]
         let attributes = defaultAttributeTypes.map { FilterAttribute(type: $0) }

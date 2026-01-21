@@ -30,8 +30,8 @@ final class MainViewModel: ViewModel {
 
 extension MainViewModel {
     func subscribe() async {
-        print("subs")
         await withTaskGroup { taskGroup in
+            taskGroup.addTask { await self.startUpdating() }
             taskGroup.addTask { await self.startUpdating() }
             taskGroup.addTask { await self.updatePlayerBottomWidgetVisibility() }
         }

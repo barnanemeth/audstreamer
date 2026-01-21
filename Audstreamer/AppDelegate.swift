@@ -46,7 +46,6 @@ extension AppDelegate: UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         applicationLoader.synchronizePrivateCloud()
-        applicationLoader.synchronizePublicCloud()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
