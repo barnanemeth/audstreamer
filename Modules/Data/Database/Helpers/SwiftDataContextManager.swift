@@ -55,9 +55,7 @@ extension SwiftDataContextManager {
         try modelContext.transaction {
             let modelsToInsert: [Model]
             if ignoreIfExists {
-                var descriptor = FetchDescriptor<Model>()
-                descriptor.propertiesToFetch = [\.id]
-
+                let descriptor = FetchDescriptor<Model>()
                 let existingIDs = try modelContext.fetch(descriptor).map(\.id)
 
                 modelsToInsert = models.lazy.filter { !existingIDs.contains($0.id) }
