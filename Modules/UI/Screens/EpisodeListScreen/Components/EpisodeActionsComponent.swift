@@ -27,7 +27,8 @@ struct EpisodeActionsComponent: View {
 
     let episode: Episode
     let isWatchAvailable: Bool
-    let onPlayTap: () async -> Void
+    let isPlaying: Bool
+    let onPlayPauseTap: () async -> Void
     let onFavouriteTap: () async -> Void
     let onDownloadTap: () async -> Void
     let onWatchTap: () async -> Void
@@ -47,7 +48,7 @@ struct EpisodeActionsComponent: View {
 extension EpisodeActionsComponent {
     private var buttons: some View {
         HStack {
-            button(symbol: .playFill, action: onPlayTap)
+            button(symbol: isPlaying ? .pauseFill : .playFill, action: onPlayPauseTap)
             button(symbol: episode.isFavourite ? .bookmarkSlashFill : .bookmarkFill, action: onFavouriteTap)
             button(symbol: episode.isDownloaded ? .arrowDownCircleBadgeXmarkFill : .arrowDownCircleFill, action: onDownloadTap)
             if isWatchAvailable {
@@ -62,6 +63,7 @@ extension EpisodeActionsComponent {
             await action()
         } label: {
             Image(systemSymbol: symbol)
+                .contentTransition(.symbolEffect(.replace))
         }
         .buttonStyle(ActionButtonStyle())
     }

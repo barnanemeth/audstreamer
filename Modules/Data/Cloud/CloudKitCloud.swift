@@ -38,6 +38,7 @@ final class CloudKitCloud {
     @Published var lastPlayedDatesChanges = [String: Date]()
     @Published var lastPositionsChanges = [String: Int]()
     @Published var numberOfPlaysChanges = [String: Int]()
+    @Published var podcastSubscriptionChanges = [String: (feedURL: URL, isPrivate: Bool, isSubscribed: Bool)]()
 
     // MARK: Private properties
 
@@ -112,9 +113,18 @@ extension CloudKitCloud: Cloud {
             .eraseToAnyPublisher()
     }
 
-    func getUserRatings() -> AnyPublisher<[UserRating], Error> {
-        fetchData(recordType: .userRating)
-            .map { [unowned self] in self.mapUserRatings($0) }
+    func getPodcastSubscriptions() -> AnyPublisher<[String: (rssFeedURL: URL, isPrivate: Bool)], Error> {
+        let predicate = NSPredicate(format: "\(Key.isSubscribed) == TRUE")
+        return fetchData(recordType: .podcastSubscriptionRecordType, predicate: predicate)
+            .map { [unowned self] in mapPodcastSubscriptions($0) }
+            .catch { [unowned self] in handleError($0) }
+            .receive(on: Constant.defaultQueue)
+            .eraseToAnyPublisher()
+    }
+
+    func setPodcastSubscription(_ podcast: Podcast, to isSubscribed: Bool) -> AnyPublisher<Void, Error> {
+        Just(podcastSubscriptionChanges[podcast.id] = (feedURL: podcast.rssFeedURL, isPrivate: podcast.isPrivate, isSubscribed: isSubscribed))
+            .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
 
@@ -144,11 +154,12 @@ extension CloudKitCloud: Cloud {
 
     func updateFromLocal() -> AnyPublisher<Void, Error> {
         let resetPrivateData = resetPrivateData()
-        let episodes = database.getEpisodes(filterFavorites: false, filterDownloads: false, filterWatch: false, keyword: nil).first()
+        let episodes = database.getEpisodes(filterFavorites: false, filterDownloads: false, filterWatch: false, keyword: nil, podcastID: nil).first()
+        let podcasts = database.getPodcasts().first()
 
-        return Publishers.Zip(resetPrivateData, episodes)
+        return Publishers.Zip3(resetPrivateData, episodes, podcasts)
             .receive(on: DispatchQueue.main)
-            .map { _, episodes -> [CKRecord] in
+            .map { _, episodes, podcasts -> [CKRecord] in
                 let favorites = episodes.filter { $0.isFavourite }.map { episode in
                     let record = CKRecord(recordType: RecordType.favoriteRecordType.rawValue)
                     record.setValue(episode.id, forKey: Key.episodeIDKey)
@@ -173,8 +184,15 @@ extension CloudKitCloud: Cloud {
                     record.setValue(episode.numberOfPlays, forKey: Key.numberOfPlaysKey)
                     return record
                 }
+                let subscibedPodcasts = podcasts.map { podcast in
+                    let record = CKRecord(recordType: RecordType.podcastSubscriptionRecordType.rawValue)
+                    record.setValue(podcast.id, forKey: Key.podcastIDKey)
+                    record.setValue(podcast.rssURL.absoluteString, forKey: Key.podcastIDKey)
+                    record.setValue(1, forKey: Key.isSubscribed)
+                    return record
+                }
 
-                return favorites + lastPlayedDates + lastPositions + numberOfPlays
+                return favorites + lastPlayedDates + lastPositions + numberOfPlays + subscibedPodcasts
             }
             .flatMap { [unowned self] in self.modifyRecords($0, databaseType: .private) }
             .eraseToAnyPublisher()
@@ -202,7 +220,7 @@ extension CloudKitCloud {
         case .lastPlayedDateRecordType: return !lastPlayedDatesChanges.isEmpty
         case .lastPositionRecordType: return !lastPositionsChanges.isEmpty
         case .numberOfPlaysRecordType: return !numberOfPlaysChanges.isEmpty
-        case .userRating: return false
+        case .podcastSubscriptionRecordType: return !podcastSubscriptionChanges.isEmpty
         }
     }
 
@@ -234,6 +252,7 @@ extension CloudKitCloud {
         lastPlayedDatesChanges.removeAll()
         lastPositionsChanges.removeAll()
         numberOfPlaysChanges.removeAll()
+        podcastSubscriptionChanges.removeAll()
     }
 
     private func handleError<Output>(_ error: Error) -> AnyPublisher<Output, Error> {
@@ -252,8 +271,9 @@ extension CloudKitCloud {
         let lastPlayedDatesChanges = $lastPlayedDatesChanges.filter { !$0.isEmpty }.toVoid()
         let lastPositionsChanges = $lastPositionsChanges.filter { !$0.isEmpty }.toVoid()
         let numberOfPlaysChanges = $numberOfPlaysChanges.filter { !$0.isEmpty }.toVoid()
+        let subscribedPodcastsChanges = $podcastSubscriptionChanges.filter { !$0.isEmpty }.toVoid()
 
-        Publishers.Merge4(favoriteChanges, lastPlayedDatesChanges, lastPositionsChanges, numberOfPlaysChanges)
+        Publishers.Merge5(favoriteChanges, lastPlayedDatesChanges, lastPositionsChanges, numberOfPlaysChanges, subscribedPodcastsChanges)
             .throttle(for: Constant.updateThrottleInterval, scheduler: Constant.defaultQueue, latest: true)
             .flatMap { [unowned self] in self.synchronizePrivateData().catch { _ in Just.void() } }
             .sink()

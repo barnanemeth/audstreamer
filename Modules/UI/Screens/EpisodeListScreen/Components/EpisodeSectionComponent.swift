@@ -18,7 +18,7 @@ struct EpisodeSectionComponent: View {
     let section: EpisodeSection
     let isTitleButtonVisible: Bool
     let onHeaderTap: () -> Void
-    let onPlayTap: () async -> Void
+    let onPlayPauseTap: () async -> Void
     let onFavouriteTap: () async -> Void
     let onDownloadTap: () async -> Void
     let onWatchTap: () async -> Void
@@ -45,6 +45,7 @@ extension EpisodeSectionComponent {
             onHeaderTap()
         } label: {
             EpisodeHeaderComponent(episode: section.episode)
+                .id(section.id)
         }
         .disabled(section.isOpened)
 
@@ -52,7 +53,8 @@ extension EpisodeSectionComponent {
             EpisodeActionsComponent(
                 episode: section.episode,
                 isWatchAvailable: section.isWatchAvailable,
-                onPlayTap: onPlayTap,
+                isPlaying: section.isPlaying,
+                onPlayPauseTap: onPlayPauseTap,
                 onFavouriteTap: onFavouriteTap,
                 onDownloadTap: onDownloadTap,
                 onWatchTap: onWatchTap

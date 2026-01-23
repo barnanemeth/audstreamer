@@ -38,6 +38,8 @@ public enum L10n {
   public static func copyright(_ p1: Any, _ p2: Any) -> String {
     return L10n.tr("Localizable", "copyright", String(describing: p1), String(describing: p2), fallback: "© %@ %@")
   }
+  /// Dashboard
+  public static let dashboard = L10n.tr("Localizable", "dashboard", fallback: "Dashboard")
   /// Delete
   public static let delete = L10n.tr("Localizable", "delete", fallback: "Delete")
   /// Delete downloads
@@ -149,6 +151,8 @@ public enum L10n {
   }
   /// Retry
   public static let retry = L10n.tr("Localizable", "retry", fallback: "Retry")
+  /// Saved
+  public static let saved = L10n.tr("Localizable", "saved", fallback: "Saved")
   /// Settings
   public static let settings = L10n.tr("Localizable", "settings", fallback: "Settings")
   /// Share

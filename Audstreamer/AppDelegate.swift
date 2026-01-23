@@ -35,21 +35,8 @@ final class AppDelegate: UIResponder {
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first)
         applicationLoader.load()
         return true
-    }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        application.applicationIconBadgeNumber = .zero
-    }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        applicationLoader.synchronizePrivateCloud()
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        applicationLoader.synchronizePrivateCloud()
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -66,5 +53,13 @@ extension AppDelegate: UIApplicationDelegate {
                      performActionFor shortcutItem: UIApplicationShortcutItem,
                      completionHandler: @escaping (Bool) -> Void) {
         shortcutHandler.handleShortcutItemAction(shortcutItem, completion: completionHandler)
+    }
+}
+
+// MARK: - Internal methods
+
+extension AppDelegate {
+    func synchronizeCloud() {
+        applicationLoader.synchronizePrivateCloud()
     }
 }

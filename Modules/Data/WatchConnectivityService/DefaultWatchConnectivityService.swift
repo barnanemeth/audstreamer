@@ -74,7 +74,7 @@ extension DefaultWatchConnectivityService: WatchConnectivityService {
     func startUpdating() {
         guard cancellables.isEmpty else { return }
 
-        database.getEpisodes(filterFavorites: false, filterDownloads: false, filterWatch: true, keyword: nil)
+        database.getEpisodes(filterFavorites: false, filterDownloads: false, filterWatch: true, keyword: nil, podcastID: nil)
             .asyncTryMap { [unowned self] in await contextManager.mapDataModels($0) }
             .removeDuplicates()
             .map { [unowned self] in self.mapEpisodes($0) }

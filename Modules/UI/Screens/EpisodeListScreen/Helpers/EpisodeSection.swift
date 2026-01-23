@@ -16,6 +16,7 @@ struct EpisodeSection: Identifiable, Hashable, Equatable {
     let episode: Episode
     let isOpened: Bool
     let title: String?
+    let isPlaying: Bool
     let isDownloaded: Bool
     let isWatchAvailable: Bool
 
@@ -30,6 +31,7 @@ extension EpisodeSection {
         hasher.combine(episode.isFavourite)
         hasher.combine(episode.isDownloaded)
         hasher.combine(episode.isOnWatch)
+        hasher.combine(isPlaying)
         hasher.combine(isDownloaded)
         hasher.combine(isOpened)
     }
@@ -40,6 +42,7 @@ extension EpisodeSection {
         lhs.episode.isDownloaded == rhs.episode.isDownloaded &&
         lhs.episode.isOnWatch == rhs.episode.isOnWatch &&
         lhs.episode.duration == rhs.episode.duration &&
+        lhs.isPlaying == rhs.isPlaying &&
         lhs.isDownloaded == rhs.isDownloaded &&
         lhs.isOpened == rhs.isOpened
     }

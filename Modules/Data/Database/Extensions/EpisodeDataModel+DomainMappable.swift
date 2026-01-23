@@ -20,6 +20,7 @@ extension EpisodeDataModel: DomainMappable {
             image: image,
             thumbnail: thumbnail,
             link: link,
+            podcastTitle: podcast?.title ?? "",
             duration: duration ?? .zero,
             isFavourite: isFavourite,
             lastPosition: lastPosition,

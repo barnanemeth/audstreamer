@@ -18,8 +18,7 @@ struct EpisodeHeaderComponent: View {
     // MARK: Constants
 
     private enum Constant {
-        static let thumbnailAspectRatio: CGFloat = 16 / 9
-        static let thumbnailSize = CGSize(width: 106, height: 60)
+        static let thumbnailSize = CGSize(width: 62, height: 62)
         static let playedThresholdSeconds = 10
     }
 
@@ -44,13 +43,7 @@ struct EpisodeHeaderComponent: View {
         VStack(spacing: 8) {
             HStack(alignment: .top, spacing: 8) {
                 thumbnail
-
-                Text(episode.title)
-                    .font(.caption)
-                    .multilineTextAlignment(.leading)
-                    .foregroundStyle(Asset.Colors.label.swiftUIColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
+                titleSection
                 indicators
             }
 
@@ -79,6 +72,22 @@ extension EpisodeHeaderComponent {
         }
         .frame(width: Constant.thumbnailSize.width, height: Constant.thumbnailSize.height)
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+
+    private var titleSection: some View {
+        VStack(spacing: 8) {
+            Text(episode.podcastTitle.uppercased())
+                .font(.caption2)
+                .fontWeight(.semibold)
+                .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text(episode.title)
+                .font(.caption)
+                .multilineTextAlignment(.leading)
+                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 
     @ViewBuilder

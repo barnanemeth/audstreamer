@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "git@github.com:barnanemeth/audstreamer-api-client.git",
       "state" : {
-        "revision" : "d9e12831ae8f83543d02e5459def0a7d5a5603f1",
-        "version" : "0.0.5"
+        "revision" : "fe4456b72b1194529f43a75721843104db21e1c3",
+        "version" : "0.0.6"
       }
     },
     {

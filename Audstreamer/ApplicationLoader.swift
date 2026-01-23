@@ -27,7 +27,7 @@ final class ApplicationLoader: NSObject {
 
     // MARK: Dependencies
 
-    @LazyInjected private var episodeService: EpisodeService
+    @LazyInjected private var podcastService: PodcastService
     @LazyInjected private var notificationHandler: NotificationHandler
     @LazyInjected private var cloud: Cloud
     @LazyInjected private var shortcutHandler: ShortcutHandler
@@ -68,7 +68,7 @@ extension ApplicationLoader {
 
         let launchHandler: ((BGTask) -> Void) = { [unowned self] task in
             task.expirationHandler = { task.setTaskCompleted(success: false) }
-            self.fetchAndSaveEpisodes()
+            self.updatePodcasts()
                 .sink(receiveCompletion: { completion in
                     switch completion {
                     case .finished: task.setTaskCompleted(success: true)
@@ -83,8 +83,8 @@ extension ApplicationLoader {
         try? BGTaskScheduler.shared.submit(refreshTaskRequest)
     }
 
-    private func fetchAndSaveEpisodes() -> AnyPublisher<Void, Error> {
-        episodeService.refresh()
+    private func updatePodcasts() -> AnyPublisher<Void, Error> {
+        podcastService.refresh()
     }
 
     private func setupImageLoading() {

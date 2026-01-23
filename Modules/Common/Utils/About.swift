@@ -11,6 +11,10 @@ public enum About {
 
     // MARK: Properties
 
+    public static var appName: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
+    }
+
     public static var versionString: String {
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
         let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""

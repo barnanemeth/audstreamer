@@ -13,14 +13,9 @@ extension CloudKitCloud {
         case lastPlayedDateRecordType = "EpisodeLastPlayedDate"
         case lastPositionRecordType = "EpisodeLastPosition"
         case numberOfPlaysRecordType = "EpisodeNumberOfPlays"
-        case userRating = "UserRating"
+        case podcastSubscriptionRecordType = "PodcastSubscription"
 
-        var isPrivate: Bool {
-            switch self {
-            case .userRating: return false
-            default: return true
-            }
-        }
+        var isPrivate: Bool { true }
     }
 
     enum Key {
@@ -31,5 +26,9 @@ extension CloudKitCloud {
         static let numberOfPlaysKey = "numberOfPlays"
         static let userIDKey = "userID"
         static let ratingKey = "rating"
+        static let podcastIDKey = "podcastID"
+        static let rssFeedKey = "rssFeed"
+        static let isPrivate = "isPrivate"
+        static let isSubscribed = "isSubscribed"
     }
 }

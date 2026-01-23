@@ -26,12 +26,16 @@ final class SwiftDataDatabase {
 extension SwiftDataDatabase: Database {
     func insertEpisodes(_ episodes: [EpisodeDataModel], overwrite: Bool) -> AnyPublisher<Void, Error> {
         ThrowingAsyncPublisher {
-            try await self.contextManager.insert(episodes)
+            try await self.contextManager.insert(episodes, ignoreIfExists: !overwrite)
         }
         .eraseToAnyPublisher()
     }
 
-    func getEpisodes(filterFavorites: Bool, filterDownloads: Bool, filterWatch: Bool, keyword: String?) -> AnyPublisher<[EpisodeDataModel], Error> {
+    func getEpisodes(filterFavorites: Bool,
+                     filterDownloads: Bool,
+                     filterWatch: Bool,
+                     keyword: String?,
+                     podcastID: PodcastDataModel.ID?) -> AnyPublisher<[EpisodeDataModel], Error> {
         var predicates = [Predicate<EpisodeDataModel>]()
 
         if let keyword = keyword?.lowercased() {
@@ -54,7 +58,11 @@ extension SwiftDataDatabase: Database {
             predicates.append(#Predicate<EpisodeDataModel> { $0.isOnWatch })
         }
 
-        let combinedPredicate = predicates.disjunction()
+        if let podcastID {
+            predicates.append(#Predicate<EpisodeDataModel> { $0.podcast?.id == podcastID })
+        }
+
+        let combinedPredicate = predicates.conjunction()
 
         let descriptor = FetchDescriptor<EpisodeDataModel>(
             predicate: combinedPredicate,
@@ -190,6 +198,37 @@ extension SwiftDataDatabase: Database {
                     model.isDownloaded = false
                 }
             }
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getPodcasts() -> AnyPublisher<[PodcastDataModel], Error> {
+        let descriptor = FetchDescriptor<PodcastDataModel>()
+        return ModelContextFetchPublisher(contextManager: contextManager, descriptor: descriptor)
+            .eraseToAnyPublisher()
+    }
+
+    func getPodcast(id: PodcastDataModel.ID) -> AnyPublisher<PodcastDataModel?, any Error> {
+        var descriptor = FetchDescriptor<PodcastDataModel>(
+            predicate: #Predicate<PodcastDataModel> { $0.id == id }
+        )
+        descriptor.fetchLimit = 1
+        return ModelContextFetchPublisher(contextManager: contextManager, descriptor: descriptor)
+            .map { $0.first }
+            .eraseToAnyPublisher()
+    }
+
+    func insertPodcasts(_ podcasts: [PodcastDataModel]) -> AnyPublisher<Void, Error> {
+        ThrowingAsyncPublisher {
+            try await self.contextManager.insert(podcasts, ignoreIfExists: false)
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func deletePodcast(_ podcast: PodcastDataModel.ID) -> AnyPublisher<Void, any Error> {
+        ThrowingAsyncPublisher {
+            let predicate = #Predicate<PodcastDataModel>{ $0.id == podcast }
+            try await self.contextManager.delete(where: predicate)
         }
         .eraseToAnyPublisher()
     }

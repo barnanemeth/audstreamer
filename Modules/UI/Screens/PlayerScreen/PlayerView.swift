@@ -92,10 +92,18 @@ extension PlayerView {
     }
 
     private var title: some View {
-        Text(titleText)
-            .font(.subheadline)
-            .foregroundStyle(Asset.Colors.label.swiftUIColor)
-            .frame(maxWidth: .infinity, alignment: .leading)
+        VStack(spacing: 8) {
+            Text(viewModel.episode?.podcastTitle.uppercased() ?? "")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text(titleText)
+                .font(.subheadline)
+                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 
     private var remotePlayButton: some View {

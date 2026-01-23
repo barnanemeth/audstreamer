@@ -22,7 +22,7 @@ extension CloudKitCloud {
                 case .lastPlayedDateRecordType: return self.lastPlayedDateRecordsToSave(from: records)
                 case .lastPositionRecordType: return self.lastPositionRecordsToSave(from: records)
                 case .numberOfPlaysRecordType: return self.numberOfPlaysRecordsToSave(from: records)
-                default: return []
+                case .podcastSubscriptionRecordType: return self.subscribedPodcastRecordsToSave(from: records)
                 }
             }
             .eraseToAnyPublisher()
@@ -95,6 +95,28 @@ extension CloudKitCloud {
                 let record = CKRecord(recordType: RecordType.numberOfPlaysRecordType.rawValue)
                 record.setValue(episodeID, forKey: Key.episodeIDKey)
                 record.setValue(numberOfPlays, forKey: Key.numberOfPlaysKey)
+                recordsToSave.append(record)
+            }
+        })
+    }
+
+    func subscribedPodcastRecordsToSave(from records: [CKRecord]) -> [CKRecord] {
+        podcastSubscriptionChanges.reduce(into: [CKRecord](), { recordsToSave, item in
+            let podcastID = item.key
+            let feedURL = item.value.feedURL
+            let isPrivate = item.value.isPrivate
+            let isSubscribed = item.value.isSubscribed
+
+            let recordToUpdate = records.first { ($0.value(forKey: Key.podcastIDKey) as? String) == podcastID }
+            if let recordToUpdate = recordToUpdate {
+                recordToUpdate.setValue(isSubscribed ? 1 : 0, forKey: Key.isSubscribed)
+                recordsToSave.append(recordToUpdate)
+            } else {
+                let record = CKRecord(recordType: RecordType.podcastSubscriptionRecordType.rawValue)
+                record.setValue(podcastID, forKey: Key.podcastIDKey)
+                record.setValue(feedURL.absoluteString, forKey: Key.rssFeedKey)
+                record.setValue(isPrivate ? 1 : 0, forKey: Key.isPrivate)
+                record.setValue(isSubscribed ? 1 : 0, forKey: Key.isSubscribed)
                 recordsToSave.append(record)
             }
         })

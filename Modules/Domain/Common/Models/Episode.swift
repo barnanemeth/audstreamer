@@ -19,6 +19,7 @@ public struct Episode: Identifiable, Hashable, Equatable {
     public let image: URL?
     public let thumbnail: URL?
     public let link: URL?
+    public var podcastTitle: String
 
     public var duration: Int
     public var isFavourite: Bool
@@ -38,6 +39,7 @@ public struct Episode: Identifiable, Hashable, Equatable {
                 image: URL? = nil,
                 thumbnail: URL? = nil,
                 link: URL? = nil,
+                podcastTitle: String,
                 duration: Int,
                 isFavourite: Bool = false,
                 lastPosition: Int? = nil,
@@ -53,6 +55,7 @@ public struct Episode: Identifiable, Hashable, Equatable {
         self.image = image
         self.thumbnail = thumbnail
         self.link = link
+        self.podcastTitle = podcastTitle
         self.duration = duration
         self.isFavourite = isFavourite
         self.lastPosition = lastPosition
@@ -107,5 +110,6 @@ extension Episode {
         case publishDate
         case duration
         case lastPosition
+        case podcastTitle
     }
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 import Common
+import Domain
 
 internal import NavigatorUI
 
@@ -16,7 +17,12 @@ enum AppNavigationDestination: @MainActor NavigationDestination {
     case login(shouldShowPlayerAtDismiss: Bool)
     case main
     case player(detents: Set<PresentationDetent>)
-    case episodeList
+    case dashboard
+    case podcastList
+    case podcastDetails(podcast: Podcast, namespace: Namespace.ID)
+    case addPodcast
+    case episodeList(podcast: Podcast?)
+    case search
     case settings
     case downloads
 
@@ -26,20 +32,41 @@ enum AppNavigationDestination: @MainActor NavigationDestination {
         switch self {
         case .loading:
             LoadingView()
+                .tint(nil)
         case let .login(shouldShowPlayerAtDismiss):
             LoginView(shouldShowPlayerAtDismiss: shouldShowPlayerAtDismiss)
+                .tint(nil)
         case .main:
             MainView()
         case let .player(detents):
             PlayerView()
                 .presentationDetents(detents)
                 .presentationDragIndicator(.visible)
-        case .episodeList:
-            EpisodeListView()
+                .tint(nil)
+        case .dashboard:
+            DashboardView()
+                .tint(nil)
+        case .podcastList:
+            PodcastListView()
+                .tint(nil)
+        case let .podcastDetails(podcast, namespace):
+            PodcastDetailsView(podcast: podcast, transitionNamesapce: namespace)
+                .tint(nil)
+        case .addPodcast:
+            AddPodcastView()
+                .tint(nil)
+        case let .episodeList(podcast):
+            EpisodeListView(podcast: podcast)
+                .tint(nil)
+        case .search:
+            SearchView()
+                .tint(nil)
         case .settings:
             SettingsView()
+                .tint(nil)
         case .downloads:
             DownloadsView()
+                .tint(nil)
         }
     }
 }

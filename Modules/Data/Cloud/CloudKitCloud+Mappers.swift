@@ -39,12 +39,13 @@ extension CloudKitCloud {
         })
     }
 
-    func mapUserRatings(_ records: [CKRecord]) -> [UserRating] {
-        records.compactMap { record in
-            guard let userID = record.value(forKey: Key.userIDKey) as? String,
-                  let episodeID = record.value(forKey: Key.episodeIDKey) as? String,
-                  let rating = record.value(forKey: Key.ratingKey) as? Double else { return nil }
-            return UserRating(userID: userID, episodeID: episodeID, rating: rating)
-        }
+    func mapPodcastSubscriptions(_ records: [CKRecord]) -> [String: (rssFeedURL: URL, isPrivate: Bool)] {
+        records.reduce(into: [String: (rssFeedURL: URL, isPrivate: Bool)](), { subscribedPodcastsDictionary, record in
+            guard let podcastID = record.object(forKey: Key.podcastIDKey) as? String,
+                  let isPrivateInt = record.object(forKey: Key.isPrivate) as? Int,
+                  let rssFeedString = record.object(forKey: Key.rssFeedKey) as? String,
+                  let rssFeedURL = URL(string: rssFeedString) else { return }
+            subscribedPodcastsDictionary[podcastID] = (rssFeedURL, isPrivateInt == 1)
+        })
     }
 }

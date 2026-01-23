@@ -34,14 +34,11 @@ struct PlayerBottomWidget: View {
 
     var body: some View {
         HStack {
-            HStack {
-                thumbnail
-                info
+            if let episode = viewModel.episode {
+                playingContent(for: episode)
+            } else {
+                nonPlayingContent
             }
-            .contentShape(Rectangle())
-            .onTapGesture { onTap() }
-
-            playPauseButton
         }
         .padding(4)
         .disabled(!viewModel.isEnabled)
@@ -53,8 +50,25 @@ struct PlayerBottomWidget: View {
 
 extension PlayerBottomWidget {
     @ViewBuilder
-    private var thumbnail: some View {
-        if let thumbnail = viewModel.episode?.thumbnail {
+    private func playingContent(for episode: Episode) -> some View {
+        HStack {
+            thumbnail(for: episode)
+            info(for: episode)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture { onTap() }
+
+        playPauseButton
+    }
+
+    private var nonPlayingContent: some View {
+        ProgressView()
+            .progressViewStyle(.linear)
+    }
+
+    @ViewBuilder
+    private func thumbnail(for episode: Episode) -> some View {
+        if let thumbnail = episode.thumbnail {
             LazyImage(url: thumbnail) { state in
                 if state.isLoading {
                     ProgressView()
@@ -67,18 +81,33 @@ extension PlayerBottomWidget {
             }
             .frame(width: 36, height: 36)
             .clipShape(Circle())
+        } else {
+            Circle()
+                .redacted(reason: [.placeholder])
+                .opacity(0.5)
+                .frame(width: 36, height: 36)
         }
     }
 
-    private var info: some View {
+    @ViewBuilder
+    private func info(for episode: Episode) -> some View {
         VStack(alignment: .leading) {
-            Text(viewModel.episode?.title ?? "")
-                .lineLimit(1)
+            Text(episode.podcastTitle.uppercased())
+                .font(.system(size: 9, weight: .semibold))
+                .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text(episode.title)
+                .font(.caption2)
+                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
             Text(viewModel.elapsedTimeText)
+                .font(.caption2)
+                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .font(.caption2)
-        .foregroundStyle(Asset.Colors.label.swiftUIColor)
-        .frame(maxWidth: .infinity)
+        .lineLimit(1)
     }
 
     private var playPauseButton: some View {

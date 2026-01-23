@@ -35,12 +35,17 @@ final class DefaultEpisodeService {
 // MARK: - EpisodeService
 
 extension DefaultEpisodeService: EpisodeService {
+    func refresh() -> AnyPublisher<Void, Error> {
+        synchronizeCloudDataToDatabase()
+    }
+
     func episodes(matching attributes: EpisodeQueryAttributes) -> AnyPublisher<[Episode], Error> {
         database.getEpisodes(
             filterFavorites: attributes.filterFavorites,
             filterDownloads: attributes.filterDownloads,
             filterWatch: attributes.filterWatch,
-            keyword: attributes.keyword
+            keyword: attributes.keyword,
+            podcastID: attributes.podcastID
         )
         .asyncTryMap { [unowned self] in await contextManager.mapDataModels($0) }
         .eraseToAnyPublisher()
@@ -66,81 +71,6 @@ extension DefaultEpisodeService: EpisodeService {
     
     func aggregatedTransferEvents() -> AnyPublisher<FileTransferAggregatedProgress, Error> {
         watchConnectivityService.getAggregatedFileTransferProgress()
-    }
-    
-    func refresh() -> AnyPublisher<Void, Error> {
-//        let isApplicationActivePublisher = applicationStateHandler.getState().map { $0 == .active }
-//
-//        return isApplicationActivePublisher
-//            .flatMap { isActive in
-//                if isActive {
-//                    Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
-//                } else {
-//                    Empty<Void, Error>(completeImmediately: false).eraseToAnyPublisher()
-//                }
-//            }
-//            .flatMap { [unowned self] _ in database.getLastEpisodePublishDate().first() }
-//            .flatMap { [unowned self] lastPublishDate -> AnyPublisher<([Episode], Int), Error> in
-//                let remoteEpisodes = apiClient.getEpisodes(from: lastPublishDate)
-//                let localEpisodesCount = getEpisodesCount()
-//
-//                return Publishers.Zip(remoteEpisodes, localEpisodesCount).eraseToAnyPublisher()
-//            }
-//            .flatMap { [unowned self] remoteEpisodes, localEpisodesCount in
-//                let isOverwriteNeeded = remoteEpisodes.count >= localEpisodesCount
-//                return database.insertEpisodes(remoteEpisodes, overwrite: isOverwriteNeeded)
-//            }
-//            .flatMap { [unowned self] in synchronizeCloudDataToDatabase() }
-//            .replaceEmpty(with: ())
-//            .eraseToAnyPublisher()
-
-//        let feedURL = URL(string: "https://jolvanez-feed-079292.gitlab.io/rss.xml")!
-//        return URLSession.shared.dataTaskPublisher(for: feedURL)
-//            .tryMap { data, _ -> RSSFeed in
-//                try RSSFeed(data: data)
-//            }
-//            .tryMap { rssFeed -> Podcast in
-//                guard let channel = rssFeed.channel, let title = channel.title else { throw URLError(.unknown) }
-//                let episodes = channel.items?.compactMap { (item: RSSFeedItem) -> Episode? in
-//                    guard let title = item.title else { return nil }
-//                    return Episode(
-//                        id: item.guid?.text ?? UUID().uuidString,
-//                        title: title,
-//                        publishDate: item.pubDate ?? .now,
-//                        descriptionText: item.description,
-//                        mediaURL: {
-//                            if let string = item.enclosure?.attributes?.url {
-//                                URL(string: string)!
-//                            } else {
-//                                URL(string: "")!
-//                            }
-//                        }(),
-//                        image: {
-//                            if let string = item.iTunes?.image?.attributes?.href ?? channel.image?.url ?? channel.iTunes?.image?.attributes?.href {
-//                                URL(string: string)!
-//                            } else {
-//                                nil
-//                            }
-//                        }(),
-//                        thumbnail: {
-//                            if let string = item.iTunes?.image?.attributes?.href ?? channel.image?.link {
-//                                URL(string: string)!
-//                            } else {
-//                                nil
-//                            }
-//                        }(),
-//                        link: nil,
-//                        duration: Int(item.iTunes?.duration ?? .zero)
-//                    )
-//                }
-//                return Podcast(id: feedURL.absoluteString, name: title, rssFeedURL: feedURL, episodes: episodes ?? [])
-//            }
-//            .flatMap { [unowned self] podcast in
-//                database.insertPodcasts([podcast])
-//            }
-//            .eraseToAnyPublisher()
-
-        return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
     func startUpdating() -> AnyPublisher<Void, any Error> {
@@ -295,7 +225,7 @@ extension DefaultEpisodeService {
     }
 
     private func getEpisodesCount() -> AnyPublisher<Int, Error> {
-        database.getEpisodes(filterFavorites: false, filterDownloads: false, filterWatch: false, keyword: nil)
+        database.getEpisodes(filterFavorites: false, filterDownloads: false, filterWatch: false, keyword: nil, podcastID: nil)
             .first()
             .map { $0.count }
             .eraseToAnyPublisher()

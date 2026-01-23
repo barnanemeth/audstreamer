@@ -18,7 +18,7 @@ internal import Reachability
 internal import OrderedCollections
 
 @Observable
-final class EpisodeListViewModel: ViewModel {
+final class EpisodeListViewModel {
 
     // MARK: Constants
 
@@ -40,13 +40,12 @@ final class EpisodeListViewModel: ViewModel {
 
     // MARK: Properties
 
-    private(set) var screenTitle = (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) ?? ""
-    private(set) var watchConnectionStatus: WatchConnectionStatus = .notAvailable
+    private(set) var screenTitle = About.appName
     private(set) var filterAttributes = [FilterAttribute]()
     private(set) var isFilterActive = false
     private(set) var searchKeyword: String?
     private(set) var sections: [EpisodeSection]?
-    private(set) var isLoading = false
+    private(set) var podcast: Podcast?
     var openedEpisodeID: String?
     var currentlyShowedDialogDescriptor: DialogDescriptor?
 
@@ -57,14 +56,20 @@ final class EpisodeListViewModel: ViewModel {
         formatter.dateFormat = Constant.splitterDateComponents.dateFormat
         return formatter
     }()
+    @ObservationIgnored private var currentlyPlayingID: AnyPublisher<String?, Error> {
+        Publishers.CombineLatest(audioPlayer.getCurrentPlayingAudioInfo().map(\.?.id), audioPlayer.isPlaying())
+            .map { $1 ? $0 : nil }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
 }
 
 // MARK: - View model
 
-extension EpisodeListViewModel {
+extension EpisodeListViewModel: ViewModel {
     func subscribe() async {
         await withTaskGroup { taskGroup in
-            taskGroup.addTask { await self.showAndInsertOpenableEpisode() }
+            taskGroup.addTask { await self.openLastPlayedEpisodeIfNeeded() }
             taskGroup.addTask { await self.subscribeToShortcutEpisode() }
             taskGroup.addTask { await self.subscribeToFilterAttributes() }
             taskGroup.addTask { await self.subscribeToEpisodes() }
@@ -75,25 +80,18 @@ extension EpisodeListViewModel {
 // MARK: - Actions
 
 extension EpisodeListViewModel {
+    func setPodcast(_ podcast: Podcast?) {
+        self.podcast = podcast
+    }
+
     @MainActor
-    func playEpisode(_ episode: Episode) async {
+    func togglePlaying(_ episode: Episode) async {
         do {
-            try await withThrowingTaskGroup { taskGroup in
-                taskGroup.addTask {
-                    let currentPlayingAudioInfo = try await self.audioPlayer.getCurrentPlayingAudioInfo().value
-                    if currentPlayingAudioInfo?.id == episode.id {
-                        try await self.audioPlayer.play().value
-                    } else {
-                        try await self.insertEpisode(episode, playImmediately: true)
-                    }
-                }
-
-                taskGroup.addTask {
-                    let currentEpisodeSocketData = CurrentEpisodeSocketData(episodeID: episode.id, playImmediately: true)
-                    try await self.socket.sendCurrentEpisode(currentEpisodeSocketData).value
-                }
-
-                try await taskGroup.waitForAll()
+            let currentlyPlayingID = try await currentlyPlayingID.value
+            if currentlyPlayingID == episode.id {
+                try await pausePlaying()
+            } else {
+                try await playEpisode(episode)
             }
         } catch {
             showErrorAlert(for: error)
@@ -173,11 +171,6 @@ extension EpisodeListViewModel {
         }
     }
 
-    @MainActor
-    func refresh() async {
-        try? await episodeService.refresh().value
-    }
-
     func setSearchKeyword(_ keyword: String) {
         if keyword.isEmpty {
             searchKeyword = nil
@@ -213,19 +206,29 @@ extension EpisodeListViewModel {
     private func subscribeToEpisodes() async {
         let filterAttributes = ObservationTrackingPublisher(self.filterAttributes)
         let searchKeyword = ObservationTrackingPublisher(self.searchKeyword)
-        let episodesPublisher = Publishers.CombineLatest(filterAttributes, searchKeyword)
-            .flatMapLatest { [unowned self] in getEpisodes(by: $0, keyword: $1) }
+        let podcast = ObservationTrackingPublisher(self.podcast)
+        let episodesPublisher = Publishers.CombineLatest3(filterAttributes, searchKeyword, podcast)
+            .flatMapLatest { [unowned self] in getEpisodes(by: $0, keyword: $1, podcast: $2) }
+
         let openedEpisodeIDPublisher = ObservationTrackingPublisher(self.openedEpisodeID)
         let isWatchAvailable = watchConnectivityService.isAvailable().replaceError(with: false)
-        let publisher = Publishers.CombineLatest3(episodesPublisher, openedEpisodeIDPublisher, isWatchAvailable)
+        let currentlyPlayingID = currentlyPlayingID.replaceError(with: nil)
 
-        for await (episodes, openedEpisodeID, isWatchAvailable) in publisher.asAsyncStream() {
-            sections = transformEpisodes(from: episodes, openedEpisodeID: openedEpisodeID, isWatchAvailable: isWatchAvailable)
+        let publisher = Publishers.CombineLatest4(episodesPublisher, openedEpisodeIDPublisher, isWatchAvailable, currentlyPlayingID)
+
+        for await (episodes, openedEpisodeID, isWatchAvailable, currentlyPlayingID) in publisher.asAsyncStream() {
+            sections = transformEpisodes(
+                from: episodes,
+                openedEpisodeID: openedEpisodeID,
+                currentlyPlayingID: currentlyPlayingID,
+                isWatchAvailable: isWatchAvailable
+            )
         }
     }
 
     private func transformEpisodes(from episodes: [Episode],
                                    openedEpisodeID: String?,
+                                   currentlyPlayingID: String?,
                                    isWatchAvailable: Bool) -> [EpisodeSection] {
         let dict = episodes.reduce(into: OrderedDictionary<DateComponents, [Episode]>(), { dictionary, episode in
             let components = Calendar.current.dateComponents(
@@ -254,6 +257,7 @@ extension EpisodeListViewModel {
                     episode: episode,
                     isOpened: episode.id == openedEpisodeID,
                     title: title,
+                    isPlaying: currentlyPlayingID == episode.id,
                     isDownloaded: isDownloaded,
                     isWatchAvailable: isWatchAvailable
                 )
@@ -265,40 +269,13 @@ extension EpisodeListViewModel {
         return sections
     }
 
-    private func showAndInsertOpenableEpisode() async {
-        do {
-            let lastPlayedEpisodeID = try await episodeService.lastPlayedEpisode().value?.id
-            let episodeIDFromNotification = try await  notificationHandler.getEpisodeID().value
-            let episodeIDFromShortcut = try await  shortcutHandler.getEpisodeID().value
-
-            openedEpisodeID = lastPlayedEpisodeID
-
-            guard let episodeID = episodeIDFromNotification ?? episodeIDFromShortcut ?? lastPlayedEpisodeID,
-                  let episode = try await episodeService.episode(id: episodeID).value  else { return }
-
-            try await withThrowingTaskGroup { taskGroup in
-                taskGroup.addTask {
-                    let currentEpisodeSocketData = CurrentEpisodeSocketData(episodeID: episode.id, playImmediately: true)
-                    try await self.socket.sendCurrentEpisode(currentEpisodeSocketData).value
-                }
-                taskGroup.addTask {
-                    try await self.insertEpisode(episode, playImmediately: false)
-                }
-                taskGroup.addTask {
-                    try await self.notificationHandler.resetEpisodeID().value
-                }
-
-                try await taskGroup.waitForAll()
-            }
-        } catch {
-            return
-        }
+    @MainActor
+    private func openLastPlayedEpisodeIfNeeded() async {
+        openedEpisodeID = try? await episodeService.lastPlayedEpisode().value?.id
     }
 
     @MainActor
     private func insertEpisode(_ episode: Episode, playImmediately: Bool) async throws {
-        defer { isLoading = false }
-        isLoading = true
         try await audioPlayer.insert(episode, playImmediately: playImmediately).value
     }
 
@@ -327,13 +304,13 @@ extension EpisodeListViewModel {
         }
     }
 
-    private func getEpisodes(by filterAttributes: [FilterAttribute],
-                             keyword: String?) -> AnyPublisher<[Episode], Never> {
+    private func getEpisodes(by filterAttributes: [FilterAttribute], keyword: String?, podcast: Podcast?) -> AnyPublisher<[Episode], Never> {
         let queryAttributes = EpisodeQueryAttributes(
             keyword: keyword,
             filterFavorites: filterAttributes.contains { $0.type == .favorites && $0.isActive },
             filterDownloads: filterAttributes.contains { $0.type == .downloads && $0.isActive },
-            filterWatch: filterAttributes.contains { $0.type == .watch && $0.isActive }
+            filterWatch: filterAttributes.contains { $0.type == .watch && $0.isActive },
+            podcastID: podcast?.id
         )
 
         return episodeService.episodes(matching: queryAttributes)
@@ -364,7 +341,7 @@ extension EpisodeListViewModel {
 
     private func episodes(for section: EpisodeSection, isDownloaded: Bool) async throws -> [Episode] {
         let componentsToDownload = dateComponents(from: section)
-        let episodes = try await episodeService.episodes(matching: nil).value
+        let episodes = try await episodeService.episodes(matching: EpisodeQueryAttributes(filterDownloads: isDownloaded, podcastID: podcast?.id)).value
         return episodes.filter { episode in
             let components = Calendar.current.dateComponents(
                 Set(Constant.splitterDateComponents),
@@ -429,6 +406,35 @@ extension EpisodeListViewModel {
     private func deleteEpisodes(for section: EpisodeSection) async throws {
         let episodes = try await episodes(for: section, isDownloaded: true)
         try await deleteEpisodes(episodes)
+    }
+
+    private func playEpisode(_ episode: Episode) async throws {
+        try await withThrowingTaskGroup { taskGroup in
+            taskGroup.addTask {
+                let currentPlayingAudioInfo = try await self.audioPlayer.getCurrentPlayingAudioInfo().value
+                if currentPlayingAudioInfo?.id == episode.id {
+                    try await self.audioPlayer.play().value
+                } else {
+                    try await self.insertEpisode(episode, playImmediately: true)
+                }
+            }
+
+            taskGroup.addTask {
+                let currentEpisodeSocketData = CurrentEpisodeSocketData(episodeID: episode.id, playImmediately: true)
+                try await self.socket.sendCurrentEpisode(currentEpisodeSocketData).value
+            }
+
+            try await taskGroup.waitForAll()
+        }
+    }
+
+    private func pausePlaying() async throws {
+        try await withThrowingTaskGroup { taskGroup in
+            taskGroup.addTask { try await self.audioPlayer.pause().value }
+            taskGroup.addTask { try await self.socket.sendPlaybackCommand(.pause).value }
+
+            try await taskGroup.waitForAll()
+        }
     }
 }
 

@@ -19,6 +19,10 @@ struct MainView: View {
 
     @State private var viewModel = MainViewModel()
 
+    // MARK: Private properties
+
+    @Environment(\.navigator) private var navigator
+
     // MARK: UI
 
     var body: some View {
@@ -34,27 +38,10 @@ struct MainView: View {
 extension MainView {
     private var tabView: some View {
         TabView {
-            Tab("Episodes", systemSymbol: .playCircleFill) {
-                ManagedNavigationStack {
-                    EpisodeListView()
-                }
-            }
-
-            Tab("Dashboard", systemSymbol: .appDashed) {
-                ManagedNavigationStack {
-                    Text("Dashboard")
-                }
-            }
-
-            Tab(L10n.settings, systemSymbol: .gear) {
-                ManagedNavigationStack {
-                    SettingsView()
-                }
-            }
-
-            Tab(role: .search) {
-                Text("Search")
-            }
+            Tab(L10n.dashboard, systemSymbol: .houseFill) { dashboard }
+            Tab("Podcasts", systemSymbol: .squareStack) { podcastList }
+            Tab(L10n.settings, systemSymbol: .gearshapeFill) { settings }
+            Tab(role: .search) { search }
         }
         .tint(Asset.Colors.primary.swiftUIColor)
         .apply {
@@ -71,7 +58,30 @@ extension MainView {
             }
         }
         .tabBarMinimizeBehavior(.onScrollDown)
-        .tabBarMinimizeBehavior(.onScrollUp)
+    }
+
+    private var dashboard: some View {
+        ManagedNavigationStack {
+            navigator.mappedNavigationView(for: AppNavigationDestination.dashboard)
+        }
+    }
+
+    private var podcastList: some View {
+        ManagedNavigationStack {
+            navigator.mappedNavigationView(for: AppNavigationDestination.podcastList)
+        }
+    }
+
+    private var settings: some View {
+        ManagedNavigationStack {
+            navigator.mappedNavigationView(for: AppNavigationDestination.settings)
+        }
+    }
+
+    private var search: some View {
+        ManagedNavigationStack {
+            navigator.mappedNavigationView(for: AppNavigationDestination.search)
+        }
     }
 
     private var playerBottomWidget: some View {

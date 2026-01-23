@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import MediaPlayer
 
+import Common
 import Domain
 
 internal import Nuke
@@ -36,9 +37,7 @@ final class DefaultRemotePlayer {
     private let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
     private let commandCenter = MPRemoteCommandCenter.shared()
     private let eventsSubject = PassthroughSubject<RemotePlayerEvent, Error>()
-    private var appTitle: Any? {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
-    }
+    private var appTitle: Any? { About.appName }
 
     // MARK: Init
 

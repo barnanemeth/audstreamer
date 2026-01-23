@@ -24,14 +24,14 @@ actor SwiftDataContextManager {
 extension SwiftDataContextManager {
     static func instantiate() -> Self {
         do {
-            let schema = Schema([EpisodeDataModel.self])
+            let schema = Schema([PodcastDataModel.self, EpisodeDataModel.self])
 
             let configuration = ModelConfiguration(
                 schema: schema,
                 isStoredInMemoryOnly: Constant.isStoredInMemoryOnly,
                 cloudKitDatabase: Constant.cloudKitDatabase
             )
-
+            print("Model container URL", configuration.url)
             return Self(modelContainer: try ModelContainer(for: schema, configurations: [configuration]))
         } catch {
             fatalError("Cannot create ModelContainer")
@@ -47,9 +47,25 @@ extension SwiftDataContextManager {
         try modelContext.fetch(descriptor)
     }
 
-    func insert<Model: PersistentModel>(_ models: [Model]) throws {
+    func fetchIdentifiers<Model: PersistentModel>(_ descriptor: FetchDescriptor<Model>) throws -> [PersistentIdentifier] {
+        try modelContext.fetchIdentifiers(descriptor)
+    }
+
+    func insert<Model: PersistentModel & Identifiable>(_ models: [Model], ignoreIfExists: Bool) throws {
         try modelContext.transaction {
-            models.forEach { model in
+            let modelsToInsert: [Model]
+            if ignoreIfExists {
+                var descriptor = FetchDescriptor<Model>()
+                descriptor.propertiesToFetch = [\.id]
+
+                let existingIDs = try modelContext.fetch(descriptor).map(\.id)
+
+                modelsToInsert = models.lazy.filter { !existingIDs.contains($0.id) }
+            } else {
+                modelsToInsert = models
+            }
+
+            modelsToInsert.forEach { model in
                 modelContext.insert(model)
             }
         }
@@ -65,6 +81,14 @@ extension SwiftDataContextManager {
 
     func delete<Model: PersistentModel>(where predicate: Predicate<Model>) throws {
         try modelContext.delete(model: Model.self, where: predicate)
+        try modelContext.save()
+
+        // Note: workaround
+        NotificationCenter.default.post(
+            name: ModelContext.didSave,
+            object: modelContext,
+            userInfo: [:]
+        )
     }
 
     func transaction(_ block: () -> Void) throws {
@@ -87,5 +111,11 @@ extension SwiftDataContextManager {
 
     func mapDataModels<DataModelType: PersistentModel & APIMappable>(_ models: [DataModelType]) -> [DataModelType.APIModelType] {
         models.compactMap { mapDataModel($0) }
+    }
+
+    func mapDataModels<DataModelType: PersistentModel, Output>(_ models: [DataModelType], block: (DataModelType) -> Output) -> [Output] {
+        models.compactMap { model in
+            block(model)
+        }
     }
 }

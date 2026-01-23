@@ -21,7 +21,7 @@ final class EpisodesViewModel: ObservableObject {
 
     // MARK: Properties
 
-    @Published private(set) var title = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
+    @Published private(set) var title = About.appName
     @Published private(set) var episodes = [EpisodeRow.Data]()
 
     // MARK: Init

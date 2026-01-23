@@ -25,6 +25,7 @@ extension Resolver {
 
 extension Resolver {
     private static func registerPublicServices() {
+        registerPodcastService()
         registerEpisodeService()
         registerCloud()
         registerSocket()
@@ -35,6 +36,12 @@ extension Resolver {
         registerWatchConnectivityService()
         registerNotificationHandler()
         registerAccount()
+    }
+
+    private static func registerPodcastService() {
+        register { DefaultPodcastService() }
+            .implements(PodcastService.self)
+            .scope(.unique)
     }
 
     private static func registerEpisodeService() {

@@ -16,7 +16,8 @@ protocol Database {
     func getEpisodes(filterFavorites: Bool,
                      filterDownloads: Bool,
                      filterWatch: Bool,
-                     keyword: String?) -> AnyPublisher<[EpisodeDataModel], Error>
+                     keyword: String?,
+                     podcastID: PodcastDataModel.ID?) -> AnyPublisher<[EpisodeDataModel], Error>
     func getEpisode(id: EpisodeDataModel.ID) -> AnyPublisher<EpisodeDataModel?, Error>
     func getLastEpisodePublishDate() -> AnyPublisher<Date?, Error>
     func getLastPlayedEpisode() -> AnyPublisher<EpisodeDataModel?, Error>
@@ -32,4 +33,9 @@ protocol Database {
     func deleteEpisode(with id: String) -> AnyPublisher<Void, Error>
     func deleteEpisode(_ episode: EpisodeDataModel) -> AnyPublisher<Void, Error>
     func resetDownloadEpisodes() -> AnyPublisher<Void, Error>
+
+    func getPodcasts() -> AnyPublisher<[PodcastDataModel], Error>
+    func getPodcast(id: PodcastDataModel.ID) -> AnyPublisher<PodcastDataModel?, Error>
+    func insertPodcasts(_ podcasts: [PodcastDataModel]) -> AnyPublisher<Void, Error>
+    func deletePodcast(_ podcast: PodcastDataModel.ID) -> AnyPublisher<Void, Error>
 }

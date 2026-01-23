@@ -19,18 +19,19 @@ struct EpisodeListView: View {
 
     @State private var viewModel = EpisodeListViewModel()
 
+    // MARK: Properties
+
+    let podcast: Podcast?
+
     // MARK: Private properties
 
     @FocusState private var isSearchEnabled: Bool
     @State private var listScrollViewProxy: ScrollViewProxy?
     private var searchTextBinding: Binding<String> {
         Binding<String>(
-            get: { viewModel.searchKeyword ?? "" },
-            set: { viewModel.setSearchKeyword($0) }
+            get: { [viewModel] in viewModel.searchKeyword ?? "" },
+            set: { [viewModel] in viewModel.setSearchKeyword($0) }
         )
-    }
-
-    init(viewModel: EpisodeListViewModel = EpisodeListViewModel()) {
     }
 
     // MARK: UI
@@ -44,17 +45,22 @@ struct EpisodeListView: View {
             .listStyle(.insetGrouped)
             .listSectionSpacing(.compact)
             .animation(.default, value: viewModel.sections)
-            .refreshable { await viewModel.refresh() }
             .searchable(text: searchTextBinding, placement: .toolbar)
             .searchFocused($isSearchEnabled)
             .onAppear { listScrollViewProxy = proxy }
         }
-//        .toolbar { toolbar }
-        .navigationTitle(viewModel.screenTitle)
+        .toolbar { toolbar }
+        .navigationTitle(podcast?.title ?? viewModel.screenTitle)
         .navigationBarTitleDisplayMode(.inline)
         .task(id: "EpisodeListView.SubscriptionTask") { await viewModel.subscribe() }
         .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
         .feedbackEnabled(true)
+        .onAppear { viewModel.setPodcast(podcast) }
+        .onChange(of: viewModel.openedEpisodeID) {
+            guard let openedEpisodeID = viewModel.openedEpisodeID else { return }
+            listScrollViewProxy?.scrollTo(openedEpisodeID, anchor: .top)
+            listScrollViewProxy = nil
+        }
     }
 }
 
@@ -63,45 +69,12 @@ struct EpisodeListView: View {
 extension EpisodeListView {
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
-        searchToolbarItem
-        watchToolbarItem
-        filterToolbarItem
-        settingsToolbarItem
-    }
-
-    private var searchToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            Button {
-                isSearchEnabled.toggle()
-            } label: {
-                Image(systemSymbol: .magnifyingglass)
-            }
-        }
-    }
-
-    @ToolbarContentBuilder
-    private var watchToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            switch viewModel.watchConnectionStatus {
-            case .notAvailable:
-                EmptyView()
-            case .available:
-                Image(systemSymbol: .applewatch)
-            case .connected:
-                Image(systemSymbol: .applewatch)
-                    .foregroundStyle(Asset.Colors.primary.swiftUIColor)
-            }
-        }
-    }
-
-    @ToolbarContentBuilder
-    private var filterToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Menu {
                 ForEach(viewModel.filterAttributes, id: \.self) { attribute in
                     let isOn = Binding<Bool>(
                         get: { attribute.isActive },
-                        set: { _ in viewModel.toggleFilterAttribute(attribute) }
+                        set: { [viewModel] _ in viewModel.toggleFilterAttribute(attribute) }
                     )
                     Toggle(attribute.title, systemImage: attribute.systemImage, isOn: isOn)
                 }
@@ -135,7 +108,7 @@ extension EpisodeListView {
                     section: section,
                     isTitleButtonVisible: !viewModel.isFilterActive,
                     onHeaderTap: { viewModel.openedEpisodeID = section.id },
-                    onPlayTap: { await viewModel.playEpisode(section.episode) },
+                    onPlayPauseTap: { await viewModel.togglePlaying(section.episode) },
                     onFavouriteTap: { await viewModel.toggleEpisodeFavorite(section.episode) },
                     onDownloadTap: { await viewModel.downloadDeleteEpisode(section.episode) },
                     onWatchTap: { await viewModel.toggleEpisodeIsOnWatch(section.episode) },

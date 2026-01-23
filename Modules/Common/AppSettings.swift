@@ -8,7 +8,7 @@
 import Foundation
 
 public enum AppSettings {
-    static let isDev = true
+    static let isDev = false
 
     public static var apiBaseURL: URL {
         if isDev {

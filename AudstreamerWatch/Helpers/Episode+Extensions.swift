@@ -21,14 +21,16 @@ extension Episode: @retroactive Decodable {
         let duration = try container.decode(Int.self, forKey: .duration)
         let lastPosition = try container.decode(Int.self, forKey: .lastPosition)
         let mediaURL = WatchURLHelper.getURLForEpisode(id)! // swiftlint:disable:this force_unwrapping
+        let podcastTitle = try container.decode(String.self, forKey: .podcastTitle)
 
         self.init(
             id: id,
             title: title,
             publishDate: publishDate,
             mediaURL: mediaURL,
+            podcastTitle: podcastTitle,
             duration: duration,
-            lastPosition: lastPosition
+            lastPosition: lastPosition,
         )
     }
 }
@@ -53,6 +55,7 @@ extension Episode {
               let title = dictionary[CodingKeys.title.rawValue] as? String,
               let publishDate = dictionary[CodingKeys.publishDate.rawValue] as? Date,
               let mediaURL = WatchURLHelper.getURLForEpisode(id),
+              let podcastTitle = dictionary[CodingKeys.podcastTitle.rawValue] as? String,
               let duration = dictionary[CodingKeys.duration.rawValue] as? Int,
               let lastPosition = dictionary[CodingKeys.lastPosition.rawValue] as? Int else {
                   return nil
@@ -62,6 +65,7 @@ extension Episode {
             title: title,
             publishDate: publishDate,
             mediaURL: mediaURL,
+            podcastTitle: podcastTitle,
             duration: duration,
             lastPosition: lastPosition
         )

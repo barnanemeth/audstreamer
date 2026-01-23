@@ -30,7 +30,7 @@ final class EpisodeDataModel: Identifiable {
     var numberOfPlays = 0
     var isOnWatch = false
 
-//    @Relationship(inverse: \PodcastDataModel.episodes) var podcast: PodcastDataModel?
+    @Relationship(inverse: \PodcastDataModel.episodes) var podcast: PodcastDataModel?
 
     // MARK: Init
 

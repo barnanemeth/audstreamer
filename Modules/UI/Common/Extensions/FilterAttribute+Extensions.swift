@@ -15,7 +15,7 @@ internal import SFSafeSymbols
 extension FilterAttribute {
     var title: String {
         switch type {
-        case .favorites: return L10n.favorites
+        case .favorites: return L10n.saved
         case .downloads: return L10n.downloads
         case .watch: return L10n.onWatch
         }
@@ -23,7 +23,7 @@ extension FilterAttribute {
 
     var systemImage: String {
         switch type {
-        case .favorites: SFSymbol.heart.rawValue
+        case .favorites: SFSymbol.bookmark.rawValue
         case .downloads: SFSymbol.arrowDownCircle.rawValue
         case .watch: SFSymbol.applewatch.rawValue
         }

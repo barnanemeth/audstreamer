@@ -25,7 +25,6 @@ final class DownloadingWidgetViewModel: LoadingWidgetViewModel {
 
     @ObservationIgnored override var statePublisher: AnyPublisher<LoadingWidgetState?, Never> {
         let aggregatedEvent = episodeService.aggregatedDownloadEvents()
-            .filter { !$0.isSilentDownloading }
 
         return Publishers.CombineLatest(aggregatedEvent, singleError)
             .map { [unowned self] in getState(aggregatedEvent: $0, singleError: $1) }
