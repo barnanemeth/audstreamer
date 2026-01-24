@@ -30,7 +30,7 @@ extension Episode: @retroactive Decodable {
             mediaURL: mediaURL,
             podcastTitle: podcastTitle,
             duration: duration,
-            lastPosition: lastPosition,
+            lastPosition: lastPosition
         )
     }
 }
@@ -46,6 +46,7 @@ extension Episode: @retroactive Encodable {
         try container.encode(publishDate, forKey: .publishDate)
         try container.encode(duration, forKey: .duration)
         try container.encode(lastPosition, forKey: .lastPosition)
+        try container.encode(podcastTitle, forKey: .podcastTitle)
     }
 }
 

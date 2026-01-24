@@ -15,16 +15,16 @@
 		C20815FA2F0C47C7004C9908 /* SwiftDataDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20815F92F0C47C7004C9908 /* SwiftDataDatabase.swift */; };
 		C20815FC2F0C47EB004C9908 /* EpisodeDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20815FB2F0C47EB004C9908 /* EpisodeDataModel.swift */; };
 		C20816002F0C4977004C9908 /* ModelContextFetchPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20815FF2F0C4977004C9908 /* ModelContextFetchPublisher.swift */; };
-		C20B07A62F0AA39100A3E815 /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; };
-		C20B07A72F0AA39100A3E815 /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C20B07A82F0AA39200A3E815 /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DF22F08094B006A1CA9 /* Data.framework */; };
-		C20B07A92F0AA39200A3E815 /* Data.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DF22F08094B006A1CA9 /* Data.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C20B07AA2F0AA39400A3E815 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DE62F08093C006A1CA9 /* Domain.framework */; };
-		C20B07AB2F0AA39400A3E815 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DE62F08093C006A1CA9 /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C20B07AC2F0AA39500A3E815 /* UI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DFE2F08095B006A1CA9 /* UI.framework */; };
-		C20B07AD2F0AA39500A3E815 /* UI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DFE2F08095B006A1CA9 /* UI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C20B07AE2F0AA39600A3E815 /* UIComponentKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313E0A2F08096A006A1CA9 /* UIComponentKit.framework */; };
-		C20B07AF2F0AA39600A3E815 /* UIComponentKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313E0A2F08096A006A1CA9 /* UIComponentKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C20B07A62F0AA39100A3E815 /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; platformFilter = ios; };
+		C20B07A72F0AA39100A3E815 /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DDA2F08092A006A1CA9 /* Common.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C20B07A82F0AA39200A3E815 /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DF22F08094B006A1CA9 /* Data.framework */; platformFilter = ios; };
+		C20B07A92F0AA39200A3E815 /* Data.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DF22F08094B006A1CA9 /* Data.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C20B07AA2F0AA39400A3E815 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DE62F08093C006A1CA9 /* Domain.framework */; platformFilter = ios; };
+		C20B07AB2F0AA39400A3E815 /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DE62F08093C006A1CA9 /* Domain.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C20B07AC2F0AA39500A3E815 /* UI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DFE2F08095B006A1CA9 /* UI.framework */; platformFilter = ios; };
+		C20B07AD2F0AA39500A3E815 /* UI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313DFE2F08095B006A1CA9 /* UI.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C20B07AE2F0AA39600A3E815 /* UIComponentKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2313E0A2F08096A006A1CA9 /* UIComponentKit.framework */; platformFilter = ios; };
+		C20B07AF2F0AA39600A3E815 /* UIComponentKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313E0A2F08096A006A1CA9 /* UIComponentKit.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C20F9C6D2AFAC920002F0F59 /* WatchEpisodeService+WCSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20F9C6C2AFAC920002F0F59 /* WatchEpisodeService+WCSessionDelegate.swift */; };
 		C21D64A42A2D137E00226AFF /* WatchRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21D64A32A2D137E00226AFF /* WatchRemotePlayer.swift */; };
 		C231414B2F081C07006A1CA9 /* Resolver+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C231414A2F081C07006A1CA9 /* Resolver+Extensions.swift */; };
@@ -2842,26 +2842,31 @@
 /* Begin PBXTargetDependency section */
 		C2313E0F2F08096A006A1CA9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = C2313E092F08096A006A1CA9 /* UIComponentKit */;
 			targetProxy = C2313E0E2F08096A006A1CA9 /* PBXContainerItemProxy */;
 		};
 		C23142142F082029006A1CA9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = C2313DD92F08092A006A1CA9 /* Common */;
 			targetProxy = C23142132F082029006A1CA9 /* PBXContainerItemProxy */;
 		};
 		C23142182F08202D006A1CA9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = C2313DF12F08094B006A1CA9 /* Data */;
 			targetProxy = C23142172F08202D006A1CA9 /* PBXContainerItemProxy */;
 		};
 		C231421C2F082031006A1CA9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = C2313DE52F08093C006A1CA9 /* Domain */;
 			targetProxy = C231421B2F082031006A1CA9 /* PBXContainerItemProxy */;
 		};
 		C23142202F082035006A1CA9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = C2313DFD2F08095B006A1CA9 /* UI */;
 			targetProxy = C231421F2F082035006A1CA9 /* PBXContainerItemProxy */;
 		};
@@ -3113,7 +3118,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG STANDARD";
 				SWIFT_VERSION = 5.0;
@@ -3145,7 +3150,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = STANDARD;
 				SWIFT_VERSION = 5.0;
