@@ -64,7 +64,7 @@ extension SearchViewModel {
     @MainActor
     func subscribeToPodcasts() async {
         let searchResult = searchKeywordSubject
-            .throttle(for: 0.5, scheduler: DispatchQueue.main, latest: true)
+            .throttle(for: 1, scheduler: DispatchQueue.main, latest: true)
             .setFailureType(to: Error.self)
             .flatMapLatest { [unowned self] searchKeyword in
                 if let searchKeyword {

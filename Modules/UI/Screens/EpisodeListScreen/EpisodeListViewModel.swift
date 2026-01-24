@@ -40,7 +40,7 @@ final class EpisodeListViewModel {
 
     // MARK: Properties
 
-    private(set) var screenTitle = About.appName
+    private(set) var screenTitle = "Episodes"
     private(set) var filterAttributes = [FilterAttribute]()
     private(set) var isFilterActive = false
     private(set) var searchKeyword: String?

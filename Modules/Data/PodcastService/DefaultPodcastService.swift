@@ -50,7 +50,7 @@ extension DefaultPodcastService: PodcastService {
             .asyncTryMap { [unowned self] in await contextManager.mapDataModels($0) }
             .flatMap { [unowned self] (podcasts: [Podcast]) in
                 guard !podcasts.isEmpty else { return Empty<[[EpisodeDataModel]], Error>(completeImmediately: true).eraseToAnyPublisher() }
-                return podcasts.map { assignEpisodesForPodcast(of: $0) }.zip()
+                return podcasts.map { assignEpisodesForPodcast($0) }.zip()
             }
             .map { $0.flatMap { $0 } }
             .flatMap { [unowned self] in
@@ -188,16 +188,24 @@ extension DefaultPodcastService {
             .eraseToAnyPublisher()
     }
 
-    private func assignEpisodesForPodcast(of podcast: Podcast) -> AnyPublisher<[EpisodeDataModel], Error> {
+    private func assignEpisodesForPodcast(_ podcast: Podcast) -> AnyPublisher<[EpisodeDataModel], Error> {
         let fetchResult = fetchPodcastFromRSSFeed(podcast.rssFeedURL, id: podcast.id, isPrivate: podcast.isPrivate)
         let localPodcast = database.getPodcast(id: podcast.id).first()
 
         return Publishers.Zip(fetchResult, localPodcast)
-            .map { fetchResult, localPodcast in
-                fetchResult.episodes.map { episode in
-                    let episode = episode
-                    episode.podcast = localPodcast
-                    return episode
+            .asyncTryMap { [unowned self] fetchResult, localPodcast in
+                await contextManager.block {
+                    guard fetchResult.episodes.count > localPodcast?.episodes.count ?? .zero else { return [] }
+                    let fetchResultEpisodeIDs = fetchResult.episodes.map(\.id)
+
+                    let episodes = fetchResult.episodes
+                        .filter { episode in
+                            !fetchResultEpisodeIDs.contains(episode.id)
+                        }
+                    for episode in episodes {
+                        episode.podcast = localPodcast
+                    }
+                    return episodes
                 }
             }
             .eraseToAnyPublisher()

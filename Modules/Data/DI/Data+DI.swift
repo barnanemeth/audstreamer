@@ -41,7 +41,7 @@ extension Resolver {
     private static func registerPodcastService() {
         register { DefaultPodcastService() }
             .implements(PodcastService.self)
-            .scope(.unique)
+            .scope(.cached)
     }
 
     private static func registerEpisodeService() {

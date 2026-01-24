@@ -116,4 +116,8 @@ extension SwiftDataContextManager {
             block(model)
         }
     }
+
+    func block<T>(_ block: () -> T) -> T {
+        block()
+    }
 }
