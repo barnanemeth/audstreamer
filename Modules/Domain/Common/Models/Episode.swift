@@ -85,10 +85,9 @@ extension Episode: AudioPlayable {
 // MARK: - NowPlayable
 
 extension Episode: NowPlayable {
-    public var imageURL: URL? {
-        // TODO: percent encoding?
-        image
-    }
+    public var artist: String { podcastTitle }
+    public var imageURL: URL? { image }
+
 }
 
 // MARK: - Downloadable

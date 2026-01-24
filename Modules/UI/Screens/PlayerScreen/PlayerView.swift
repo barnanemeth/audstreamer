@@ -25,7 +25,12 @@ struct PlayerView: View {
 
     // MARK: Dependencies
 
-    @State private var viewModel = PlayerViewModel()
+//    @State private var viewModel = PlayerViewModel()
+    @Bindable private var viewModel: PlayerViewModel
+
+    init() {
+        _viewModel = Bindable(Resolver.resolve())
+    }
 
     // MARK: Private properties
 

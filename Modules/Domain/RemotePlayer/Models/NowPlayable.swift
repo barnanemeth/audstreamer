@@ -9,6 +9,7 @@ import Foundation
 
 public protocol NowPlayable {
     var title: String { get }
+    var artist: String { get }
     var duration: Int { get }
     var imageURL: URL? { get }
 }

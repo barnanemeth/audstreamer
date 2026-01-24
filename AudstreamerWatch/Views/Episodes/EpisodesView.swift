@@ -44,7 +44,6 @@ extension EpisodesView {
             VStack(spacing: 16) {
                 Image(systemSymbol: .exclamationmarkCircle)
                     .font(.largeTitle)
-                
                 Text(L10n.noEpisodes)
             }
         }

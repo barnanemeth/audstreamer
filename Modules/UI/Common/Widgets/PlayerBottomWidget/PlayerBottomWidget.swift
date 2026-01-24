@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import Common
 import Domain
 import UIComponentKit
 
@@ -24,7 +25,13 @@ struct PlayerBottomWidget: View {
 
     // MARK: Dependencies
 
-    @State private var viewModel = PlayerViewModel()
+//    @State private var viewModel = PlayerViewModel()
+    @Bindable private var viewModel: PlayerViewModel
+
+    init(onTap: @escaping () -> Void) {
+        self.onTap = onTap
+        _viewModel = Bindable(Resolver.resolve())
+    }
 
     // MARK: Properties
 
@@ -91,7 +98,7 @@ extension PlayerBottomWidget {
 
     @ViewBuilder
     private func info(for episode: Episode) -> some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: .zero) {
             Text(episode.podcastTitle.uppercased())
                 .font(.system(size: 9, weight: .semibold))
                 .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)

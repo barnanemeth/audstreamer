@@ -12,6 +12,9 @@ extension Resolver {
     public static func registerUI() {
         registerNavigator()
         registerFilterHelper()
+
+        register { PlayerViewModel() }
+            .scope(.cached)
     }
 }
 

@@ -58,6 +58,7 @@ extension DefaultRemotePlayer: RemotePlayer {
         fetchArtwork(for: item)
             .map { [unowned self] artworkImage in
                 self.nowPlayingInfoCenter.nowPlayingInfo?[Constant.titleKey] = item.title
+                self.nowPlayingInfoCenter.nowPlayingInfo?[Constant.artistKey] = item.artist
                 self.nowPlayingInfoCenter.nowPlayingInfo?[Constant.playbackDurationKey] = Double(preferredDuration)
                 self.nowPlayingInfoCenter.nowPlayingInfo?[Constant.artworkKey] = MPMediaItemArtwork(
                     boundsSize: artworkImage.size,

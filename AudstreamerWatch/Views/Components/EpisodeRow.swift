@@ -34,9 +34,16 @@ struct EpisodeRow: View {
 extension EpisodeRow {
     private var title: some View {
         HStack(alignment: .top, spacing: 8) {
-            Text(data.episode.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .multilineTextAlignment(.leading)
+            VStack {
+                Text(data.episode.podcastTitle.uppercased())
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text(data.episode.title)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
 
             if data.isPlaying {
                 Image(systemSymbol: .playCircleFill)
