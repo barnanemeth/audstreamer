@@ -76,7 +76,8 @@ extension EpisodeHeaderComponent {
 
     private var titleSection: some View {
         VStack(spacing: 8) {
-            Text(episode.podcastTitle.uppercased())
+            let topText = "\(episode.podcastTitle.uppercased()) · \(episode.publishDate.formatted(date: .numeric, time: .omitted))"
+            Text(topText)
                 .font(.caption2)
                 .fontWeight(.semibold)
                 .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)

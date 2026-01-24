@@ -33,6 +33,7 @@ struct DashboardView: View {
         }
         .navigationTitle(viewModel.screenTitle)
         .background(Color(uiColor: UIColor.systemGroupedBackground))
+        .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
         .animation(.default, value: viewModel.savedPodcasts)
         .animation(.default, value: viewModel.trendingPodcasts)
         .task(id: "DashboardView.SubscriptionTask") { await viewModel.subscribe() }
@@ -52,12 +53,12 @@ extension DashboardView {
 
                     EpisodeActionsComponent(
                         episode: episode,
-                        isWatchAvailable: false,
-                        isPlaying: false,
-                        onPlayPauseTap: { },
-                        onFavouriteTap: { },
-                        onDownloadTap: { },
-                        onWatchTap: { }
+                        isWatchAvailable: viewModel.isWatchAvailable,
+                        isPlaying: viewModel.currentlyPlayingID == episode.id,
+                        onPlayPauseTap: { await viewModel.playPauseEpisode(episode) },
+                        onFavouriteTap: { await viewModel.toggleEpisodeFavorite(episode) },
+                        onDownloadTap: { await viewModel.downloadDeleteEpisode(episode) },
+                        onWatchTap: { await viewModel.toggleEpisodeIsOnWatch(episode)  }
                     )
                     .background(Asset.Colors.background.swiftUIColor)
                 }
@@ -65,6 +66,7 @@ extension DashboardView {
                 .background(Asset.Colors.background.swiftUIColor)
                 .clipShape(RoundedRectangle(cornerRadius: 24))
             }
+            .animation(.default, value: viewModel.lastPlayedEpisode)
         }
     }
 
