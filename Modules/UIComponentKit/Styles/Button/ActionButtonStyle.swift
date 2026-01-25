@@ -17,10 +17,10 @@ extension ActionButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 22, weight: .semibold))
-            .tint(Asset.Colors.white.swiftUIColor)
-            .foregroundColor(Asset.Colors.white.swiftUIColor)
+            .tint(Asset.Colors.labelLight.swiftUIColor)
+            .foregroundColor(Asset.Colors.labelLight.swiftUIColor)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Asset.Colors.primary.swiftUIColor)
+            .background(Asset.Colors.accentPrimary.swiftUIColor)
             .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             .opacity(configuration.isPressed ? 0.5 : 1)
     }

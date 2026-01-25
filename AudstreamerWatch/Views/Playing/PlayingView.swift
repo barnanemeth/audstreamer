@@ -68,7 +68,7 @@ extension PlayingView {
 
     private var title: some View {
         Text(episode.title)
-            .font(.footnote)
+            .font(.caption)
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity, alignment: .center)
     }
@@ -111,7 +111,7 @@ extension PlayingView {
                 Spacer()
                 Text(viewModel.remainingTime)
             }
-            .font(.footnote)
+            .font(.caption)
         }
         .fixedSize(horizontal: false, vertical: true)
     }

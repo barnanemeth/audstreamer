@@ -48,14 +48,14 @@ enum CustomButtonStyleType {
     func foregroundColor(isPressed: Bool, isEnabled: Bool) -> Color {
         switch self {
         case .primary:
-            guard isEnabled else { return Asset.Colors.white.swiftUIColor }
-            return Asset.Colors.white.swiftUIColor
-        case .secondary:
             guard isEnabled else { return Asset.Colors.labelSecondary.swiftUIColor }
-            return isPressed ? Asset.Colors.primary.swiftUIColor : Asset.Colors.secondary.swiftUIColor
+            return Asset.Colors.labelLight.swiftUIColor
+        case .secondary:
+            guard isEnabled else { return Asset.Colors.surfaceMuted.swiftUIColor }
+            return isPressed ? Asset.Colors.accentPrimaryPressed.swiftUIColor : Asset.Colors.accentPrimary.swiftUIColor
         case .text:
-            guard isEnabled else { return Asset.Colors.disabled.swiftUIColor }
-            return isPressed ? Asset.Colors.primary.swiftUIColor : Asset.Colors.secondary.swiftUIColor
+            guard isEnabled else { return Asset.Colors.surfaceMuted.swiftUIColor }
+            return isPressed ? Asset.Colors.accentPrimaryPressed.swiftUIColor : Asset.Colors.accentPrimary.swiftUIColor
         }
     }
 
@@ -66,8 +66,8 @@ enum CustomButtonStyleType {
                 return isPressed ? overrideColor.darken(by: 0.25) : overrideColor
             }
 
-            guard isEnabled else { return Asset.Colors.disabled.swiftUIColor.darken(by: 0.5) }
-            return isPressed ? Asset.Colors.primary.swiftUIColor.darken(by: 0.35) : Asset.Colors.primary.swiftUIColor
+            guard isEnabled else { return Asset.Colors.surfaceMuted.swiftUIColor }
+            return isPressed ? Asset.Colors.accentPrimaryPressed.swiftUIColor : Asset.Colors.accentPrimary.swiftUIColor
         case .secondary, .text:
             return .clear
         }

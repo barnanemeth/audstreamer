@@ -57,7 +57,7 @@ extension LoadingView {
 
     private var label: some View {
         Text(L10n.loading)
-            .font(.callout)
-            .foregroundStyle(Asset.Colors.label.swiftUIColor)
+            .font(.button)
+            .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
     }
 }

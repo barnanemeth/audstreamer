@@ -27,6 +27,6 @@ struct SettingsFooterComponent: View {
                 .fontWeight(.regular)
         }
         .font(.system(size: 13))
-        .foregroundStyle(Asset.Colors.label.swiftUIColor)
+        .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
     }
 }

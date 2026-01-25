@@ -68,7 +68,7 @@ extension EpisodeSectionComponent {
         if let title = section.title {
             HStack {
                 Text(title)
-                    .font(.headline)
+                    .font(.h4)
 
                 Spacer()
 
@@ -82,7 +82,7 @@ extension EpisodeSectionComponent {
                             .arrowDownCircleFill
                         }
                         Image(systemSymbol: symbol)
-                            .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+                            .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
                     }
                 }
             }

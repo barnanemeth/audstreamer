@@ -62,7 +62,7 @@ extension EpisodeRow {
             Image(systemSymbol: symbol)
             Text(verbatim: text)
         }
-        .font(.footnote)
+        .font(.caption)
         .foregroundColor(color)
     }
 }

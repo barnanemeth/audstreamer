@@ -105,13 +105,13 @@ extension PlayerBottomWidget {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(episode.title)
-                .font(.caption2)
-                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .font(.captionText)
+                .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(viewModel.elapsedTimeText)
-                .font(.caption2)
-                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .font(.captionText)
+                .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .lineLimit(1)
@@ -129,7 +129,7 @@ extension PlayerBottomWidget {
             Image(systemSymbol: symbol)
                 .font(.system(size: 30))
                 .contentTransition(.symbolEffect(.replace))
-                .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+                .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
         }
     }
 }

@@ -56,21 +56,21 @@ extension DownloadsView {
         } label: {
             Image(systemSymbol: data.isPaused ? .playFill : .pauseFill)
         }
-        .tint(data.isPaused ? Asset.Colors.success.swiftUIColor : Asset.Colors.warning.swiftUIColor)
+        .tint(data.isPaused ? Asset.Colors.State.success.swiftUIColor : Asset.Colors.State.warning.swiftUIColor)
 
         AsyncButton {
             await viewModel.cancel(data.item)
         } label: {
             Image(systemSymbol: .stopFill)
         }
-        .tint(Asset.Colors.error.swiftUIColor)
+        .tint(Asset.Colors.State.error.swiftUIColor)
     }
 
     @ViewBuilder
     private var completedView: some View {
         if viewModel.isCompleted {
             ContentUnavailableView("", systemSymbol: .checkmarkCircle, description: Text(L10n.allDownloadsCompleted))
-                .foregroundStyle(Asset.Colors.success.swiftUIColor)
+                .foregroundStyle(Asset.Colors.State.success.swiftUIColor)
                 .fontWeight(.semibold)
         }
     }

@@ -25,18 +25,22 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum Asset {
   public enum Colors {
-    public static let background = ColorAsset(name: "Background")
-    public static let badge = ColorAsset(name: "Badge")
-    public static let disabled = ColorAsset(name: "Disabled")
-    public static let error = ColorAsset(name: "Error")
-    public static let label = ColorAsset(name: "Label")
+    public static let accentPrimary = ColorAsset(name: "AccentPrimary")
+    public static let accentPrimaryPressed = ColorAsset(name: "AccentPrimaryPressed")
+    public static let accentSecondary = ColorAsset(name: "AccentSecondary")
+    public static let accentSecondaryPressed = ColorAsset(name: "AccentSecondaryPressed")
+    public static let labelLight = ColorAsset(name: "LabelLight")
+    public static let labelPrimary = ColorAsset(name: "LabelPrimary")
     public static let labelSecondary = ColorAsset(name: "LabelSecondary")
-    public static let primary = ColorAsset(name: "Primary")
-    public static let secondary = ColorAsset(name: "Secondary")
-    public static let shadow = ColorAsset(name: "Shadow")
-    public static let success = ColorAsset(name: "Success")
-    public static let warning = ColorAsset(name: "Warning")
-    public static let white = ColorAsset(name: "White")
+    public static let separator = ColorAsset(name: "Separator")
+    public enum State {
+      public static let error = ColorAsset(name: "Error")
+      public static let success = ColorAsset(name: "Success")
+      public static let warning = ColorAsset(name: "Warning")
+    }
+    public static let surfaceBase = ColorAsset(name: "SurfaceBase")
+    public static let surfaceElevated = ColorAsset(name: "SurfaceElevated")
+    public static let surfaceMuted = ColorAsset(name: "SurfaceMuted")
   }
   public enum Images {
     public static let airplay = ImageAsset(name: "Airplay")

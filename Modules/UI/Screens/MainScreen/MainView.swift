@@ -44,7 +44,7 @@ extension MainView {
             Tab(L10n.settings, systemSymbol: .gearshapeFill, value: .settings) { settings }
             Tab(value: .search, role: .search) { search }
         }
-        .tint(Asset.Colors.primary.swiftUIColor)
+        .tint(Asset.Colors.accentPrimary.swiftUIColor)
         .tabBarMinimizeBehavior(.onScrollDown)
         .apply {
             if #available(iOS 26.1, *) {

@@ -61,9 +61,9 @@ extension DashboardPodcastsSection {
     private var header: some View {
         HStack {
             Text("Your Library")
-                .font(.title3)
+                .font(.h4)
                 .fontWeight(.semibold)
-                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
 
             Spacer()
 
@@ -71,12 +71,12 @@ extension DashboardPodcastsSection {
                 onSeeAllTap()
             } label: {
                 Text("See all")
-                    .font(.subheadline)
+                    .font(.bodySecondaryText)
                     .fontWeight(.medium)
-                    .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+                    .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
 
                 Image(systemSymbol: .chevronRight)
-                    .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                    .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
             }
         }
     }
@@ -113,10 +113,10 @@ extension DashboardPodcastsSection {
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
             Text(podcast.title)
-                .font(.footnote)
+                .font(.captionText)
                 .fontWeight(.medium)
                 .lineLimit(1)
-                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
         }
         .padding(12)
         .background(backgroundColor)
@@ -130,7 +130,7 @@ extension DashboardPodcastsSection {
             emptyButtons
         }
         .padding(16)
-        .background(Asset.Colors.background.swiftUIColor)
+        .background(Asset.Colors.surfaceBase.swiftUIColor)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(radius: 8)
     }
@@ -143,12 +143,12 @@ extension DashboardPodcastsSection {
 
             VStack(alignment: .leading) {
                 Text("Build your Library")
-                    .font(.headline)
+                    .font(.h4)
 
                 Text("Follow podcasts to see new episodes here")
-                    .font(.subheadline)
+                    .font(.bodySecondaryText)
             }
-            .foregroundStyle(Asset.Colors.label.swiftUIColor)
+            .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
         }
     }
 

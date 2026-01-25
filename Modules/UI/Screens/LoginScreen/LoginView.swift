@@ -46,6 +46,7 @@ struct LoginView: View {
         }
         .padding(.top, 56)
         .padding([.horizontal, .bottom])
+        .background(Asset.Colors.surfaceBase.swiftUIColor)
         .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
         .interactiveDismissDisabled()
         .onAppear { viewModel.shouldShowPlayerAtDismiss = shouldShowPlayerAtDismiss }
@@ -58,12 +59,12 @@ extension LoginView {
     private var title: some View {
         VStack(spacing: 32) {
             Text(L10n.logIn)
-                .font(.title)
-                .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+                .font(.h1)
+                .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
 
             Text(L10n.logInInfo)
                 .font(.system(size: 17))
-                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
                 .multilineTextAlignment(.center)
         }
     }
@@ -71,7 +72,7 @@ extension LoginView {
     private var image: some View {
         Asset.Images.femaleMaleCircle.swiftUIImage
             .resizable()
-            .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+            .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
             .frame(width: Constant.infoImageSize, height: Constant.infoImageSize)
     }
 
@@ -82,17 +83,17 @@ extension LoginView {
             Button(L10n.cancel) {
                 viewModel.handleCancel()
             }
-            .font(.headline)
-            .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+            .font(.h4)
+            .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
         }
     }
 
     @ViewBuilder
     private var signInWithAppleButton: some View {
-        let (foregroundColor, backgroundColor) = switch colorScheme {
-        case .dark: (Asset.Colors.background.swiftUIColor, Asset.Colors.white.swiftUIColor)
-        case .light: (Asset.Colors.white.swiftUIColor, Asset.Colors.label.swiftUIColor)
-        @unknown default: (Asset.Colors.white.swiftUIColor, Asset.Colors.label.swiftUIColor)
+        let (foregroundColor, backgroundColor): (Color, Color) = switch colorScheme {
+        case .dark: (.black, .white)
+        case .light: (.white, .black)
+        @unknown default: (.black, .white)
         }
 
         AsyncButton {

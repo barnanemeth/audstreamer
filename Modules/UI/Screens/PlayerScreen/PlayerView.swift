@@ -66,12 +66,12 @@ extension PlayerView {
             ZStack {
                 Text(text)
                     .font(.system(size: 11))
-                    .foregroundStyle(Asset.Colors.white.swiftUIColor)
+                    .foregroundStyle(Asset.Colors.labelLight.swiftUIColor)
                     .padding(.top, 14)
                     .padding(.bottom, 4)
                     .frame(maxWidth: .infinity)
             }
-            .pulsingBackground(from: Asset.Colors.primary.swiftUIColor, to: Asset.Colors.secondary.swiftUIColor)
+            .pulsingBackground(from: Asset.Colors.accentPrimary.swiftUIColor, to: Asset.Colors.accentPrimaryPressed.swiftUIColor)
             .padding(.horizontal, -20)
             .padding(.top, -Constant.padding)
             .fixedSize(horizontal: false, vertical: true)
@@ -100,14 +100,14 @@ extension PlayerView {
     private var title: some View {
         VStack(spacing: 8) {
             Text(viewModel.episode?.podcastTitle.uppercased() ?? "")
-                .font(.subheadline)
+                .font(.bodySecondaryText)
                 .fontWeight(.semibold)
                 .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(titleText)
-                .font(.subheadline)
-                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .font(.bodySecondaryText)
+                .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
@@ -118,7 +118,7 @@ extension PlayerView {
         } label: {
             Image(systemSymbol: .airplayAudio)
                 .font(.system(size: Constant.remotePlayButtonSize, weight: .semibold))
-                .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+                .foregroundStyle(Asset.Colors.accentPrimaryPressed.swiftUIColor)
                 .overlay(alignment: .topTrailing) {
                     if let count = viewModel.activeDevicesCount {
                         Badge(text: count.description)
@@ -181,7 +181,7 @@ extension PlayerView {
             }
             .frame(maxWidth: .infinity)
         }
-        .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+        .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
     }
 
     private var playPauseButton: some View {
@@ -196,7 +196,7 @@ extension PlayerView {
             Image(systemSymbol: symbol)
                 .font(.system(size: 42))
                 .contentTransition(.symbolEffect(.replace))
-                .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+                .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
         }
     }
 
@@ -216,7 +216,7 @@ extension PlayerView {
         UIComponentKit.Slider(value: binding) { isHighlighted in
             viewModel.isSliderHighlighted = isHighlighted
         }
-        .tint(Asset.Colors.primary.swiftUIColor)
+        .tint(Asset.Colors.accentPrimary.swiftUIColor)
     }
 
     private var timeTexts: some View {
@@ -225,7 +225,7 @@ extension PlayerView {
             Spacer()
             Text(viewModel.remainingTimeText)
         }
-        .font(.caption2)
+        .font(.captionText)
         .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
     }
 }

@@ -81,10 +81,10 @@ extension PodcastDetailsView {
     private var titleSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(podcast.title)
-                .font(.headline)
+                .font(.h4)
 
             Text(podcast.description ?? "")
-                .font(.body)
+                .font(.bodyText)
                 .multilineTextAlignment(.leading)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -67,15 +67,15 @@ private extension PodcastCard {
     var title: some View {
         VStack(alignment: .leading) {
             Text(podcast.title)
-                .font(.subheadline)
+                .font(.bodySecondaryText)
                 .fontWeight(.semibold)
-                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(podcast.author ?? "")
-                .font(.caption)
+                .font(.captionText)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
         }
         .lineLimit(1)
         .padding(16)

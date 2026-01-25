@@ -83,8 +83,8 @@ extension EpisodeActionsComponent {
             Text(L10n.duration(durationString))
                 .multilineTextAlignment(.trailing)
         }
-        .font(.caption)
+        .font(.captionText)
         .lineLimit(2)
-        .foregroundStyle(Asset.Colors.label.swiftUIColor)
+        .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
     }
 }

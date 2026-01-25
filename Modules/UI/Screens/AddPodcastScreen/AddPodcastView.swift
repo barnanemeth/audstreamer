@@ -20,8 +20,8 @@ struct AddPodcastView: View {
     var body: some View {
         VStack {
             Text("Add new podcast")
-                .font(.headline)
-                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .font(.h4)
+                .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
 
             TextEditor(text: $viewModel.feedURL)
                 .textEditorStyle(.automatic)
@@ -35,7 +35,7 @@ struct AddPodcastView: View {
             .buttonStyle(.glass)
 
         }
-        .tint(Asset.Colors.primary.swiftUIColor)
+        .tint(Asset.Colors.accentPrimary.swiftUIColor)
         .padding()
         .presentationDetents([.medium])
     }

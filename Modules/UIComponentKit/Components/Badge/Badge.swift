@@ -35,9 +35,9 @@ public struct Badge: View {
 
                 Group {
                     if abs(width - height) < 0.5 {
-                        Circle().fill(Asset.Colors.primary.swiftUIColor)
+                        Circle().fill(Asset.Colors.accentPrimary.swiftUIColor)
                     } else {
-                        Capsule().fill(Asset.Colors.primary.swiftUIColor)
+                        Capsule().fill(Asset.Colors.accentPrimary.swiftUIColor)
                     }
                 }
                 .frame(width: width, height: height)
@@ -45,7 +45,7 @@ public struct Badge: View {
 
             Text(text)
                 .font(.system(size: 8, weight: .semibold))
-                .foregroundStyle(Asset.Colors.white.swiftUIColor)
+                .foregroundStyle(Asset.Colors.labelLight.swiftUIColor)
                 .padding(.horizontal, 4)
                 .frame(height: Constant.size)
         }

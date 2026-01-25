@@ -67,10 +67,10 @@ extension DownloadingComponent {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(stateText(for: downloadState))
-                .font(.caption)
+                .font(.captionText)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .foregroundStyle(Asset.Colors.label.swiftUIColor)
+        .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
     }
 
     @ViewBuilder
@@ -87,7 +87,7 @@ extension DownloadingComponent {
                 Image(systemSymbol: .xmarkCircle)
                     .resizable()
                     .fontWeight(.thin)
-                    .foregroundStyle(Asset.Colors.error.swiftUIColor)
+                    .foregroundStyle(Asset.Colors.State.error.swiftUIColor)
                     .padding(2)
             }
         }

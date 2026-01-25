@@ -147,9 +147,9 @@ extension SettingsViewModel {
 
         for await connectionStatus in publisher.asAsyncStream() {
             let (text, color): (String, Color) = switch connectionStatus {
-            case .notAvailable: (L10n.notAvailable, Asset.Colors.error.swiftUIColor)
-            case .available: (L10n.available, Asset.Colors.warning.swiftUIColor)
-            case .connected: (L10n.active, Asset.Colors.success.swiftUIColor)
+            case .notAvailable: (L10n.notAvailable, Asset.Colors.State.error.swiftUIColor)
+            case .available: (L10n.available, Asset.Colors.State.warning.swiftUIColor)
+            case .connected: (L10n.active, Asset.Colors.State.success.swiftUIColor)
             }
 
             watchConnection = (text, color)
@@ -180,9 +180,9 @@ extension SettingsViewModel {
 
         for await (socketStatus, isLoggedIn) in publisher.asAsyncStream() {
             let (statusText, statusColor, actionText) = switch socketStatus {
-            case .connected: (L10n.connected, Asset.Colors.success.swiftUIColor, L10n.disconnect)
-            case .pending: (L10n.pending, Asset.Colors.warning.swiftUIColor, L10n.disconnect)
-            case .disconnected: (L10n.disconnected, Asset.Colors.error.swiftUIColor, L10n.connect)
+            case .connected: (L10n.connected, Asset.Colors.State.success.swiftUIColor, L10n.disconnect)
+            case .pending: (L10n.pending, Asset.Colors.State.warning.swiftUIColor, L10n.disconnect)
+            case .disconnected: (L10n.disconnected, Asset.Colors.State.error.swiftUIColor, L10n.connect)
             }
 
             socketConnection = (statusText, statusColor)
@@ -200,9 +200,9 @@ extension SettingsViewModel {
 
         for await isLoggedIn in publisher.asAsyncStream() {
             let (text, color) = if isLoggedIn {
-                (L10n.logout, Asset.Colors.error.swiftUIColor)
+                (L10n.logout, Asset.Colors.State.error.swiftUIColor)
             } else {
-                (L10n.logIn, Asset.Colors.label.swiftUIColor)
+                (L10n.logIn, Asset.Colors.labelPrimary.swiftUIColor)
             }
 
             accountAction = (text, color)

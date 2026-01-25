@@ -265,6 +265,8 @@
 		C285EA332F254F3B002227D6 /* CustomButtonStyle+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285EA2E2F254F3B002227D6 /* CustomButtonStyle+Preview.swift */; };
 		C285EA362F2550C1002227D6 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285EA352F2550C1002227D6 /* Color+Extensions.swift */; };
 		C285EA372F2550C1002227D6 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285EA352F2550C1002227D6 /* Color+Extensions.swift */; };
+		C285F06B2F262646002227D6 /* Font+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285F06A2F262646002227D6 /* Font+Extensions.swift */; };
+		C285F06C2F262646002227D6 /* Font+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285F06A2F262646002227D6 /* Font+Extensions.swift */; };
 		C29490FF2F0D0B89002DE2C9 /* SwiftDataContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29490FE2F0D0B89002DE2C9 /* SwiftDataContextManager.swift */; };
 		C29491012F0D1000002DE2C9 /* AsyncPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29491002F0D1000002DE2C9 /* AsyncPublisher.swift */; };
 		C29491032F0D17EC002DE2C9 /* AsyncMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29491022F0D17EC002DE2C9 /* AsyncMap.swift */; };
@@ -652,6 +654,7 @@
 		C285EA2E2F254F3B002227D6 /* CustomButtonStyle+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomButtonStyle+Preview.swift"; sourceTree = "<group>"; };
 		C285EA2F2F254F3B002227D6 /* CustomButtonStyleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonStyleType.swift; sourceTree = "<group>"; };
 		C285EA352F2550C1002227D6 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
+		C285F06A2F262646002227D6 /* Font+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extensions.swift"; sourceTree = "<group>"; };
 		C28AC3442943DDEF006E04BA /* ShortcutHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutHandler.swift; sourceTree = "<group>"; };
 		C28AC3482943DE67006E04BA /* DefaultShortcutHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultShortcutHandler.swift; sourceTree = "<group>"; };
 		C28B239F2C0B78860012FA81 /* DownloadAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DownloadAnimation.json; sourceTree = "<group>"; };
@@ -2058,6 +2061,7 @@
 			isa = PBXGroup;
 			children = (
 				C285EA352F2550C1002227D6 /* Color+Extensions.swift */,
+				C285F06A2F262646002227D6 /* Font+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2807,6 +2811,7 @@
 				C265DBA62F085BC600B772BC /* NavigationDestination.swift in Sources */,
 				C25F2B0F2F20ED3D006356A5 /* DashboardView.swift in Sources */,
 				C285EA372F2550C1002227D6 /* Color+Extensions.swift in Sources */,
+				C285F06C2F262646002227D6 /* Font+Extensions.swift in Sources */,
 				C231418D2F081F1F006A1CA9 /* BackgroundTask.swift in Sources */,
 				C231418E2F081F1F006A1CA9 /* SettingsFooterComponent.swift in Sources */,
 				C231418F2F081F1F006A1CA9 /* UI+DI.swift in Sources */,
@@ -2835,6 +2840,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C285F06B2F262646002227D6 /* Font+Extensions.swift in Sources */,
 				C231415F2F081E2F006A1CA9 /* Environment+Loading.swift in Sources */,
 				C23141602F081E2F006A1CA9 /* Environment+FeedbackEnabled.swift in Sources */,
 				C23141692F081E5C006A1CA9 /* AsyncButton.swift in Sources */,

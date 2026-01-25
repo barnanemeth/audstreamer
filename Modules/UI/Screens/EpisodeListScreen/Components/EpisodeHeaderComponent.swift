@@ -78,15 +78,15 @@ extension EpisodeHeaderComponent {
         VStack(spacing: 8) {
             let topText = "\(episode.podcastTitle.uppercased()) · \(episode.publishDate.formatted(date: .numeric, time: .omitted))"
             Text(topText)
-                .font(.caption2)
+                .font(.captionText)
                 .fontWeight(.semibold)
                 .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(episode.title)
-                .font(.caption)
+                .font(.captionText)
                 .multilineTextAlignment(.leading)
-                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
@@ -106,7 +106,7 @@ extension EpisodeHeaderComponent {
                         Image(systemSymbol: .applewatch)
                     }
                 }
-                .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+                .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
 
                 Spacer()
             }
@@ -118,7 +118,7 @@ extension EpisodeHeaderComponent {
         if let playingProgress {
             ProgressView(value: playingProgress)
                 .progressViewStyle(.linear)
-                .tint(Asset.Colors.primary.swiftUIColor)
+                .tint(Asset.Colors.accentPrimary.swiftUIColor)
         }
     }
 }

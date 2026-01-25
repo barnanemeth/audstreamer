@@ -76,12 +76,12 @@ extension SearchView {
 
             VStack(alignment: .leading) {
                 Text(podcast.title)
-                    .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                    .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text(podcast.author ?? "")
-                    .font(.caption)
+                    .font(.captionText)
                     .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -91,7 +91,7 @@ extension SearchView {
             } label: {
                 Image(systemSymbol: podcast.isSubscribed ? .minusCircleFill : .plusCircleFill)
             }
-            .foregroundStyle(podcast.isSubscribed ? Asset.Colors.error.swiftUIColor : Asset.Colors.primary.swiftUIColor)
+            .foregroundStyle(podcast.isSubscribed ? Asset.Colors.State.error.swiftUIColor : Asset.Colors.accentPrimary.swiftUIColor)
         }
     }
 }

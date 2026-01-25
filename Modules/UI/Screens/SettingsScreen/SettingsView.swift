@@ -65,11 +65,11 @@ extension SettingsView {
                 Button(L10n.deleteDownloads) {
                     viewModel.handleDeleteDownloadsAction()
                 }
-                .foregroundStyle(Asset.Colors.error.swiftUIColor)
+                .foregroundStyle(Asset.Colors.State.error.swiftUIColor)
             }
         }
-        .font(.callout)
-        .foregroundStyle(Asset.Colors.label.swiftUIColor)
+        .font(.bodyText)
+        .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
     }
 
     private var socketSection: some View {
@@ -84,8 +84,8 @@ extension SettingsView {
                 }
             }
         }
-        .font(.callout)
-        .foregroundStyle(Asset.Colors.label.swiftUIColor)
+        .font(.bodyText)
+        .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
     }
 
     private var watchConnectionSection: some View {
@@ -103,8 +103,8 @@ extension SettingsView {
                 }
             }
         }
-        .font(.callout)
-        .foregroundStyle(Asset.Colors.label.swiftUIColor)
+        .font(.bodyText)
+        .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
     }
 
     private var accountSection: some View {
@@ -116,8 +116,8 @@ extension SettingsView {
                 .foregroundStyle(color)
             }
         }
-        .font(.callout)
-        .foregroundStyle(Asset.Colors.label.swiftUIColor)
+        .font(.bodyText)
+        .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
     }
 
     private var footerSection: some View {

@@ -84,7 +84,7 @@ extension LoadingWidget {
                 Image(systemSymbol: .xmarkCircle)
                     .resizable()
                     .fontWeight(.thin)
-                    .foregroundStyle(Asset.Colors.error.swiftUIColor)
+                    .foregroundStyle(Asset.Colors.State.error.swiftUIColor)
                     .padding(2)
             }
         }
@@ -111,7 +111,7 @@ extension LoadingWidget {
             Text(viewModel.subtitle ?? "")
                 .font(.system(size: 12, weight: .regular))
         }
-        .foregroundStyle(Asset.Colors.label.swiftUIColor)
+        .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
         .padding(.vertical, 4)
         .padding(.trailing, 16)
         .frame(maxWidth: .infinity, alignment: .leading)

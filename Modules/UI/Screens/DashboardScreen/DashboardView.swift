@@ -32,7 +32,7 @@ struct DashboardView: View {
             .padding()
         }
         .navigationTitle(viewModel.screenTitle)
-        .background(Color(uiColor: UIColor.systemGroupedBackground))
+        .background(Asset.Colors.surfaceBase.swiftUIColor)
         .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
         .animation(.default, value: viewModel.savedPodcasts)
         .animation(.default, value: viewModel.trendingPodcasts)
@@ -49,7 +49,7 @@ extension DashboardView {
             section(title: "Continue") {
                 VStack(spacing: 16) {
                     EpisodeHeaderComponent(episode: episode)
-                        .background(Asset.Colors.background.swiftUIColor)
+                        .background(Asset.Colors.surfaceBase.swiftUIColor)
 
                     EpisodeActionsComponent(
                         episode: episode,
@@ -60,10 +60,10 @@ extension DashboardView {
                         onDownloadTap: { await viewModel.downloadDeleteEpisode(episode) },
                         onWatchTap: { await viewModel.toggleEpisodeIsOnWatch(episode)  }
                     )
-                    .background(Asset.Colors.background.swiftUIColor)
+                    .background(Asset.Colors.surfaceBase.swiftUIColor)
                 }
                 .padding()
-                .background(Asset.Colors.background.swiftUIColor)
+                .background(Asset.Colors.surfaceBase.swiftUIColor)
                 .clipShape(RoundedRectangle(cornerRadius: 24))
                 .shadow(radius: 8)
             }
@@ -129,12 +129,12 @@ extension DashboardView {
 
             VStack(alignment: .leading) {
                 Text(podcast.title)
-                    .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                    .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text(podcast.author ?? "")
-                    .font(.caption)
+                    .font(.captionText)
                     .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -144,7 +144,7 @@ extension DashboardView {
             } label: {
                 Image(systemSymbol: podcast.isSubscribed ? .minusCircleFill : .plusCircleFill)
             }
-            .foregroundStyle(podcast.isSubscribed ? Asset.Colors.error.swiftUIColor : Asset.Colors.primary.swiftUIColor)
+            .foregroundStyle(podcast.isSubscribed ? Asset.Colors.State.error.swiftUIColor : Asset.Colors.accentPrimary.swiftUIColor)
         }
     }
 
@@ -162,14 +162,14 @@ extension DashboardView {
 
             VStack(alignment: .leading) {
                 Text(episode.podcastTitle.uppercased())
-                    .font(.caption)
+                    .font(.captionText)
                     .fontWeight(.semibold)
                     .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text(episode.title)
-                    .font(.caption)
+                    .font(.captionText)
                     .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -178,9 +178,9 @@ extension DashboardView {
                 await viewModel.playPauseEpisode(episode)
             } label: {
                 Image(systemSymbol: .playpauseCircleFill)
-                    .font(.headline)
+                    .font(.h4)
             }
-            .foregroundStyle(Asset.Colors.primary.swiftUIColor)
+            .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
         }
     }
 
@@ -195,9 +195,9 @@ extension DashboardView {
                         Image(systemSymbol: .chevronRight)
                     }
                 }
-                .font(.title3)
+                .font(.h4)
                 .fontWeight(.semibold)
-                .foregroundStyle(Asset.Colors.label.swiftUIColor)
+                .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .disabled(action == nil)

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import UIComponentKit
+
 internal import SFSafeSymbols
 
 struct PodcastListView: View {
@@ -44,7 +46,7 @@ struct PodcastListView: View {
             .padding()
         }
         .listStyle(.plain)
-        .background(Color(uiColor: UIColor.systemGroupedBackground))
+        .background(Asset.Colors.surfaceBase.swiftUIColor)
         .overlay { emptyView }
         .animation(.default, value: viewModel.podcasts)
         .navigationTitle("Podcasts")
