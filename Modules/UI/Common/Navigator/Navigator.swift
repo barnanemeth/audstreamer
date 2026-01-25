@@ -15,4 +15,5 @@ protocol Navigator: NavigatorPublic {
     @MainActor func navigate(to destination: AppNavigationDestination, method: NavigationMethod)
     @MainActor func dismiss()
     @MainActor func pop()
+    @MainActor func changeTab(to tab: MainTab)
 }

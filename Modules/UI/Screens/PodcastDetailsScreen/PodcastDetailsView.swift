@@ -8,6 +8,7 @@
 import SwiftUI
 
 import Domain
+import UIComponentKit
 
 internal import NukeUI
 internal import SFSafeSymbols
@@ -21,7 +22,7 @@ struct PodcastDetailsView: View {
     // MARK: Properties
 
     let podcast: Podcast
-    let transitionNamesapce: Namespace.ID
+    let transitionNamesapce: Namespace.ID?
 
     // MARK: UI
 
@@ -52,7 +53,13 @@ extension PodcastDetailsView {
                         .aspectRatio(contentMode: .fill)
                 }
             }
-            .navigationTransition(.zoom(sourceID: podcast, in: transitionNamesapce))
+            .apply {
+                if let transitionNamesapce {
+                    $0.navigationTransition(.zoom(sourceID: podcast, in: transitionNamesapce))
+                } else {
+                   $0
+                }
+            }
         }
         .clipped()
     }

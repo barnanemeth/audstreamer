@@ -1,0 +1,75 @@
+//
+//  CustomButtonStyleType.swift
+//  UIComponentKit
+//
+//  Created by Barna Nemeth on 2024. 12. 12..
+//
+
+import SwiftUI
+
+internal import SFSafeSymbols
+
+enum CustomButtonStyleType {
+    case primary(size: ButtonSize, fill: Bool, icon: Image?, backgroundColor: Color?)
+    case secondary(size: ButtonSize, fill: Bool, icon: Image?)
+    case text(size: ButtonSize, fill: Bool, icon: Image?)
+
+    var size: ButtonSize {
+        switch self {
+        case let .primary(size, _, _, _): size
+        case let .secondary(size, _, _): size
+        case let .text(size, _, _): size
+        }
+    }
+
+    var fill: Bool {
+        switch self {
+        case let .primary(_, fill, _, _): fill
+        case let .secondary(_, fill, _): fill
+        case let .text(_, fill, _): fill
+        }
+    }
+
+    var icon: Image? {
+        switch self {
+        case let .primary(_, _, icon, _): icon
+        case let .secondary(_, _, icon): icon
+        case let .text(_, _, icon): icon
+        }
+    }
+
+    var borderWidth: CGFloat? {
+        switch self {
+        case let .secondary(size, _, _): size.borderWidth
+        case .primary, .text: nil
+        }
+    }
+
+    func foregroundColor(isPressed: Bool, isEnabled: Bool) -> Color {
+        switch self {
+        case .primary:
+            guard isEnabled else { return Asset.Colors.white.swiftUIColor }
+            return Asset.Colors.white.swiftUIColor
+        case .secondary:
+            guard isEnabled else { return Asset.Colors.labelSecondary.swiftUIColor }
+            return isPressed ? Asset.Colors.primary.swiftUIColor : Asset.Colors.secondary.swiftUIColor
+        case .text:
+            guard isEnabled else { return Asset.Colors.disabled.swiftUIColor }
+            return isPressed ? Asset.Colors.primary.swiftUIColor : Asset.Colors.secondary.swiftUIColor
+        }
+    }
+
+    func backgroundColor(isPressed: Bool, isEnabled: Bool) -> Color {
+        switch self {
+        case let .primary(_, _, _, overrideColor):
+            if let overrideColor {
+                return isPressed ? overrideColor.darken(by: 0.25) : overrideColor
+            }
+
+            guard isEnabled else { return Asset.Colors.disabled.swiftUIColor.darken(by: 0.5) }
+            return isPressed ? Asset.Colors.primary.swiftUIColor.darken(by: 0.35) : Asset.Colors.primary.swiftUIColor
+        case .secondary, .text:
+            return .clear
+        }
+    }
+}

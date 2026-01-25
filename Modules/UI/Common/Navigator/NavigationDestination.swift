@@ -19,7 +19,7 @@ enum AppNavigationDestination: @MainActor NavigationDestination {
     case player(detents: Set<PresentationDetent>)
     case dashboard
     case podcastList
-    case podcastDetails(podcast: Podcast, namespace: Namespace.ID)
+    case podcastDetails(podcast: Podcast, namespace: Namespace.ID?)
     case addPodcast
     case episodeList(podcast: Podcast?)
     case search

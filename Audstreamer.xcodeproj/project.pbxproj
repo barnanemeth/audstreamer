@@ -257,6 +257,14 @@
 		C27008D62EF7224600B54C93 /* VolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27008D52EF7224600B54C93 /* VolumeView.swift */; };
 		C27008D82EF82A2100B54C93 /* EpisodeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27008D72EF82A2100B54C93 /* EpisodeRow.swift */; };
 		C27008DF2EF82DF700B54C93 /* XCAssets+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27008DD2EF82DF700B54C93 /* XCAssets+Generated.swift */; };
+		C285E7102F253D62002227D6 /* DashboardPodcastsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285E70F2F253D62002227D6 /* DashboardPodcastsSection.swift */; };
+		C285E7122F254770002227D6 /* MainTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285E7112F254770002227D6 /* MainTab.swift */; };
+		C285EA302F254F3B002227D6 /* ButtonSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285EA2C2F254F3B002227D6 /* ButtonSize.swift */; };
+		C285EA312F254F3B002227D6 /* CustomButtonStyleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285EA2F2F254F3B002227D6 /* CustomButtonStyleType.swift */; };
+		C285EA322F254F3B002227D6 /* CustomButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285EA2D2F254F3B002227D6 /* CustomButtonStyle.swift */; };
+		C285EA332F254F3B002227D6 /* CustomButtonStyle+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285EA2E2F254F3B002227D6 /* CustomButtonStyle+Preview.swift */; };
+		C285EA362F2550C1002227D6 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285EA352F2550C1002227D6 /* Color+Extensions.swift */; };
+		C285EA372F2550C1002227D6 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C285EA352F2550C1002227D6 /* Color+Extensions.swift */; };
 		C29490FF2F0D0B89002DE2C9 /* SwiftDataContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29490FE2F0D0B89002DE2C9 /* SwiftDataContextManager.swift */; };
 		C29491012F0D1000002DE2C9 /* AsyncPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29491002F0D1000002DE2C9 /* AsyncPublisher.swift */; };
 		C29491032F0D17EC002DE2C9 /* AsyncMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29491022F0D17EC002DE2C9 /* AsyncMap.swift */; };
@@ -637,6 +645,13 @@
 		C28429F22915BCA100BC1146 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		C28429F42915BD5200BC1146 /* DownloadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadOperation.swift; sourceTree = "<group>"; };
 		C28429F62915C33C00BC1146 /* DownloadItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadItem.swift; sourceTree = "<group>"; };
+		C285E70F2F253D62002227D6 /* DashboardPodcastsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPodcastsSection.swift; sourceTree = "<group>"; };
+		C285E7112F254770002227D6 /* MainTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTab.swift; sourceTree = "<group>"; };
+		C285EA2C2F254F3B002227D6 /* ButtonSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonSize.swift; sourceTree = "<group>"; };
+		C285EA2D2F254F3B002227D6 /* CustomButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonStyle.swift; sourceTree = "<group>"; };
+		C285EA2E2F254F3B002227D6 /* CustomButtonStyle+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomButtonStyle+Preview.swift"; sourceTree = "<group>"; };
+		C285EA2F2F254F3B002227D6 /* CustomButtonStyleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonStyleType.swift; sourceTree = "<group>"; };
+		C285EA352F2550C1002227D6 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		C28AC3442943DDEF006E04BA /* ShortcutHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutHandler.swift; sourceTree = "<group>"; };
 		C28AC3482943DE67006E04BA /* DefaultShortcutHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultShortcutHandler.swift; sourceTree = "<group>"; };
 		C28B239F2C0B78860012FA81 /* DownloadAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DownloadAnimation.json; sourceTree = "<group>"; };
@@ -1011,6 +1026,7 @@
 		C2313D422F07FF86006A1CA9 /* UIComponentKit */ = {
 			isa = PBXGroup;
 			children = (
+				C285EA342F2550AD002227D6 /* Extensions */,
 				C23141362F081615006A1CA9 /* Environments */,
 				C23141352F0815FF006A1CA9 /* Modifiers */,
 				C23141342F0815F9006A1CA9 /* Styles */,
@@ -1489,7 +1505,7 @@
 		C23141342F0815F9006A1CA9 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
-				C25A05BB2F04123400BECB5F /* ActionButtonStyle.swift */,
+				C285EA2B2F254F35002227D6 /* Button */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -1596,6 +1612,7 @@
 				C265DBA52F085BC600B772BC /* NavigationDestination.swift */,
 				C265E2242F0A61EF00B772BC /* Navigator.swift */,
 				C265E2272F0A645700B772BC /* NavigationMethod.swift */,
+				C285E7112F254770002227D6 /* MainTab.swift */,
 			);
 			path = Navigator;
 			sourceTree = "<group>";
@@ -1893,6 +1910,7 @@
 		C25F2B0B2F20ECCE006356A5 /* DashboardScreen */ = {
 			isa = PBXGroup;
 			children = (
+				C285E70E2F253D43002227D6 /* Components */,
 				C25F2B0C2F20ECE0006356A5 /* DashboardViewModel.swift */,
 				C25F2B0E2F20ED3D006356A5 /* DashboardView.swift */,
 			);
@@ -2014,6 +2032,34 @@
 				C2C2D3902EF9B06D008AFF00 /* SettingsFooterComponent.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		C285E70E2F253D43002227D6 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				C285E70F2F253D62002227D6 /* DashboardPodcastsSection.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		C285EA2B2F254F35002227D6 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				C285EA2C2F254F3B002227D6 /* ButtonSize.swift */,
+				C285EA2D2F254F3B002227D6 /* CustomButtonStyle.swift */,
+				C285EA2E2F254F3B002227D6 /* CustomButtonStyle+Preview.swift */,
+				C285EA2F2F254F3B002227D6 /* CustomButtonStyleType.swift */,
+				C25A05BB2F04123400BECB5F /* ActionButtonStyle.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		C285EA342F2550AD002227D6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C285EA352F2550C1002227D6 /* Color+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		C28B576329380090005921B5 /* DownloadsScreen */ = {
@@ -2737,6 +2783,7 @@
 				C231417C2F081F1F006A1CA9 /* LoadingWidget.swift in Sources */,
 				C231417D2F081F1F006A1CA9 /* EpisodeListViewModel.swift in Sources */,
 				C231417F2F081F1F006A1CA9 /* LoadingViewModel.swift in Sources */,
+				C285E7102F253D62002227D6 /* DashboardPodcastsSection.swift in Sources */,
 				C23141802F081F1F006A1CA9 /* EpisodeSectionComponent.swift in Sources */,
 				C23141812F081F1F006A1CA9 /* Calendar.Component+Extensions.swift in Sources */,
 				C23141832F081F1F006A1CA9 /* ViewModel.swift in Sources */,
@@ -2751,6 +2798,7 @@
 				C23141872F081F1F006A1CA9 /* WatchConnectionStatus.swift in Sources */,
 				C23141882F081F1F006A1CA9 /* NumberFormatterHelper.swift in Sources */,
 				C2AF99B02F22B25300F32847 /* AddPodcastView.swift in Sources */,
+				C285E7122F254770002227D6 /* MainTab.swift in Sources */,
 				C2AF99B12F22B25300F32847 /* AddPodcastViewModel.swift in Sources */,
 				C23141892F081F1F006A1CA9 /* LoadingWidgetViewModel.swift in Sources */,
 				C2AF99A42F22A76400F32847 /* PodcastDetailsView.swift in Sources */,
@@ -2758,6 +2806,7 @@
 				C231418B2F081F1F006A1CA9 /* EpisodeHeaderComponent.swift in Sources */,
 				C265DBA62F085BC600B772BC /* NavigationDestination.swift in Sources */,
 				C25F2B0F2F20ED3D006356A5 /* DashboardView.swift in Sources */,
+				C285EA372F2550C1002227D6 /* Color+Extensions.swift in Sources */,
 				C231418D2F081F1F006A1CA9 /* BackgroundTask.swift in Sources */,
 				C231418E2F081F1F006A1CA9 /* SettingsFooterComponent.swift in Sources */,
 				C231418F2F081F1F006A1CA9 /* UI+DI.swift in Sources */,
@@ -2794,7 +2843,12 @@
 				C231416C2F081E6B006A1CA9 /* XCAssets+Generated.swift in Sources */,
 				C23141622F081E3B006A1CA9 /* FillWidthModifier.swift in Sources */,
 				C23141632F081E3B006A1CA9 /* SizeChangedModifier.swift in Sources */,
+				C285EA302F254F3B002227D6 /* ButtonSize.swift in Sources */,
+				C285EA312F254F3B002227D6 /* CustomButtonStyleType.swift in Sources */,
+				C285EA322F254F3B002227D6 /* CustomButtonStyle.swift in Sources */,
+				C285EA332F254F3B002227D6 /* CustomButtonStyle+Preview.swift in Sources */,
 				C23717BA2F1A19780073A642 /* Apply.swift in Sources */,
+				C285EA362F2550C1002227D6 /* Color+Extensions.swift in Sources */,
 				C23141642F081E3B006A1CA9 /* PulsingBackgroundModifier.swift in Sources */,
 				C23141682F081E46006A1CA9 /* ActionButtonStyle.swift in Sources */,
 				C23141662F081E3B006A1CA9 /* FeedbackEnabledModifier.swift in Sources */,

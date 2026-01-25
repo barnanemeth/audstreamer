@@ -22,6 +22,7 @@ struct MainView: View {
     // MARK: Private properties
 
     @Environment(\.navigator) private var navigator
+    @State private var selectedTab: MainTab = .dashboard
 
     // MARK: UI
 
@@ -37,13 +38,14 @@ struct MainView: View {
 
 extension MainView {
     private var tabView: some View {
-        TabView {
-            Tab(L10n.dashboard, systemSymbol: .houseFill) { dashboard }
-            Tab("Podcasts", systemSymbol: .squareStack) { podcastList }
-            Tab(L10n.settings, systemSymbol: .gearshapeFill) { settings }
-            Tab(role: .search) { search }
+        TabView(selection: $selectedTab) {
+            Tab(L10n.dashboard, systemSymbol: .houseFill, value: .dashboard) { dashboard }
+            Tab("Library", systemSymbol: .squareStack, value: .podcasts) { podcastList }
+            Tab(L10n.settings, systemSymbol: .gearshapeFill, value: .settings) { settings }
+            Tab(value: .search, role: .search) { search }
         }
         .tint(Asset.Colors.primary.swiftUIColor)
+        .tabBarMinimizeBehavior(.onScrollDown)
         .apply {
             if #available(iOS 26.1, *) {
                 $0.tabViewBottomAccessory(isEnabled: viewModel.isPlayerBottomWidgetVisible) {
@@ -57,7 +59,10 @@ extension MainView {
                 }
             }
         }
-        .tabBarMinimizeBehavior(.onScrollDown)
+        .onNavigationReceive { (event: MainTab) in
+            selectedTab = event
+            return .auto
+        }
     }
 
     private var dashboard: some View {

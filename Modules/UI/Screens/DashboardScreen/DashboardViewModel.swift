@@ -12,6 +12,7 @@ import Common
 import Domain
 
 internal import Reachability
+import SwiftUI
 
 @Observable
 final class DashboardViewModel {
@@ -20,6 +21,7 @@ final class DashboardViewModel {
 
     private enum Constant {
         static let maximumUpcomingEpisodesToShow = 5
+        static let maximumSavedPodcastsToShow = 6
     }
 
     // MARK: Dependencies
@@ -100,6 +102,16 @@ extension DashboardViewModel {
             showErrorAlert(for: error)
         }
     }
+
+    @MainActor
+    func navigateToPodcastDetails(for podcast: Podcast) {
+        navigator.navigate(to: .podcastDetails(podcast: podcast, namespace: nil), method: .push)
+    }
+
+    @MainActor
+    func navigateToPodcastList() {
+        navigator.changeTab(to: .podcasts)
+    }
 }
 
 // MARK: - Helpers
@@ -117,7 +129,7 @@ extension DashboardViewModel {
     private func subscribeToSavedPodcasts() async {
         let publisher = savedPodcastsPublisher.replaceError(with: [])
         for await podcasts in publisher.asAsyncStream() {
-            savedPodcasts = podcasts
+            savedPodcasts = Array(podcasts.prefix(Constant.maximumSavedPodcastsToShow))
         }
     }
 

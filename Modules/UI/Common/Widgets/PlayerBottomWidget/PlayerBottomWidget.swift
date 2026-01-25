@@ -25,17 +25,18 @@ struct PlayerBottomWidget: View {
 
     // MARK: Dependencies
 
-//    @State private var viewModel = PlayerViewModel()
     @Bindable private var viewModel: PlayerViewModel
+
+    // MARK: Properties
+
+    let onTap: () -> Void
+
+    // MARK: Init
 
     init(onTap: @escaping () -> Void) {
         self.onTap = onTap
         _viewModel = Bindable(Resolver.resolve())
     }
-
-    // MARK: Properties
-
-    let onTap: () -> Void
 
     // MARK: UI
 
@@ -69,8 +70,7 @@ extension PlayerBottomWidget {
     }
 
     private var nonPlayingContent: some View {
-        ProgressView()
-            .progressViewStyle(.linear)
+        Color.clear
     }
 
     @ViewBuilder

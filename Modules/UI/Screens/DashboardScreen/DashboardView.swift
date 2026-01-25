@@ -25,8 +25,8 @@ struct DashboardView: View {
         ScrollView {
             LazyVStack(spacing: 32) {
                 continueSection
-                upcomingEpisodes
                 savedPodcasts
+                upcomingEpisodes
                 trendingPodcasts
             }
             .padding()
@@ -65,10 +65,22 @@ extension DashboardView {
                 .padding()
                 .background(Asset.Colors.background.swiftUIColor)
                 .clipShape(RoundedRectangle(cornerRadius: 24))
+                .shadow(radius: 8)
             }
             .animation(.default, value: viewModel.lastPlayedEpisode)
         }
     }
+
+    private var savedPodcasts: some View {
+        DashboardPodcastsSection(
+            podcasts: viewModel.savedPodcasts,
+            onSelect: { viewModel.navigateToPodcastDetails(for: $0) },
+            onSeeAllTap: { viewModel.navigateToPodcastList() },
+            onBrowseTrendingTap: { },
+            onSearchTap: {  }
+        )
+    }
+
 
     @ViewBuilder
     private var upcomingEpisodes: some View {
@@ -81,23 +93,6 @@ extension DashboardView {
                     episodeItem(for: episode)
                         .id(episode)
                 }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private var savedPodcasts: some View {
-        section(
-            title: "Your podcasts",
-            action: { },
-        ) {
-            ForEach(viewModel.savedPodcasts) { podcast in
-                Button {
-                    viewModel.navigateToEpisodes(for: podcast)
-                } label: {
-                    podcastItem(for: podcast)
-                }
-                .id(podcast)
             }
         }
     }
@@ -200,7 +195,7 @@ extension DashboardView {
                         Image(systemSymbol: .chevronRight)
                     }
                 }
-                .font(.headline)
+                .font(.title3)
                 .fontWeight(.semibold)
                 .foregroundStyle(Asset.Colors.label.swiftUIColor)
                 .frame(maxWidth: .infinity, alignment: .leading)

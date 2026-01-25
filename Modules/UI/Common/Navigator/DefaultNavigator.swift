@@ -72,4 +72,8 @@ extension DefaultNavigator: Navigator {
     func pop() {
         currentNavigator.pop()
     }
+
+    func changeTab(to tab: MainTab) {
+        rootNavigator.send(tab)
+    }
 }

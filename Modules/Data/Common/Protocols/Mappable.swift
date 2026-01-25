@@ -32,13 +32,13 @@ extension Array where Element: DomainMappable {
 }
 
 extension Array where Element: DataMappable {
-    var asDomainModels: [Element.DataModelType] {
+    var asDataModels: [Element.DataModelType] {
         compactMap { $0.asDataModel }
     }
 }
 
 extension Array where Element: APIMappable {
-    var asDomainModels: [Element.APIModelType] {
+    var asAPIModels: [Element.APIModelType] {
         compactMap { $0.asAPIModel }
     }
 }

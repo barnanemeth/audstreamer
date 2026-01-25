@@ -14,6 +14,7 @@ import Domain
 
 internal import AudstreamerAPIClient
 internal import FeedKit
+internal import XMLKit
 
 enum DefaultPodcastServiceError: Error {
     case cannotDecodeFeed
@@ -50,7 +51,7 @@ extension DefaultPodcastService: PodcastService {
             .asyncTryMap { [unowned self] in await contextManager.mapDataModels($0) }
             .flatMap { [unowned self] (podcasts: [Podcast]) in
                 guard !podcasts.isEmpty else { return Empty<[[EpisodeDataModel]], Error>(completeImmediately: true).eraseToAnyPublisher() }
-                return podcasts.map { assignEpisodesForPodcast($0) }.zip()
+                return podcasts.map { assignNewEpisodesForPodcast($0) }.zip()
             }
             .map { $0.flatMap { $0 } }
             .flatMap { [unowned self] in
@@ -161,6 +162,16 @@ extension DefaultPodcastService {
             .eraseToAnyPublisher()
     }
 
+    private func fetchEpisodesFromRSSFeed(_ feedURL: URL) -> AnyPublisher<[EpisodeRSSModel], Error> {
+        session.dataTaskPublisher(for: feedURL)
+            .tryMap { [unowned self] data, response -> [EpisodeRSSModel] in
+                try validateResponse(response)
+                let feed = try Feed(data: data)
+                return feed.rss?.channel?.items ?? []
+            }
+            .eraseToAnyPublisher()
+    }
+
     private func fetchAndSavePodcastFromRSSFeed(_ feedURL: URL, id: String, isPrivate: Bool) -> AnyPublisher<Void, Error> {
         fetchPodcastFromRSSFeed(feedURL, id: id, isPrivate: isPrivate)
             .flatMap { [unowned self] in database.insertPodcasts([$0]) }
@@ -188,24 +199,27 @@ extension DefaultPodcastService {
             .eraseToAnyPublisher()
     }
 
-    private func assignEpisodesForPodcast(_ podcast: Podcast) -> AnyPublisher<[EpisodeDataModel], Error> {
-        let fetchResult = fetchPodcastFromRSSFeed(podcast.rssFeedURL, id: podcast.id, isPrivate: podcast.isPrivate)
+    private func assignNewEpisodesForPodcast(_ podcast: Podcast) -> AnyPublisher<[EpisodeDataModel], Error> {
+        let remoteEpisodes = fetchEpisodesFromRSSFeed(podcast.rssFeedURL)
         let localPodcast = database.getPodcast(id: podcast.id).first()
 
-        return Publishers.Zip(fetchResult, localPodcast)
-            .asyncTryMap { [unowned self] fetchResult, localPodcast in
+        return Publishers.Zip(remoteEpisodes, localPodcast)
+            .asyncTryMap { [unowned self] remoteEpisodes, localPodcast -> [EpisodeDataModel] in
                 await contextManager.block {
-                    guard fetchResult.episodes.count > localPodcast?.episodes.count ?? .zero else { return [] }
-                    let fetchResultEpisodeIDs = fetchResult.episodes.map(\.id)
+                    guard let localPodcast else { return [] }
 
-                    let episodes = fetchResult.episodes
+                    let localIDs = localPodcast.episodes.map(\.id)
+                    let newEpisodes = remoteEpisodes
                         .filter { episode in
-                            !fetchResultEpisodeIDs.contains(episode.id)
+                            guard let id = episode.guid?.text else { return false }
+                            return !localIDs.contains(id)
                         }
-                    for episode in episodes {
+
+                    let dataModels = newEpisodes.asDataModels
+                    for episode in dataModels {
                         episode.podcast = localPodcast
                     }
-                    return episodes
+                    return dataModels
                 }
             }
             .eraseToAnyPublisher()

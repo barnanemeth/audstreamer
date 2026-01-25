@@ -12,7 +12,7 @@ public enum AppSettings {
 
     public static var apiBaseURL: URL {
         if isDev {
-            "http://localhost:4000"
+            "http://10.10.0.194:4000"
         } else {
             "https://api.audstreamer.com"
         }
