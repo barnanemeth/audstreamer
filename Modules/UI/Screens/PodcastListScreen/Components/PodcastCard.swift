@@ -19,17 +19,6 @@ struct PodcastCard: View {
     let podcast: Podcast
     let transitionNamespace: Namespace.ID
 
-    // MARK: Private properties
-
-    @Environment(\.colorScheme) private var colorScheme: ColorScheme
-    private var backgroundColor: Color {
-        switch colorScheme {
-        case .light: .white
-        case .dark: .gray.opacity(0.1)
-        @unknown default: .white
-        }
-    }
-
     // MARK: - UI
     var body: some View {
         VStack(spacing: .zero) {
@@ -37,9 +26,9 @@ struct PodcastCard: View {
             title
         }
         .matchedTransitionSource(id: podcast, in: transitionNamespace)
-        .background(backgroundColor)
+        .background(Asset.Colors.surfaceElevated.swiftUIColor)
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow(radius: 8)
+        .shadow(color: Asset.Colors.surfaceMuted.swiftUIColor, radius: 8)
     }
 }
 

@@ -9,11 +9,13 @@ import SwiftUI
 
 public enum ButtonSize {
     case normal
+    case medium
     case small
 
     var font: Font {
         switch self {
         case .normal: .headline
+        case .medium: .footnote
         case .small: .footnote
         }
     }
@@ -21,13 +23,15 @@ public enum ButtonSize {
     var height: CGFloat {
         switch self {
         case .normal: 52
+        case .medium: 40
         case .small: 32
         }
     }
 
     var cornerRadius: CGFloat {
         switch self {
-        case .normal: 12
+        case .normal: 14
+        case .medium: 12
         case .small: 8
         }
     }
@@ -39,6 +43,7 @@ public enum ButtonSize {
     var iconSize: CGFloat {
         switch self {
         case .normal: 18
+        case .medium: 16
         case .small: 14
         }
     }

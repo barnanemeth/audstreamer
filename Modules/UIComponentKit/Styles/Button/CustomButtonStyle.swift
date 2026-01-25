@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+internal import SFSafeSymbols
+
 public struct CustomButtonStyle: ButtonStyle {
 
     // MARK: Private properties
@@ -16,6 +18,13 @@ public struct CustomButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.isLoading) private var isLoading
     @State private var shouldShowIcon = true
+
+    private var font: Font {
+        switch type {
+        case .symbol: .system(size: 22, weight: .semibold)
+        default: type.size.font
+        }
+    }
 
     // MARK: Init
 
@@ -36,9 +45,8 @@ extension CustomButtonStyle {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: type.size.iconSize)
             }
-
             configuration.label
-                .font(type.size.font)
+                .font(font)
                 .frame(height: type.size.height)
                 .fixedSize(horizontal: true, vertical: false)
                 .tint(type.foregroundColor(isPressed: configuration.isPressed, isEnabled: isEnabled))
@@ -52,6 +60,7 @@ extension CustomButtonStyle {
         .overlay { overlay(isPressed: configuration.isPressed, isEnabled: isEnabled) }
         .allowsHitTesting(!isLoading)
         .onChange(of: isLoading) { handleLoadingStateChange() }
+        .opacity(configuration.isPressed ? 0.5 : 1)
     }
 }
 
@@ -99,5 +108,9 @@ extension ButtonStyle where Self == CustomButtonStyle {
                             fill: Bool = false,
                             icon: Image? = nil) -> CustomButtonStyle {
         CustomButtonStyle(type: .text(size: size, fill: fill, icon: icon))
+    }
+
+    public static func symbol(fill: Bool = false) -> CustomButtonStyle {
+        CustomButtonStyle(type: .symbol(fill: fill))
     }
 }

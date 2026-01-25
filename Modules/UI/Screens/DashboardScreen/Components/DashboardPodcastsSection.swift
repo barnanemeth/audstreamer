@@ -30,17 +30,6 @@ struct DashboardPodcastsSection: View {
     let onBrowseTrendingTap: () -> Void
     let onSearchTap: () -> Void
 
-    // MARK: Private properties
-
-    @Environment(\.colorScheme) private var colorScheme: ColorScheme
-    private var backgroundColor: Color {
-        switch colorScheme {
-        case .light: .white
-        case .dark: .gray.opacity(0.1)
-        @unknown default: .white
-        }
-    }
-
     // MARK: UI
 
     var body: some View {
@@ -119,9 +108,9 @@ extension DashboardPodcastsSection {
                 .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
         }
         .padding(12)
-        .background(backgroundColor)
+        .background(Asset.Colors.surfaceElevated.swiftUIColor)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .shadow(radius: 8)
+        .shadow(color: Asset.Colors.surfaceMuted.swiftUIColor, radius: 8)
     }
 
     private var empty: some View {
@@ -132,7 +121,7 @@ extension DashboardPodcastsSection {
         .padding(16)
         .background(Asset.Colors.surfaceBase.swiftUIColor)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .shadow(radius: 8)
+        .shadow(color: Asset.Colors.surfaceMuted.swiftUIColor, radius: 8)
     }
 
     private var emptyHeader: some View {

@@ -41,6 +41,8 @@ struct EpisodeListView: View {
             List {
                 listContent
             }
+            .background(Asset.Colors.surfaceBase.swiftUIColor)
+            .scrollContentBackground(.hidden)
             .overlay { emptyView }
             .listStyle(.insetGrouped)
             .listSectionSpacing(.compact)
@@ -114,6 +116,7 @@ extension EpisodeListView {
                     onWatchTap: { await viewModel.toggleEpisodeIsOnWatch(section.episode) },
                     onSectionDownloadTap: { await viewModel.downnloadOrDeletedEpisodes(for: section) }
                 )
+                .listRowBackground(Asset.Colors.surfaceElevated.swiftUIColor)
             }
         }
     }

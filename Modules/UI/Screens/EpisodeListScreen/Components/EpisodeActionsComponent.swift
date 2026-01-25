@@ -20,7 +20,6 @@ struct EpisodeActionsComponent: View {
     private enum Constant {
         static let thumbnailAspectRatio: CGFloat = 16 / 9
         static let thumbnailWidth: CGFloat = 106
-        static let buttonsHeight: CGFloat = 40
     }
 
     // MARK: Properties
@@ -55,7 +54,6 @@ extension EpisodeActionsComponent {
                 button(symbol: episode.isOnWatch ? .applewatchSlash : .applewatch, action: onWatchTap)
             }
         }
-        .frame(height: Constant.buttonsHeight)
     }
 
     private func button(symbol: SFSymbol, action: @escaping () async -> Void) -> some View {
@@ -65,7 +63,7 @@ extension EpisodeActionsComponent {
             Image(systemSymbol: symbol)
                 .contentTransition(.symbolEffect(.replace))
         }
-        .buttonStyle(ActionButtonStyle())
+        .buttonStyle(.symbol(fill: true))
     }
 
     private var details: some View {

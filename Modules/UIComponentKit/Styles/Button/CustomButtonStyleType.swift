@@ -13,12 +13,14 @@ enum CustomButtonStyleType {
     case primary(size: ButtonSize, fill: Bool, icon: Image?, backgroundColor: Color?)
     case secondary(size: ButtonSize, fill: Bool, icon: Image?)
     case text(size: ButtonSize, fill: Bool, icon: Image?)
+    case symbol(fill: Bool)
 
     var size: ButtonSize {
         switch self {
         case let .primary(size, _, _, _): size
         case let .secondary(size, _, _): size
         case let .text(size, _, _): size
+        case .symbol: .medium
         }
     }
 
@@ -27,6 +29,7 @@ enum CustomButtonStyleType {
         case let .primary(_, fill, _, _): fill
         case let .secondary(_, fill, _): fill
         case let .text(_, fill, _): fill
+        case let .symbol(fill): fill
         }
     }
 
@@ -35,19 +38,20 @@ enum CustomButtonStyleType {
         case let .primary(_, _, icon, _): icon
         case let .secondary(_, _, icon): icon
         case let .text(_, _, icon): icon
+        case .symbol: nil
         }
     }
 
     var borderWidth: CGFloat? {
         switch self {
         case let .secondary(size, _, _): size.borderWidth
-        case .primary, .text: nil
+        case .primary, .text, .symbol: nil
         }
     }
 
     func foregroundColor(isPressed: Bool, isEnabled: Bool) -> Color {
         switch self {
-        case .primary:
+        case .primary, .symbol:
             guard isEnabled else { return Asset.Colors.labelSecondary.swiftUIColor }
             return Asset.Colors.labelLight.swiftUIColor
         case .secondary:
@@ -66,6 +70,9 @@ enum CustomButtonStyleType {
                 return isPressed ? overrideColor.darken(by: 0.25) : overrideColor
             }
 
+            guard isEnabled else { return Asset.Colors.surfaceMuted.swiftUIColor }
+            return isPressed ? Asset.Colors.accentPrimaryPressed.swiftUIColor : Asset.Colors.accentPrimary.swiftUIColor
+        case .symbol:
             guard isEnabled else { return Asset.Colors.surfaceMuted.swiftUIColor }
             return isPressed ? Asset.Colors.accentPrimaryPressed.swiftUIColor : Asset.Colors.accentPrimary.swiftUIColor
         case .secondary, .text:

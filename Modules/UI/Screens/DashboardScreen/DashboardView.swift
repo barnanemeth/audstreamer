@@ -49,7 +49,7 @@ extension DashboardView {
             section(title: "Continue") {
                 VStack(spacing: 16) {
                     EpisodeHeaderComponent(episode: episode)
-                        .background(Asset.Colors.surfaceBase.swiftUIColor)
+                        .background(Asset.Colors.surfaceElevated.swiftUIColor)
 
                     EpisodeActionsComponent(
                         episode: episode,
@@ -60,12 +60,12 @@ extension DashboardView {
                         onDownloadTap: { await viewModel.downloadDeleteEpisode(episode) },
                         onWatchTap: { await viewModel.toggleEpisodeIsOnWatch(episode)  }
                     )
-                    .background(Asset.Colors.surfaceBase.swiftUIColor)
+                    .background(Asset.Colors.surfaceElevated.swiftUIColor)
                 }
                 .padding()
-                .background(Asset.Colors.surfaceBase.swiftUIColor)
+                .background(Asset.Colors.surfaceElevated.swiftUIColor)
                 .clipShape(RoundedRectangle(cornerRadius: 24))
-                .shadow(radius: 8)
+                .shadow(color: Asset.Colors.surfaceMuted.swiftUIColor, radius: 8)
             }
             .animation(.default, value: viewModel.lastPlayedEpisode)
         }

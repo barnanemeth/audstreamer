@@ -83,8 +83,7 @@ extension LoginView {
             Button(L10n.cancel) {
                 viewModel.handleCancel()
             }
-            .font(.h4)
-            .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
+            .buttonStyle(.text())
         }
     }
 

@@ -74,6 +74,7 @@ extension PodcastDetailsView {
             } label: {
                 Text("Episodes")
             }
+            .buttonStyle(.primary())
         }
         .padding()
     }
