@@ -108,6 +108,7 @@ extension WatchAudioPlayer: AudioPlayer {
             guard playImmediately else { return }
             self.audioPlayer.play()
         })
+        .print("insert")
         .eraseToAnyPublisher()
     }
 
@@ -180,19 +181,21 @@ extension WatchAudioPlayer {
     private func insert(item: AudioPlayable,
                         playImmediately: Bool,
                         completion: @escaping ((Result<Void, Error>) -> Void)) {
-        let asset = AVURLAsset(url: item.url)
-        let audioIdentifier = item.id
-        let audioPreferredStartTime = item.preferredStartTime
-        asset.loadValuesAsynchronously(forKeys: [Constant.durationResourceKey]) { [unowned self] in
+        Task {
             do {
-                try self.checkAssetLoadState(for: asset)
+                let asset = AVURLAsset(url: item.url)
+                let audioIdentifier = item.id
+                let audioPreferredStartTime = item.preferredStartTime
+
+                let duration = try await Int(asset.load(.duration).seconds.rounded(.up))
                 let playerItem = AVPlayerItem(asset: asset)
                 self.audioPlayer.insert(playerItem, after: nil)
                 let seconds = audioPreferredStartTime ?? .zero
                 let seekTime = CMTime(seconds: seconds, preferredTimescale: Constant.preferredTimescale)
-                self.audioPlayer.seek(to: seekTime)
-                let audioInfo = AudioInfo(id: audioIdentifier, duration: Int(asset.duration.seconds.rounded(.up)))
+                await self.audioPlayer.seek(to: seekTime)
+                let audioInfo = AudioInfo(id: audioIdentifier, duration: duration)
                 self.currentPlayingAudioInfoSubject.send(audioInfo)
+
                 completion(.success(()))
             } catch {
                 completion(.failure(error))
@@ -225,15 +228,6 @@ extension WatchAudioPlayer {
             self.audioPlayer.seek(to: self.getTargetTime(with: interval)) { _ in promise(.success(())) }
         }
         .eraseToAnyPublisher()
-    }
-
-    private func checkAssetLoadState(for asset: AVURLAsset) throws {
-        var error: NSError?
-        switch asset.statusOfValue(forKey: Constant.durationResourceKey, error: &error) {
-        case .loaded: return
-        case .failed, .cancelled: throw AudioPlayeError.cannotLoadAsset(error)
-        default: preconditionFailure("Unhandled case")
-        }
     }
 
     private func resetPlayer() {

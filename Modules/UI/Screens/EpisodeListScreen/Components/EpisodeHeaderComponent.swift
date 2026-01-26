@@ -25,12 +25,13 @@ struct EpisodeHeaderComponent: View {
     // MARK: Properties
 
     let episode: Episode
+    var shouldShowIndicators = false
 
     // MARK: Private properties
 
     @Namespace private var namespace
     private var isIndicatorsVisible: Bool {
-        episode.isFavourite || episode.isDownloaded || episode.isOnWatch
+        shouldShowIndicators && (episode.isFavourite || episode.isDownloaded || episode.isOnWatch)
     }
     private var playingProgress: Float? {
         guard let lastPosition = episode.lastPosition, episode.duration > .zero, lastPosition >= Constant.playedThresholdSeconds else { return nil }
@@ -76,19 +77,21 @@ extension EpisodeHeaderComponent {
 
     private var titleSection: some View {
         VStack(spacing: 8) {
-            let topText = "\(episode.podcastTitle.uppercased()) · \(episode.publishDate.formatted(date: .numeric, time: .omitted))"
-            Text(topText)
-                .font(.captionText)
+            Text(episode.podcastTitle.uppercased())
                 .fontWeight(.semibold)
                 .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(episode.title)
-                .font(.captionText)
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text(bottomInfoText)
+                .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .font(.captionText)
     }
 
     @ViewBuilder
@@ -120,5 +123,15 @@ extension EpisodeHeaderComponent {
                 .progressViewStyle(.linear)
                 .tint(Asset.Colors.accentPrimary.swiftUIColor)
         }
+    }
+
+    private var bottomInfoText: String {
+        var text = "\(episode.publishDate.formatted(date: .abbreviated, time: .omitted))"
+        if episode.duration > .zero {
+            let duration = Duration(secondsComponent: Int64(episode.duration), attosecondsComponent: .zero)
+            let durationText = duration.formatted(.units(allowed: [.minutes]))
+            text.append(" · \(durationText)")
+        }
+        return text
     }
 }

@@ -121,6 +121,12 @@ extension DefaultPodcastService: PodcastService {
             .eraseToAnyPublisher()
     }
 
+    func savedPodcast(id: Podcast.ID) -> AnyPublisher<Podcast?, Error> {
+        database.getPodcast(id: id)
+            .asyncTryMap { [unowned self] in await contextManager.mapDataModel($0) }
+            .eraseToAnyPublisher()
+    }
+
     func addPodcastFeed(_ feedURL: URL) -> AnyPublisher<Void, Error> {
         var components = URLComponents(url: feedURL, resolvingAgainstBaseURL: false)
         components?.fragment = nil

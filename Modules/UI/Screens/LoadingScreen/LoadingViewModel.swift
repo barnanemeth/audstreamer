@@ -49,12 +49,10 @@ extension LoadingViewModel {
         do {
             isLoading = true
             // Note: temporary
-//            Task {
-//                try await podcastService.refresh().value
-//                try await episodeService.refresh().value
-//            }
-            try await podcastService.refresh().value
-            try await episodeService.refresh().value
+            Task {
+                try await podcastService.refresh().value
+                try await episodeService.refresh().value
+            }
             await navigateNext()
         } catch {
             presentErrorAlert(for: error)

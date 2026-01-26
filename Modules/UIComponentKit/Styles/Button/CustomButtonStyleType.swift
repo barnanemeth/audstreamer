@@ -56,7 +56,7 @@ enum CustomButtonStyleType {
             return Asset.Colors.labelLight.swiftUIColor
         case .secondary:
             guard isEnabled else { return Asset.Colors.surfaceMuted.swiftUIColor }
-            return isPressed ? Asset.Colors.accentPrimaryPressed.swiftUIColor : Asset.Colors.accentPrimary.swiftUIColor
+            return isPressed ? Asset.Colors.labelSecondary.swiftUIColor : Asset.Colors.labelPrimary.swiftUIColor
         case .text:
             guard isEnabled else { return Asset.Colors.surfaceMuted.swiftUIColor }
             return isPressed ? Asset.Colors.accentPrimaryPressed.swiftUIColor : Asset.Colors.accentPrimary.swiftUIColor
@@ -75,7 +75,10 @@ enum CustomButtonStyleType {
         case .symbol:
             guard isEnabled else { return Asset.Colors.surfaceMuted.swiftUIColor }
             return isPressed ? Asset.Colors.accentPrimaryPressed.swiftUIColor : Asset.Colors.accentPrimary.swiftUIColor
-        case .secondary, .text:
+        case .secondary:
+            guard isEnabled else { return Asset.Colors.surfaceMuted.swiftUIColor }
+            return Asset.Colors.surfaceMuted.swiftUIColor
+        case .text:
             return .clear
         }
     }

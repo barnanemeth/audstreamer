@@ -37,7 +37,7 @@ public enum ButtonSize {
     }
 
     var borderWidth: CGFloat {
-        2
+        .zero
     }
 
     var iconSize: CGFloat {

@@ -25,6 +25,18 @@ public struct CustomButtonStyle: ButtonStyle {
         default: type.size.font
         }
     }
+    private var height: CGFloat {
+        switch type {
+        case .text: 28
+        default: type.size.height
+        }
+    }
+    private var horizontalPadding: CGFloat {
+        switch type {
+        case .text: 8
+        default: type.size.horizontalPadding
+        }
+    }
 
     // MARK: Init
 
@@ -37,7 +49,7 @@ public struct CustomButtonStyle: ButtonStyle {
 
 extension CustomButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
-        HStack(spacing: type.size.cornerRadius) {
+        HStack(spacing: type.size.spacing) {
             if let icon = type.icon, shouldShowIcon {
                 icon
                     .renderingMode(.template)
@@ -47,13 +59,13 @@ extension CustomButtonStyle {
             }
             configuration.label
                 .font(font)
-                .frame(height: type.size.height)
+                .frame(height: height)
                 .fixedSize(horizontal: true, vertical: false)
                 .tint(type.foregroundColor(isPressed: configuration.isPressed, isEnabled: isEnabled))
         }
         .fillWidth(fill: type.fill)
         .contentShape(RoundedRectangle(cornerRadius: type.size.cornerRadius))
-        .padding(.horizontal, type.size.horizontalPadding)
+        .padding(.horizontal, horizontalPadding)
         .foregroundStyle(type.foregroundColor(isPressed: configuration.isPressed, isEnabled: isEnabled))
         .background(type.backgroundColor(isPressed: configuration.isPressed, isEnabled: isEnabled))
         .clipShape(RoundedRectangle(cornerRadius: type.size.cornerRadius))

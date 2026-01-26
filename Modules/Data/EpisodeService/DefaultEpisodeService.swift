@@ -223,11 +223,4 @@ extension DefaultEpisodeService {
             }
             .eraseToAnyPublisher()
     }
-
-    private func getEpisodesCount() -> AnyPublisher<Int, Error> {
-        database.getEpisodes(filterFavorites: false, filterDownloads: false, filterWatch: false, keyword: nil, podcastID: nil)
-            .first()
-            .map { $0.count }
-            .eraseToAnyPublisher()
-    }
 }

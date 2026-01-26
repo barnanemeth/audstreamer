@@ -35,10 +35,7 @@ struct EpisodeActionsComponent: View {
     // MARK: UI
 
     var body: some View {
-        VStack(spacing: 12) {
-            buttons
-            details
-        }
+        buttons
     }
 }
 
@@ -64,25 +61,5 @@ extension EpisodeActionsComponent {
                 .contentTransition(.symbolEffect(.replace))
         }
         .buttonStyle(.symbol(fill: true))
-    }
-
-    private var details: some View {
-        HStack {
-            Text(L10n.publishDate(episode.publishDate.formatted(date: .abbreviated, time: .omitted)))
-                .multilineTextAlignment(.leading)
-
-            Spacer()
-
-            let durationString = if episode.duration > .zero {
-                Double(episode.duration).secondsToHoursMinutesSecondsString
-            } else {
-                "--:--:--"
-            }
-            Text(L10n.duration(durationString))
-                .multilineTextAlignment(.trailing)
-        }
-        .font(.captionText)
-        .lineLimit(2)
-        .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
     }
 }

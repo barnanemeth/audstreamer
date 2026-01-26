@@ -15,6 +15,12 @@ internal import SFSafeSymbols
 
 struct EpisodeListView: View {
 
+    // MARK: Constants
+
+    private enum Constant {
+        static let batchSize = 64
+    }
+
     // MARK: Dependencies
 
     @State private var viewModel = EpisodeListViewModel()
@@ -27,6 +33,7 @@ struct EpisodeListView: View {
 
     @FocusState private var isSearchEnabled: Bool
     @State private var listScrollViewProxy: ScrollViewProxy?
+    @State private var currentBatchSize = Constant.batchSize
     private var searchTextBinding: Binding<String> {
         Binding<String>(
             get: { [viewModel] in viewModel.searchKeyword ?? "" },
@@ -105,7 +112,7 @@ extension EpisodeListView {
     @ViewBuilder
     private var listContent: some View {
         if let sections = viewModel.sections {
-            ForEach(sections) { section in
+            ForEach(sections.prefix(currentBatchSize)) { section in
                 EpisodeSectionComponent(
                     section: section,
                     isTitleButtonVisible: !viewModel.isFilterActive,
@@ -117,6 +124,13 @@ extension EpisodeListView {
                     onSectionDownloadTap: { await viewModel.downnloadOrDeletedEpisodes(for: section) }
                 )
                 .listRowBackground(Asset.Colors.surfaceElevated.swiftUIColor)
+            }
+
+            if sections.count > currentBatchSize {
+                Rectangle()
+                    .fill(.clear)
+                    .frame(height: 1)
+                    .onAppear { currentBatchSize += Constant.batchSize }
             }
         }
     }

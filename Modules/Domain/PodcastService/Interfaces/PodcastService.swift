@@ -15,5 +15,6 @@ public protocol PodcastService {
     func subscribe(to podcast: Podcast) -> AnyPublisher<Void, Error>
     func unsubscribe(from podcast: Podcast) -> AnyPublisher<Void, Error>
     func savedPodcasts() -> AnyPublisher<[Podcast], Error>
+    func savedPodcast(id: Podcast.ID) -> AnyPublisher<Podcast?, Error>
     func addPodcastFeed(_ feedURL: URL) -> AnyPublisher<Void, Error>
 }

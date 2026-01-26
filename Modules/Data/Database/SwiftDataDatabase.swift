@@ -64,10 +64,11 @@ extension SwiftDataDatabase: Database {
 
         let combinedPredicate = predicates.conjunction()
 
-        let descriptor = FetchDescriptor<EpisodeDataModel>(
+        var descriptor = FetchDescriptor<EpisodeDataModel>(
             predicate: combinedPredicate,
             sortBy: [.init(\.publishDate, order: .reverse)]
         )
+        descriptor.relationshipKeyPathsForPrefetching = []
 
         return ModelContextFetchPublisher(contextManager: contextManager, descriptor: descriptor)
             .eraseToAnyPublisher()

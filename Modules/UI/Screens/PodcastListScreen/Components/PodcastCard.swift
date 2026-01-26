@@ -28,7 +28,7 @@ struct PodcastCard: View {
         .matchedTransitionSource(id: podcast, in: transitionNamespace)
         .background(Asset.Colors.surfaceElevated.swiftUIColor)
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow(color: Asset.Colors.surfaceMuted.swiftUIColor, radius: 8)
+        .shadow(radius: 8)
     }
 }
 

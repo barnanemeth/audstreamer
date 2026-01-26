@@ -15,6 +15,12 @@ internal import SFSafeSymbols
 
 struct DashboardView: View {
 
+    // MARK: Constants
+
+    private enum Constant {
+        static let defaultHorizontalPadding: CGFloat = 16
+    }
+
     // MARK: Dependencies
 
     @State private var viewModel = DashboardViewModel()
@@ -26,16 +32,15 @@ struct DashboardView: View {
             LazyVStack(spacing: 32) {
                 continueSection
                 savedPodcasts
-                upcomingEpisodes
                 trendingPodcasts
+                latestEpisodes
             }
-            .padding()
+            .padding(.vertical)
         }
         .navigationTitle(viewModel.screenTitle)
         .background(Asset.Colors.surfaceBase.swiftUIColor)
         .dialog(descriptor: $viewModel.currentlyShowedDialogDescriptor)
-        .animation(.default, value: viewModel.savedPodcasts)
-        .animation(.default, value: viewModel.trendingPodcasts)
+        .animation(.default, value: viewModel.lastPlayedEpisode)
         .task(id: "DashboardView.SubscriptionTask") { await viewModel.subscribe() }
     }
 }
@@ -46,165 +51,36 @@ extension DashboardView {
     @ViewBuilder
     private var continueSection: some View {
         if let episode = viewModel.lastPlayedEpisode {
-            section(title: "Continue") {
-                VStack(spacing: 16) {
-                    EpisodeHeaderComponent(episode: episode)
-                        .background(Asset.Colors.surfaceElevated.swiftUIColor)
-
-                    EpisodeActionsComponent(
-                        episode: episode,
-                        isWatchAvailable: viewModel.isWatchAvailable,
-                        isPlaying: viewModel.currentlyPlayingID == episode.id,
-                        onPlayPauseTap: { await viewModel.playPauseEpisode(episode) },
-                        onFavouriteTap: { await viewModel.toggleEpisodeFavorite(episode) },
-                        onDownloadTap: { await viewModel.downloadDeleteEpisode(episode) },
-                        onWatchTap: { await viewModel.toggleEpisodeIsOnWatch(episode)  }
-                    )
-                    .background(Asset.Colors.surfaceElevated.swiftUIColor)
-                }
-                .padding()
-                .background(Asset.Colors.surfaceElevated.swiftUIColor)
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-                .shadow(color: Asset.Colors.surfaceMuted.swiftUIColor, radius: 8)
-            }
-            .animation(.default, value: viewModel.lastPlayedEpisode)
+            LastPlayedEpisodeWidget(episode: episode, horizontalPadding: Constant.defaultHorizontalPadding)
         }
     }
 
     private var savedPodcasts: some View {
-        DashboardPodcastsSection(
-            podcasts: viewModel.savedPodcasts,
+        SavedPodcastsWidget(
+            horizontalPadding: Constant.defaultHorizontalPadding,
             onSelect: { viewModel.navigateToPodcastDetails(for: $0) },
             onSeeAllTap: { viewModel.navigateToPodcastList() },
-            onBrowseTrendingTap: { },
-            onSearchTap: {  }
+            onBrowseTrendingTap: { /*TODO*/ },
+            onSearchTap: { /*TODO*/ }
         )
     }
 
-
-    @ViewBuilder
-    private var upcomingEpisodes: some View {
-        if !viewModel.upcomingEpisodes.isEmpty {
-            section(
-                title: "Upcoming episodes",
-                action: { viewModel.navigateToEpisodes(for: nil) },
-            ) {
-                ForEach(viewModel.upcomingEpisodes) { episode in
-                    episodeItem(for: episode)
-                        .id(episode)
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
     private var trendingPodcasts: some View {
-        if let podcasts = viewModel.trendingPodcasts {
-            section(
-                title: "Trending",
-                action: { },
-            ) {
-                ForEach(podcasts) { podcast in
-                    podcastItem(for: podcast)
-                        .id(podcast)
-                }
-            }
-        } else {
-            ProgressView()
-                .progressViewStyle(.circular)
-        }
+        TrendingWidget(
+            horizontalPadding: Constant.defaultHorizontalPadding,
+            onSelect: { _ in /*TODO*/ },
+            onSeeAllTap: { }
+        )
     }
 
-    private func podcastItem(for podcast: Podcast) -> some View {
-        HStack(spacing: 16) {
-            LazyImage(url: podcast.imageURL) { state in
-                if let image = state.image {
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 32, height: 32)
-                }
-            }
-            .frame(width: 38, height: 38)
-
-            VStack(alignment: .leading) {
-                Text(podcast.title)
-                    .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
-                    .multilineTextAlignment(.leading)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                Text(podcast.author ?? "")
-                    .font(.captionText)
-                    .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-
-            AsyncButton {
-                await viewModel.toggleSubscription(for: podcast)
-            } label: {
-                Image(systemSymbol: podcast.isSubscribed ? .minusCircleFill : .plusCircleFill)
-            }
-            .foregroundStyle(podcast.isSubscribed ? Asset.Colors.State.error.swiftUIColor : Asset.Colors.accentPrimary.swiftUIColor)
-        }
-    }
-
-    private func episodeItem(for episode: Episode) -> some View {
-        HStack(spacing: 16) {
-            LazyImage(url: episode.imageURL) { state in
-                if let image = state.image {
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 32, height: 32)
-                }
-            }
-            .frame(width: 38, height: 38)
-
-            VStack(alignment: .leading) {
-                Text(episode.podcastTitle.uppercased())
-                    .font(.captionText)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
-                    .multilineTextAlignment(.leading)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                Text(episode.title)
-                    .font(.captionText)
-                    .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-
-            AsyncButton {
-                await viewModel.playPauseEpisode(episode)
-            } label: {
-                Image(systemSymbol: .playpauseCircleFill)
-                    .font(.h4)
-            }
-            .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
-        }
-    }
-
-    private func section<Content: View>(title: String, action: (() -> Void)? = nil, @ViewBuilder content: () -> Content) -> some View {
-        LazyVStack(spacing: 16) {
-            Button {
-                action?()
-            } label: {
-                HStack {
-                    Text(title)
-                    if action != nil {
-                        Image(systemSymbol: .chevronRight)
-                    }
-                }
-                .font(.h4)
-                .fontWeight(.semibold)
-                .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .disabled(action == nil)
-
-            content()
-
-            Divider()
+    @ViewBuilder
+    private var latestEpisodes: some View {
+        if !viewModel.latestEpisodes.isEmpty {
+            LatestEpisodesWidget(
+                episodes: viewModel.latestEpisodes,
+                horizontalPadding: Constant.defaultHorizontalPadding,
+                onSeeAllTap: { viewModel.navigateToEpisodes(for: nil) }
+            )
         }
     }
 }
