@@ -60,15 +60,15 @@ extension DashboardView {
             horizontalPadding: Constant.defaultHorizontalPadding,
             onSelect: { viewModel.navigateToPodcastDetails(for: $0) },
             onSeeAllTap: { viewModel.navigateToPodcastList() },
-            onBrowseTrendingTap: { /*TODO*/ },
-            onSearchTap: { /*TODO*/ }
+            onBrowseTrendingTap: { viewModel.navigateToTrending() },
+            onSearchTap: { viewModel.navigateToSearch() }
         )
     }
 
     private var trendingPodcasts: some View {
         TrendingWidget(
             horizontalPadding: Constant.defaultHorizontalPadding,
-            onSelect: { _ in /*TODO*/ },
+            onSelect: { viewModel.navigateToPodcastDetails(for: $0) },
             onSeeAllTap: { }
         )
     }

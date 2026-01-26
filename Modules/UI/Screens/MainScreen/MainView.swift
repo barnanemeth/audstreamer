@@ -59,9 +59,9 @@ extension MainView {
                 }
             }
         }
-        .onNavigationReceive { (event: MainTab) in
-            selectedTab = event
-            return .auto
+        .onNavigationReceive { (tab: MainTab) in
+            selectedTab = tab
+            return .after(0.75)
         }
     }
 

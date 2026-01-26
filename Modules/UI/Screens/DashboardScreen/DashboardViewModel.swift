@@ -86,6 +86,16 @@ extension DashboardViewModel {
     func navigateToPodcastList() {
         navigator.changeTab(to: .podcasts)
     }
+
+    @MainActor
+    func navigateToTrending() {
+        navigator.changeTab(to: .search, values: [AppNavigationDestination.SearchMode.trending])
+    }
+
+    @MainActor
+    func navigateToSearch() {
+        navigator.changeTab(to: .search, values: [AppNavigationDestination.SearchMode.search])
+    }
 }
 
 // MARK: - Helpers

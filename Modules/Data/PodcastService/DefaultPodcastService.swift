@@ -18,6 +18,7 @@ internal import XMLKit
 
 enum DefaultPodcastServiceError: Error {
     case cannotDecodeFeed
+    case cannotFindPodcast
 }
 
 final class DefaultPodcastService {
@@ -37,6 +38,8 @@ final class DefaultPodcastService {
 
     // MARK: Private properties
 
+    private var trendingCache = [Int: [Podcast]]()
+    private var searchCache = Set<Podcast>()
     private lazy var session: URLSession = {
         URLSession(configuration: .ephemeral)
     }()
@@ -79,14 +82,36 @@ extension DefaultPodcastService: PodcastService {
                 throw URLError(.badServerResponse)
             }
         }
+        .handleEvents(receiveOutput: { [unowned self] in
+            searchCache.formUnion($0)
+        })
         .eraseToAnyPublisher()
     }
-    
+
+    func podcast(id: Podcast.ID) -> AnyPublisher<Podcast?, Error> {
+        database.getPodcast(id: id)
+            .asyncTryMap { [unowned self] in await contextManager.mapDataModel($0) }
+            .map { [unowned self] savedPodcast in
+                if let savedPodcast {
+                    savedPodcast
+                } else {
+                    trendingCache.first?.value.first(where: { $0.id == id }) ?? searchCache.first(where: { $0.id == id })
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+
     func getTrending(maximumResult: Int?) -> AnyPublisher<[Podcast], Error> {
+        let maximumResult = maximumResult ?? Constant.defaultMaximumResultCount
+
+        if let cachedPodcasts = trendingCache[maximumResult] {
+            return Just(cachedPodcasts).setFailureType(to: Error.self).eraseToAnyPublisher()
+        }
+
         let input = Operations.getTrendingPodcasts.Input(
             query: Operations.getTrendingPodcasts.Input.Query(
                 language: "hu",
-                max: maximumResult ?? Constant.defaultMaximumResultCount
+                max: maximumResult
             )
         )
         return ThrowingAsyncPublisher<Operations.getTrendingPodcasts.Output, Error> {
@@ -100,6 +125,10 @@ extension DefaultPodcastService: PodcastService {
                 throw URLError(.badServerResponse)
             }
         }
+        .handleEvents(receiveOutput: { [unowned self] podcasts in
+            trendingCache.removeAll()
+            trendingCache[maximumResult] = podcasts
+        })
         .eraseToAnyPublisher()
     }
     
@@ -118,12 +147,6 @@ extension DefaultPodcastService: PodcastService {
     func savedPodcasts() -> AnyPublisher<[Podcast], Error> {
         database.getPodcasts()
             .map { $0.asDomainModels }
-            .eraseToAnyPublisher()
-    }
-
-    func savedPodcast(id: Podcast.ID) -> AnyPublisher<Podcast?, Error> {
-        database.getPodcast(id: id)
-            .asyncTryMap { [unowned self] in await contextManager.mapDataModel($0) }
             .eraseToAnyPublisher()
     }
 
@@ -155,12 +178,23 @@ extension DefaultPodcastService {
         }
     }
 
-    private func fetchPodcastFromRSSFeed(_ feedURL: URL, id: String, isPrivate: Bool) -> AnyPublisher<PodcastDataModel, Error> {
+    private func fetchPodcastFromRSSFeed(_ feedURL: URL) -> AnyPublisher<PodcastRSSModel, Error> {
         session.dataTaskPublisher(for: feedURL)
             .tryMap { [unowned self] data, response in
                 try validateResponse(response)
                 let feed = try Feed(data: data)
-                guard let podcast = feed.rss?.channel?.asDataModel(id: id, rssFeedURL: feedURL, isPrivate: isPrivate) else {
+                guard let podcast = feed.rss?.channel else {
+                    throw DefaultPodcastServiceError.cannotDecodeFeed
+                }
+                return podcast
+            }
+            .eraseToAnyPublisher()
+    }
+
+    private func fetchPodcastFromRSSFeedAndMapToDataModel(_ feedURL: URL, id: String, isPrivate: Bool) -> AnyPublisher<PodcastDataModel, Error> {
+        fetchPodcastFromRSSFeed(feedURL)
+            .tryMap { podcast in
+                guard let podcast = podcast.asDataModel(id: id, rssFeedURL: feedURL, isPrivate: isPrivate) else {
                     throw DefaultPodcastServiceError.cannotDecodeFeed
                 }
                 return podcast
@@ -169,17 +203,13 @@ extension DefaultPodcastService {
     }
 
     private func fetchEpisodesFromRSSFeed(_ feedURL: URL) -> AnyPublisher<[EpisodeRSSModel], Error> {
-        session.dataTaskPublisher(for: feedURL)
-            .tryMap { [unowned self] data, response -> [EpisodeRSSModel] in
-                try validateResponse(response)
-                let feed = try Feed(data: data)
-                return feed.rss?.channel?.items ?? []
-            }
+        fetchPodcastFromRSSFeed(feedURL)
+            .map { $0.items ?? [] }
             .eraseToAnyPublisher()
     }
 
     private func fetchAndSavePodcastFromRSSFeed(_ feedURL: URL, id: String, isPrivate: Bool) -> AnyPublisher<Void, Error> {
-        fetchPodcastFromRSSFeed(feedURL, id: id, isPrivate: isPrivate)
+        fetchPodcastFromRSSFeedAndMapToDataModel(feedURL, id: id, isPrivate: isPrivate)
             .flatMap { [unowned self] in database.insertPodcasts([$0]) }
             .eraseToAnyPublisher()
     }

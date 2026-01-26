@@ -17,6 +17,7 @@ final class SearchViewModel {
     // MARK: Dependencies
 
     @ObservationIgnored @Injected private var podcastService: PodcastService
+    @ObservationIgnored @Injected private var navigator: Navigator
 
     // MARK: Properties
 
@@ -55,6 +56,11 @@ extension SearchViewModel {
         } catch {
             print(error)
         }
+    }
+
+    @MainActor
+    func navigateToPodcastDetails(for podcast: Podcast) {
+        navigator.navigate(to: .podcastDetails(podcast: podcast, namespace: nil), method: .push)
     }
 }
 

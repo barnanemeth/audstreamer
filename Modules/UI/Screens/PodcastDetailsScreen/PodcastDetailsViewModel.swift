@@ -115,7 +115,7 @@ extension PodcastDetailsViewModel {
 extension PodcastDetailsViewModel {
     @MainActor
     private func subscribeToPodcast(_ podcast: Podcast) async {
-        let publisher = podcastService.savedPodcast(id: podcast.id).replaceError(with: nil).unwrap()
+        let publisher = podcastService.podcast(id: podcast.id).replaceError(with: nil).unwrap()
         for await podcast in publisher.asAsyncStream() {
             self.podcast = podcast
             descriptionAttributedString = attributedString(from: podcast.description ?? "")

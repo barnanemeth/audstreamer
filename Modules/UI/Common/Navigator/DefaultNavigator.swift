@@ -73,7 +73,8 @@ extension DefaultNavigator: Navigator {
         currentNavigator.pop()
     }
 
-    func changeTab(to tab: MainTab) {
-        rootNavigator.send(tab)
+    func changeTab(to tab: MainTab, values: [any Hashable]?) {
+        let values: [any Hashable] = [tab] + (values ?? [])
+        rootNavigator.send(values: values)
     }
 }

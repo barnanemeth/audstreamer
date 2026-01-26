@@ -15,5 +15,12 @@ protocol Navigator: NavigatorPublic {
     @MainActor func navigate(to destination: AppNavigationDestination, method: NavigationMethod)
     @MainActor func dismiss()
     @MainActor func pop()
-    @MainActor func changeTab(to tab: MainTab)
+    @MainActor func changeTab(to tab: MainTab, values: [any Hashable]?)
+}
+
+extension Navigator {
+    @MainActor
+    func changeTab(to tab: MainTab, values: [any Hashable]? = nil) {
+        changeTab(to: tab, values: values)
+    }
 }

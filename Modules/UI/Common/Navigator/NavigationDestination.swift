@@ -13,6 +13,12 @@ import Domain
 internal import NavigatorUI
 
 enum AppNavigationDestination: @MainActor NavigationDestination {
+    enum SearchMode: Hashable {
+        case automatic
+        case trending
+        case search
+    }
+
     case loading
     case login(shouldShowPlayerAtDismiss: Bool)
     case main
