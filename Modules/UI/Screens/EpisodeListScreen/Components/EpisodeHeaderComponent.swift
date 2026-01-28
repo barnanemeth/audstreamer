@@ -25,7 +25,7 @@ struct EpisodeHeaderComponent: View {
     // MARK: Properties
 
     let episode: Episode
-    var shouldShowIndicators = false
+    var shouldShowIndicators = true
 
     // MARK: Private properties
 

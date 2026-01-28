@@ -16,6 +16,7 @@ struct LoginView: View {
 
     private enum Constant {
         static let infoImageSize: CGFloat = 240
+        static let animationPeriod: TimeInterval = 2
     }
 
     // MARK: - Dependencies
@@ -36,11 +37,12 @@ struct LoginView: View {
     // MARK: UI
 
     var body: some View {
-        VStack {
-            title
+        VStack(spacing: 24) {
             Spacer()
             image
             Spacer()
+            title
+            checkList
             Spacer()
             buttons
         }
@@ -56,60 +58,94 @@ struct LoginView: View {
 // MARK: - Helpers
 
 extension LoginView {
-    private var title: some View {
-        VStack(spacing: 32) {
-            Text(L10n.logIn)
-                .font(.h1)
+    private var image: some View {
+        TimelineView(.periodic(from: .now, by: Constant.animationPeriod)) { context in
+            Image(systemSymbol: symbol(for: context.date))
+                .font(.system(size: 88))
                 .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
+                .contentTransition(.symbolEffect(.replace.byLayer))
+        }
+        .frame(height: 100)
+    }
 
-            Text(L10n.logInInfo)
-                .font(.system(size: 17))
+    private var title: some View {
+        VStack(spacing: 12) {
+            Text("Sign In")
+                .font(.h2)
                 .foregroundStyle(Asset.Colors.labelPrimary.swiftUIColor)
+
+            Text("Sign in to sync your listening progress across devices and receive notifications for new episodes")
+                .font(.bodyText)
+                .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
                 .multilineTextAlignment(.center)
         }
     }
 
-    private var image: some View {
-        Asset.Images.femaleMaleCircle.swiftUIImage
-            .resizable()
-            .foregroundStyle(Asset.Colors.accentPrimary.swiftUIColor)
-            .frame(width: Constant.infoImageSize, height: Constant.infoImageSize)
+    @ViewBuilder
+    private var checkList: some View {
+        let list = [
+            "Sync listening progress across devices",
+            "Get notifications for new episodes"
+        ]
+        VStack(alignment: .leading, spacing: 8) {
+            ForEach(list, id: \.self) { item in
+                HStack(spacing: 8) {
+                    Image(systemSymbol: .checkmarkCircleFill)
+                        .foregroundStyle(Asset.Colors.accentPrimaryPressed.swiftUIColor)
+                        .opacity(0.9)
+
+                    Text(item)
+                        .foregroundStyle(Asset.Colors.labelSecondary.swiftUIColor)
+                }
+                .font(.bodySecondaryText)
+            }
+        }
     }
 
     private var buttons: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: 16) {
             signInWithAppleButton
 
-            Button(L10n.cancel) {
+            Button("Later") {
                 viewModel.handleCancel()
             }
-            .buttonStyle(.text())
+            .buttonStyle(.secondary(fill: true))
         }
     }
 
     @ViewBuilder
     private var signInWithAppleButton: some View {
-        let (foregroundColor, backgroundColor): (Color, Color) = switch colorScheme {
-        case .dark: (.black, .white)
-        case .light: (.white, .black)
-        @unknown default: (.black, .white)
+        VStack(spacing: 16) {
+            let (foregroundColor, backgroundColor): (Color, Color) = switch colorScheme {
+            case .dark: (.black, .white)
+            case .light: (.white, .black)
+            @unknown default: (.black, .white)
+            }
+            AsyncButton("Sign in with Apple") {await viewModel.login() }
+                .buttonStyle(
+                    .primary(
+                        fill: true,
+                        icon: Image(systemSymbol: .appleLogo),
+                        backgroundColor: backgroundColor
+                    )
+                )
+                .foregroundStyle(foregroundColor)
         }
-
-        AsyncButton {
-            await viewModel.login()
-        } label: {
-            Spacer()
-            Image(systemSymbol: .appleLogo)
-            Text(L10n.signInWithApple)
-            Spacer()
-        }
-        .fillWidth()
-        .padding()
-        .fontWeight(.semibold)
-        .foregroundStyle(foregroundColor)
-        .tint(foregroundColor)
-        .background(backgroundColor)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .frame(height: 44)
     }
+
+    private func symbol(for date: Date) -> SFSymbol {
+        let t = date.timeIntervalSinceReferenceDate
+        let step = Int(floor(t / Constant.animationPeriod))
+        return if step.isMultiple(of: Int(Constant.animationPeriod)) {
+            .ipadLandscapeAndIphone
+        } else {
+            .bellBadge
+        }
+    }
+}
+
+// MARK: - Preview
+
+#Preview {
+    LoginView(shouldShowPlayerAtDismiss: false)
 }
