@@ -59,7 +59,8 @@ final class SocketIOSocket {
                 .compress,
                 .extraHeaders(headers),
                 .version(.three),
-                .reconnectAttempts(Constant.reconnectAttempts)
+                .reconnectAttempts(Constant.reconnectAttempts),
+                .forceWebsockets(true)
         )
         // swiftlint:enable vertical_parameter_alignment_on_call
     }
