@@ -52,6 +52,7 @@ extension DashboardView {
     private var continueSection: some View {
         if let episode = viewModel.lastPlayedEpisode {
             LastPlayedEpisodeWidget(episode: episode, horizontalPadding: Constant.defaultHorizontalPadding)
+                .geometryGroup()
         }
     }
 
@@ -63,14 +64,16 @@ extension DashboardView {
             onBrowseTrendingTap: { viewModel.navigateToTrending() },
             onSearchTap: { viewModel.navigateToSearch() }
         )
+        .geometryGroup()
     }
 
     private var trendingPodcasts: some View {
         TrendingWidget(
             horizontalPadding: Constant.defaultHorizontalPadding,
             onSelect: { viewModel.navigateToPodcastDetails(for: $0) },
-            onSeeAllTap: { }
+            onSeeAllTap: { viewModel.navigateToTrending() }
         )
+        .geometryGroup()
     }
 
     @ViewBuilder
@@ -81,6 +84,7 @@ extension DashboardView {
                 horizontalPadding: Constant.defaultHorizontalPadding,
                 onSeeAllTap: { viewModel.navigateToEpisodes(for: nil) }
             )
+            .geometryGroup()
         }
     }
 }

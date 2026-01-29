@@ -79,7 +79,7 @@ extension SearchViewModel {
                     podcastService.getTrending(maximumResult: nil)
                 }
             }
-        let savedPodcasts = podcastService.savedPodcasts()
+        let savedPodcasts = podcastService.savedPodcasts(sortingPreference: nil)
         let publisher = Publishers.CombineLatest(searchResult, savedPodcasts)
             .map { searchResult, savedPodcasts in
                 searchResult.map { podcast in

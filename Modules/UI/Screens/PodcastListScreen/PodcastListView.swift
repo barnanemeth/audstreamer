@@ -27,7 +27,6 @@ struct PodcastListView: View {
     // MARK: Private properties
 
     @Namespace private var transitionNamespace: Namespace.ID
-    @Environment(\.navigator) private var navigator
 
     // MARK: UI
 

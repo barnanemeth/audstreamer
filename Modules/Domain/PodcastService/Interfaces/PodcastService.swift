@@ -15,6 +15,6 @@ public protocol PodcastService {
     func getTrending(maximumResult: Int?) -> AnyPublisher<[Podcast], Error>
     func subscribe(to podcast: Podcast) -> AnyPublisher<Void, Error>
     func unsubscribe(from podcast: Podcast) -> AnyPublisher<Void, Error>
-    func savedPodcasts() -> AnyPublisher<[Podcast], Error>
+    func savedPodcasts(sortingPreference: PodcastSortingPreference?) -> AnyPublisher<[Podcast], Error>
     func addPodcastFeed(_ feedURL: URL) -> AnyPublisher<Void, Error>
 }

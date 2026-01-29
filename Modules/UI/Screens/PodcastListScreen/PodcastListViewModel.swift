@@ -55,7 +55,7 @@ extension PodcastListViewModel {
 extension PodcastListViewModel {
     @MainActor
     private func subscribeToPodcasts() async {
-        let publisher = podcastService.savedPodcasts().replaceError(with: [])
+        let publisher = podcastService.savedPodcasts(sortingPreference: .byLatestRelease).replaceError(with: [])
         for try await podcasts in publisher.asAsyncStream() {
             self.podcasts = podcasts
         }

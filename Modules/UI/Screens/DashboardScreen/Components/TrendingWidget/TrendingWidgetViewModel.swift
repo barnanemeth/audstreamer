@@ -61,7 +61,7 @@ extension TrendingWidgetViewModel {
         do {
             guard podcasts == nil else { return }
             let trending = podcastService.getTrending(maximumResult: Constant.maximumPodcastsToShow + Constant.maximumPodcastsFetchOverhead)
-            let savedIDs = podcastService.savedPodcasts().first().map { $0.map(\.id) }
+            let savedIDs = podcastService.savedPodcasts(sortingPreference: nil).first().map { $0.map(\.id) }
             let publisher = Publishers.Zip(trending, savedIDs)
                 .map { trending, savedIDs in
                     trending.filter { podcast in

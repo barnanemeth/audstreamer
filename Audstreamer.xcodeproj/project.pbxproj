@@ -27,6 +27,20 @@
 		C20B07AF2F0AA39600A3E815 /* UIComponentKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C2313E0A2F08096A006A1CA9 /* UIComponentKit.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C20F9C6D2AFAC920002F0F59 /* WatchEpisodeService+WCSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20F9C6C2AFAC920002F0F59 /* WatchEpisodeService+WCSessionDelegate.swift */; };
 		C21D64A42A2D137E00226AFF /* WatchRemotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21D64A32A2D137E00226AFF /* WatchRemotePlayer.swift */; };
+		C223AA3E2F2AA02D006D98D1 /* CustomTextFieldSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA3C2F2AA02D006D98D1 /* CustomTextFieldSize.swift */; };
+		C223AA3F2F2AA02D006D98D1 /* CustomTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA3D2F2AA02D006D98D1 /* CustomTextFieldStyle.swift */; };
+		C223AA402F2AA02D006D98D1 /* CustomTextFieldContentSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA3B2F2AA02D006D98D1 /* CustomTextFieldContentSize.swift */; };
+		C223AA422F2AA079006D98D1 /* IndirectValidateModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA412F2AA079006D98D1 /* IndirectValidateModifiers.swift */; };
+		C223AA462F2AA0AF006D98D1 /* NonEmptyValidationRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA452F2AA0AF006D98D1 /* NonEmptyValidationRule.swift */; };
+		C223AA482F2AA0CD006D98D1 /* ValidationRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA472F2AA0CD006D98D1 /* ValidationRule.swift */; };
+		C223AA4A2F2AA0D3006D98D1 /* ValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA492F2AA0D3006D98D1 /* ValidationResult.swift */; };
+		C223AA4C2F2AA0D9006D98D1 /* ValidateModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA4B2F2AA0D9006D98D1 /* ValidateModifier.swift */; };
+		C223AA4E2F2AA0DE006D98D1 /* DirectValidateModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA4D2F2AA0DE006D98D1 /* DirectValidateModifier.swift */; };
+		C223AA502F2AA0EB006D98D1 /* Environment+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA4F2F2AA0EB006D98D1 /* Environment+Validation.swift */; };
+		C223AA522F2AA11E006D98D1 /* Environment+Seleciton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA512F2AA11E006D98D1 /* Environment+Seleciton.swift */; };
+		C223AA542F2B4F71006D98D1 /* URLValidationRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA532F2B4F71006D98D1 /* URLValidationRule.swift */; };
+		C223AA592F2B9CF9006D98D1 /* PodcastServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA582F2B9CF9006D98D1 /* PodcastServiceError.swift */; };
+		C223AA5B2F2BA051006D98D1 /* PodcastSortingPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C223AA5A2F2BA051006D98D1 /* PodcastSortingPreference.swift */; };
 		C231414B2F081C07006A1CA9 /* Resolver+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C231414A2F081C07006A1CA9 /* Resolver+Extensions.swift */; };
 		C231415A2F081DBD006A1CA9 /* WatchEpisodeService+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D7EA292A39B31B00D51F40 /* WatchEpisodeService+Helpers.swift */; };
 		C231415F2F081E2F006A1CA9 /* Environment+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C2D3832EF98BA8008AFF00 /* Environment+Loading.swift */; };
@@ -526,6 +540,20 @@
 		C21F8D30290F03D600053070 /* Strings+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Strings+Generated.swift"; sourceTree = "<group>"; };
 		C21F8D33290F05DD00053070 /* XCAssets+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCAssets+Generated.swift"; sourceTree = "<group>"; };
 		C21F8D35290F435800053070 /* CloudKitCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitCloud.swift; sourceTree = "<group>"; };
+		C223AA3B2F2AA02D006D98D1 /* CustomTextFieldContentSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldContentSize.swift; sourceTree = "<group>"; };
+		C223AA3C2F2AA02D006D98D1 /* CustomTextFieldSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldSize.swift; sourceTree = "<group>"; };
+		C223AA3D2F2AA02D006D98D1 /* CustomTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldStyle.swift; sourceTree = "<group>"; };
+		C223AA412F2AA079006D98D1 /* IndirectValidateModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndirectValidateModifiers.swift; sourceTree = "<group>"; };
+		C223AA452F2AA0AF006D98D1 /* NonEmptyValidationRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonEmptyValidationRule.swift; sourceTree = "<group>"; };
+		C223AA472F2AA0CD006D98D1 /* ValidationRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationRule.swift; sourceTree = "<group>"; };
+		C223AA492F2AA0D3006D98D1 /* ValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationResult.swift; sourceTree = "<group>"; };
+		C223AA4B2F2AA0D9006D98D1 /* ValidateModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateModifier.swift; sourceTree = "<group>"; };
+		C223AA4D2F2AA0DE006D98D1 /* DirectValidateModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectValidateModifier.swift; sourceTree = "<group>"; };
+		C223AA4F2F2AA0EB006D98D1 /* Environment+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+Validation.swift"; sourceTree = "<group>"; };
+		C223AA512F2AA11E006D98D1 /* Environment+Seleciton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+Seleciton.swift"; sourceTree = "<group>"; };
+		C223AA532F2B4F71006D98D1 /* URLValidationRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLValidationRule.swift; sourceTree = "<group>"; };
+		C223AA582F2B9CF9006D98D1 /* PodcastServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastServiceError.swift; sourceTree = "<group>"; };
+		C223AA5A2F2BA051006D98D1 /* PodcastSortingPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastSortingPreference.swift; sourceTree = "<group>"; };
 		C22880ED2AEEF1DE007A7059 /* EpisodeTransferMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeTransferMetadata.swift; sourceTree = "<group>"; };
 		C23133E02F06D918006A1CA9 /* LoadingWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWidgetViewModel.swift; sourceTree = "<group>"; };
 		C23133E32F06D92B006A1CA9 /* LoadingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWidget.swift; sourceTree = "<group>"; };
@@ -944,6 +972,38 @@
 				C21D64A32A2D137E00226AFF /* WatchRemotePlayer.swift */,
 			);
 			path = RemotePlayer;
+			sourceTree = "<group>";
+		};
+		C223AA3A2F2AA023006D98D1 /* TextField */ = {
+			isa = PBXGroup;
+			children = (
+				C223AA3B2F2AA02D006D98D1 /* CustomTextFieldContentSize.swift */,
+				C223AA3C2F2AA02D006D98D1 /* CustomTextFieldSize.swift */,
+				C223AA3D2F2AA02D006D98D1 /* CustomTextFieldStyle.swift */,
+			);
+			path = TextField;
+			sourceTree = "<group>";
+		};
+		C223AA432F2AA093006D98D1 /* Validate */ = {
+			isa = PBXGroup;
+			children = (
+				C223AA442F2AA09D006D98D1 /* Rules */,
+				C223AA412F2AA079006D98D1 /* IndirectValidateModifiers.swift */,
+				C223AA4D2F2AA0DE006D98D1 /* DirectValidateModifier.swift */,
+				C223AA472F2AA0CD006D98D1 /* ValidationRule.swift */,
+				C223AA492F2AA0D3006D98D1 /* ValidationResult.swift */,
+				C223AA4B2F2AA0D9006D98D1 /* ValidateModifier.swift */,
+			);
+			path = Validate;
+			sourceTree = "<group>";
+		};
+		C223AA442F2AA09D006D98D1 /* Rules */ = {
+			isa = PBXGroup;
+			children = (
+				C223AA452F2AA0AF006D98D1 /* NonEmptyValidationRule.swift */,
+				C223AA532F2B4F71006D98D1 /* URLValidationRule.swift */,
+			);
+			path = Rules;
 			sourceTree = "<group>";
 		};
 		C23133DF2F06D905006A1CA9 /* LoadingWidget */ = {
@@ -1522,6 +1582,7 @@
 		C23141342F0815F9006A1CA9 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				C223AA3A2F2AA023006D98D1 /* TextField */,
 				C285EA2B2F254F35002227D6 /* Button */,
 			);
 			path = Styles;
@@ -1530,6 +1591,7 @@
 		C23141352F0815FF006A1CA9 /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				C223AA432F2AA093006D98D1 /* Validate */,
 				C2C2D6B22EF9DB76008AFF00 /* FillWidthModifier.swift */,
 				C25A05B72F04066100BECB5F /* FeedbackEnabledModifier.swift */,
 				C292315A2F04675C004C71C6 /* PulsingBackgroundModifier.swift */,
@@ -1544,6 +1606,8 @@
 			children = (
 				C2C2D3802EF98B91008AFF00 /* Environment+FeedbackEnabled.swift */,
 				C2C2D3832EF98BA8008AFF00 /* Environment+Loading.swift */,
+				C223AA4F2F2AA0EB006D98D1 /* Environment+Validation.swift */,
+				C223AA512F2AA11E006D98D1 /* Environment+Seleciton.swift */,
 			);
 			path = Environments;
 			sourceTree = "<group>";
@@ -1892,6 +1956,8 @@
 			isa = PBXGroup;
 			children = (
 				C25F2B002F1FD3EA006356A5 /* Podcast.swift */,
+				C223AA582F2B9CF9006D98D1 /* PodcastServiceError.swift */,
+				C223AA5A2F2BA051006D98D1 /* PodcastSortingPreference.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2725,6 +2791,7 @@
 				C23142852F0846FD006A1CA9 /* EpisodeRequestMessage.swift in Sources */,
 				C23142862F0846FD006A1CA9 /* EpisodeTransferMetadata.swift in Sources */,
 				C23142872F0846FD006A1CA9 /* LastPositionMessage.swift in Sources */,
+				C223AA5B2F2BA051006D98D1 /* PodcastSortingPreference.swift in Sources */,
 				C25F2AFF2F1FD34A006356A5 /* PodcastService.swift in Sources */,
 				C23142882F0846FD006A1CA9 /* ReplyMessage.swift in Sources */,
 				C23141D72F081FCA006A1CA9 /* NotificationHandler.swift in Sources */,
@@ -2738,6 +2805,7 @@
 				C252B1CB2F12D6870007BE2A /* DownloadAggregatedEvent.swift in Sources */,
 				C252B1CC2F12D6870007BE2A /* DownloadServiceError.swift in Sources */,
 				C252B1CD2F12D6870007BE2A /* Downloadable.swift in Sources */,
+				C223AA592F2B9CF9006D98D1 /* PodcastServiceError.swift in Sources */,
 				C252B1D22F163C7E0007BE2A /* RemotePlayer.swift in Sources */,
 				C252B1CE2F12D6870007BE2A /* DownloadEvent.swift in Sources */,
 				C23141E02F081FCA006A1CA9 /* SocketError.swift in Sources */,
@@ -2901,6 +2969,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C223AA462F2AA0AF006D98D1 /* NonEmptyValidationRule.swift in Sources */,
+				C223AA4C2F2AA0D9006D98D1 /* ValidateModifier.swift in Sources */,
+				C223AA482F2AA0CD006D98D1 /* ValidationRule.swift in Sources */,
+				C223AA422F2AA079006D98D1 /* IndirectValidateModifiers.swift in Sources */,
+				C223AA522F2AA11E006D98D1 /* Environment+Seleciton.swift in Sources */,
 				C285F06B2F262646002227D6 /* Font+Extensions.swift in Sources */,
 				C231415F2F081E2F006A1CA9 /* Environment+Loading.swift in Sources */,
 				C23141602F081E2F006A1CA9 /* Environment+FeedbackEnabled.swift in Sources */,
@@ -2908,10 +2981,17 @@
 				C231416A2F081E5C006A1CA9 /* Badge.swift in Sources */,
 				C231416B2F081E5C006A1CA9 /* Slider.swift in Sources */,
 				C231416C2F081E6B006A1CA9 /* XCAssets+Generated.swift in Sources */,
+				C223AA542F2B4F71006D98D1 /* URLValidationRule.swift in Sources */,
 				C23141622F081E3B006A1CA9 /* FillWidthModifier.swift in Sources */,
+				C223AA4A2F2AA0D3006D98D1 /* ValidationResult.swift in Sources */,
 				C23141632F081E3B006A1CA9 /* SizeChangedModifier.swift in Sources */,
 				C285EA302F254F3B002227D6 /* ButtonSize.swift in Sources */,
+				C223AA502F2AA0EB006D98D1 /* Environment+Validation.swift in Sources */,
 				C285EA312F254F3B002227D6 /* CustomButtonStyleType.swift in Sources */,
+				C223AA3E2F2AA02D006D98D1 /* CustomTextFieldSize.swift in Sources */,
+				C223AA4E2F2AA0DE006D98D1 /* DirectValidateModifier.swift in Sources */,
+				C223AA3F2F2AA02D006D98D1 /* CustomTextFieldStyle.swift in Sources */,
+				C223AA402F2AA02D006D98D1 /* CustomTextFieldContentSize.swift in Sources */,
 				C285EA322F254F3B002227D6 /* CustomButtonStyle.swift in Sources */,
 				C285EA332F254F3B002227D6 /* CustomButtonStyle+Preview.swift in Sources */,
 				C23717BA2F1A19780073A642 /* Apply.swift in Sources */,
@@ -3154,6 +3234,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -3209,6 +3290,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};

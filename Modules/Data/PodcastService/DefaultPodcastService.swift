@@ -16,11 +16,6 @@ internal import AudstreamerAPIClient
 internal import FeedKit
 internal import XMLKit
 
-enum DefaultPodcastServiceError: Error {
-    case cannotDecodeFeed
-    case cannotFindPodcast
-}
-
 final class DefaultPodcastService {
 
     // MARK: Constants
@@ -40,9 +35,7 @@ final class DefaultPodcastService {
 
     private var trendingCache = [Int: [Podcast]]()
     private var searchCache = Set<Podcast>()
-    private lazy var session: URLSession = {
-        URLSession(configuration: .ephemeral)
-    }()
+    private let session = URLSession(configuration: .ephemeral)
 }
 
 // MARK: - PodcastService
@@ -144,8 +137,17 @@ extension DefaultPodcastService: PodcastService {
             .eraseToAnyPublisher()
     }
 
-    func savedPodcasts() -> AnyPublisher<[Podcast], Error> {
+    func savedPodcasts(sortingPreference: PodcastSortingPreference?) -> AnyPublisher<[Podcast], Error> {
         database.getPodcasts()
+            .asyncTryMap { [unowned self] podcasts in
+                await contextManager.block {
+                    if let sortingPreference {
+                        podcasts.sorted(by: sortComparator(for: sortingPreference))
+                    } else {
+                        podcasts
+                    }
+                }
+            }
             .map { $0.asDomainModels }
             .eraseToAnyPublisher()
     }
@@ -158,7 +160,14 @@ extension DefaultPodcastService: PodcastService {
 
         let id = SHA256.hash(data: normalizedString.data(using: .utf8)!).map { String(format: "%02x", $0) }.joined()
 
-        return fetchAndSavePodcastFromRSSFeed(feedURL, id: id, isPrivate: true)
+        return isPodcastsExists(with: id)
+            .flatMap { [unowned self] isExists in
+                if isExists {
+                    Fail<Void, Error>(error: PodcastServiceError.alreadyExists).eraseToAnyPublisher()
+                } else {
+                    fetchAndSavePodcastFromRSSFeed(feedURL, id: id, isPrivate: true)
+                }
+            }
             .flatMap { [unowned self] in database.getPodcast(id: id).first() }
             .asyncTryMap { [unowned self] in await contextManager.mapDataModel($0) }
             .flatMap { [unowned self] podcast in
@@ -184,7 +193,7 @@ extension DefaultPodcastService {
                 try validateResponse(response)
                 let feed = try Feed(data: data)
                 guard let podcast = feed.rss?.channel else {
-                    throw DefaultPodcastServiceError.cannotDecodeFeed
+                    throw PodcastServiceError.cannotDecodeFeed
                 }
                 return podcast
             }
@@ -195,7 +204,7 @@ extension DefaultPodcastService {
         fetchPodcastFromRSSFeed(feedURL)
             .tryMap { podcast in
                 guard let podcast = podcast.asDataModel(id: id, rssFeedURL: feedURL, isPrivate: isPrivate) else {
-                    throw DefaultPodcastServiceError.cannotDecodeFeed
+                    throw PodcastServiceError.cannotDecodeFeed
                 }
                 return podcast
             }
@@ -259,5 +268,33 @@ extension DefaultPodcastService {
                 }
             }
             .eraseToAnyPublisher()
+    }
+
+    private func isPodcastsExists(with id: Podcast.ID) -> AnyPublisher<Bool, Error> {
+        database.getPodcast(id: id)
+            .first()
+            .map { $0 != nil }
+            .eraseToAnyPublisher()
+    }
+
+    private func sortComparator(for sortingPreference: PodcastSortingPreference) -> (PodcastDataModel, PodcastDataModel) -> Bool {
+        switch sortingPreference {
+        case .byLatestRelease:
+            { lhs, rhs in
+                (lhs.episodes.map(\.publishDate).max() ?? .distantPast) >
+                (rhs.episodes.map(\.publishDate).max() ?? .distantPast)
+            }
+        case .byLatestInteraction:
+            { lhs, rhs in
+                (lhs.episodes.map { $0.lastPlayed ?? $0.publishDate }.max() ?? .distantPast) >
+                (rhs.episodes.map { $0.lastPlayed ?? $0.publishDate }.max() ?? .distantPast)
+            }
+        case let.byTitle(ascending):
+            if ascending {
+                { $0.title > $1.title }
+            } else {
+                { $0.title < $1.title }
+            }
+        }
     }
 }

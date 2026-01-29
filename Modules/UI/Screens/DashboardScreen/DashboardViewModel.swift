@@ -36,12 +36,6 @@ final class DashboardViewModel {
     private(set) var lastPlayedEpisode: Episode?
     private(set) var latestEpisodes = [Episode]()
     var currentlyShowedDialogDescriptor: DialogDescriptor?
-
-    // MARK: Private properties
-
-    @ObservationIgnored private lazy var savedPodcastsPublisher: AnyPublisher<[Podcast], Error> = {
-        podcastService.savedPodcasts().shareReplay()
-    }()
 }
 
 // MARK: - View model

@@ -42,9 +42,12 @@ extension SavedPodcastsWidgetViewModel: ViewModel {
 extension SavedPodcastsWidgetViewModel {
     @MainActor
     private func subscribeToPodcasts() async {
-        let publisher = podcastService.savedPodcasts().replaceError(with: [])
+        let publisher = podcastService.savedPodcasts(sortingPreference: .byLatestInteraction).replaceError(with: [])
         for await podcasts in publisher.asAsyncStream() {
-            self.podcasts = Array(podcasts.prefix(Constant.maximumSavedPodcastsToShow))
+            self.podcasts = Array(
+                podcasts
+                    .prefix(Constant.maximumSavedPodcastsToShow)
+            )
 
         }
     }
