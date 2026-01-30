@@ -126,10 +126,10 @@ extension LoginView {
                     .primary(
                         fill: true,
                         icon: Image(systemSymbol: .appleLogo),
+                        foregroundColor: foregroundColor,
                         backgroundColor: backgroundColor
                     )
                 )
-                .foregroundStyle(foregroundColor)
         }
     }
 

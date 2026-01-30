@@ -113,11 +113,18 @@ extension PodcastDetailsView {
             }
             .contentTransition(.symbolEffect(.replace))
 
-            AsyncButton("Download") {
+            AsyncButton(viewModel.isDownloaded ? "Delete" : "Download") {
                 await viewModel.download()
             }
             .frame(maxWidth: .infinity)
-            .buttonStyle(.secondary(size: .medium, fill: true, icon: Image(systemSymbol: .arrowDownCircleFill)))
+            .buttonStyle(
+                .secondary(
+                    size: .medium,
+                    fill: true,
+                    icon: Image(systemSymbol: viewModel.isDownloaded ? .arrowDownCircleBadgeXmarkFill : .arrowDownCircleFill
+                )
+                )
+            )
         }
     }
 

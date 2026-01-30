@@ -73,6 +73,7 @@ extension CustomButtonStyle {
         .allowsHitTesting(!isLoading)
         .onChange(of: isLoading) { handleLoadingStateChange() }
         .opacity(configuration.isPressed ? 0.5 : 1)
+        .geometryGroup()
     }
 }
 
@@ -106,8 +107,17 @@ extension ButtonStyle where Self == CustomButtonStyle {
     public static func primary(size: ButtonSize = .normal,
                                fill: Bool = false,
                                icon: Image? = nil,
+                               foregroundColor: Color? = nil,
                                backgroundColor: Color? = nil) -> CustomButtonStyle {
-        CustomButtonStyle(type: .primary(size: size, fill: fill, icon: icon, backgroundColor: backgroundColor))
+        CustomButtonStyle(
+            type: .primary(
+                size: size,
+                fill: fill,
+                icon: icon,
+                foregroundColor: foregroundColor,
+                backgroundColor: backgroundColor
+            )
+        )
     }
 
     public static func secondary(size: ButtonSize = .normal,

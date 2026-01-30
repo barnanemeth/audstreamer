@@ -37,6 +37,7 @@ final class PodcastDetailsViewModel {
     private(set) var episodes: [Episode]?
     private(set) var allEpisodesInfo: (count: Int, duration: Duration)?
     private(set) var currentlyPlayingID: String?
+    private(set) var isDownloaded = false
     var currentlyShowingDialogDescriptor: DialogDescriptor?
 
     // MARK: Private properties
@@ -57,6 +58,7 @@ extension PodcastDetailsViewModel {
         await withTaskGroup { taskGroup in
             taskGroup.addTask { await self.subscribeToPodcast(podcast) }
             taskGroup.addTask { await self.subscribeToEpisodes(podcast) }
+            taskGroup.addTask { await self.updateIsDownloaded(for: podcast) }
             taskGroup.addTask { await self.subscribeCurrentlyPlayingIDPublisher() }
         }
     }
@@ -133,6 +135,19 @@ extension PodcastDetailsViewModel {
                 allEpisodesInfo = (episodes.count, Duration(secondsComponent: Int64(episodes.map(\.duration).reduce(0, +)), attosecondsComponent: .zero))
                 self.episodes = Array(episodes.prefix(Constant.maximumEpisodesToShow))
             }
+        }
+    }
+
+    @MainActor
+    private func updateIsDownloaded(for podcast: Podcast) async {
+        let query = EpisodeQueryAttributes(podcastID: podcast.id)
+        let publisher = episodeService.episodes(matching: query)
+            .map { episodes in
+                episodes.allSatisfy { $0.isDownloaded }
+            }
+            .replaceError(with: false)
+        for await isDownloaded in publisher.asAsyncStream() {
+            self.isDownloaded = isDownloaded
         }
     }
 

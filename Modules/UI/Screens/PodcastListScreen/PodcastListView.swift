@@ -40,6 +40,7 @@ struct PodcastListView: View {
                         PodcastCard(podcast: podcast, transitionNamespace: transitionNamespace)
                     }
                     .id(podcast)
+                    .geometryGroup()
                 }
             }
             .padding()

@@ -156,7 +156,7 @@ extension SearchView {
             ContentUnavailableView(
                 "No Results",
                 systemImage: "magnifyingglass",
-                description: Text("No podcasts found for “\(String(describing: viewModel.searchKeyword))”.")
+                description: Text("No podcasts found for “\(String(describing: viewModel.searchKeyword ?? ""))”.")
             )
         }
     }

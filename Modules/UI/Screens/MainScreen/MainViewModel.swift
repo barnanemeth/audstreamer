@@ -61,8 +61,7 @@ extension MainViewModel {
             .replaceError(with: nil)
             .map { $0 != nil }
             .removeDuplicates()
-            .debounce(for: 1, scheduler: DispatchQueue.main)
-        for await isVisible in publisher.values {
+        for await isVisible in publisher.asAsyncStream() {
             isPlayerBottomWidgetVisible = isVisible
         }
     }

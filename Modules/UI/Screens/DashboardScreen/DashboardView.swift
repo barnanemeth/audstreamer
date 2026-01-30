@@ -28,8 +28,8 @@ struct DashboardView: View {
     // MARK: UI
 
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 32) {
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 32) {
                 continueSection
                 savedPodcasts
                 trendingPodcasts
