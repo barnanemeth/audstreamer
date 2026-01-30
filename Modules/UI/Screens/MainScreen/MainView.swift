@@ -39,10 +39,22 @@ struct MainView: View {
 extension MainView {
     private var tabView: some View {
         TabView(selection: $selectedTab) {
-            Tab(L10n.dashboard, systemSymbol: .houseFill, value: .dashboard) { dashboard }
-            Tab("Library", systemSymbol: .squareStack, value: .podcasts) { podcastList }
-            Tab(L10n.settings, systemSymbol: .gearshapeFill, value: .settings) { settings }
-            Tab(value: .search, role: .search) { search }
+            Tab(L10n.dashboard, systemSymbol: .houseFill, value: .dashboard) {
+                dashboard
+            }
+
+            Tab("Library", systemSymbol: .squareStack, value: .podcasts) {
+                podcastList
+            }
+
+            Tab(L10n.settings, systemSymbol: .gearshapeFill, value: .settings) {
+                settings
+            }
+            .badge(viewModel.pendingTransfersCount ?? .zero)
+
+            Tab(value: .search, role: .search) {
+                search
+            }
         }
         .tint(Asset.Colors.accentPrimary.swiftUIColor)
         .tabBarMinimizeBehavior(.onScrollDown)

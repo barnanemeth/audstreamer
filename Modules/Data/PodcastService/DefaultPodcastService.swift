@@ -101,28 +101,31 @@ extension DefaultPodcastService: PodcastService {
             return Just(cachedPodcasts).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
 
-        let input = Operations.getTrendingPodcasts.Input(
-            query: Operations.getTrendingPodcasts.Input.Query(
-                language: "hu",
-                max: maximumResult
-            )
-        )
-        return ThrowingAsyncPublisher<Operations.getTrendingPodcasts.Output, Error> {
-            try await self.client.getTrendingPodcasts(input)
-        }
-        .tryMap { response in
-            switch response {
-            case let .ok(successfulResponse):
-                try successfulResponse.body.json.asDomainModels
-            case .undocumented:
-                throw URLError(.badServerResponse)
+        return getPreferredLanguage()
+            .flatMap { [unowned self] language in
+                let input = Operations.getTrendingPodcasts.Input(
+                    query: Operations.getTrendingPodcasts.Input.Query(
+                        language: Locale.current.region?.identifier,
+                        max: maximumResult
+                    )
+                )
+                return ThrowingAsyncPublisher<Operations.getTrendingPodcasts.Output, Error> {
+                    try await self.client.getTrendingPodcasts(input)
+                }
             }
-        }
-        .handleEvents(receiveOutput: { [unowned self] podcasts in
-            trendingCache.removeAll()
-            trendingCache[maximumResult] = podcasts
-        })
-        .eraseToAnyPublisher()
+            .tryMap { response in
+                switch response {
+                case let .ok(successfulResponse):
+                    try successfulResponse.body.json.asDomainModels
+                case .undocumented:
+                    throw URLError(.badServerResponse)
+                }
+            }
+            .handleEvents(receiveOutput: { [unowned self] podcasts in
+                trendingCache.removeAll()
+                trendingCache[maximumResult] = podcasts
+            })
+            .eraseToAnyPublisher()
     }
     
     func subscribe(to podcast: Podcast) -> AnyPublisher<Void, Error> {
@@ -296,5 +299,25 @@ extension DefaultPodcastService {
                 { $0.title < $1.title }
             }
         }
+    }
+
+    private func getPreferredLanguage() -> AnyPublisher<String, Error> {
+        database.getPodcasts()
+            .first()
+            .asyncTryMap { [unowned self] in await contextManager.mapDataModels($0) }
+            .map { pocasts in
+                let languages = pocasts.compactMap(\.language).compactMap { $0.components(separatedBy: "-").first?.lowercased() }
+                let languageCounts = languages.reduce(into: [String: Int]()) { languageCounts, language in
+                    if languageCounts[language] != nil {
+                        languageCounts[language]! += 1
+                    } else {
+                        languageCounts[language] = 1
+                    }
+                }
+                let mostCommonLanguage = languageCounts.max(by: { $0.value < $1.value })?.key
+
+                return mostCommonLanguage ?? Locale.current.language.languageCode?.identifier ?? Locale.preferredLanguages.first ?? Locale.current.identifier
+            }
+            .eraseToAnyPublisher()
     }
 }

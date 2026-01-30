@@ -69,7 +69,7 @@ extension LoadingViewModel {
             try await account.refresh().value
             let isLoggedIn = try await account.isLoggedIn().value
             if isLoggedIn {
-                navigateToPlayerScreen()
+                navigateToMainScreen()
             } else {
                 navigateToLoginScreen()
             }
@@ -79,7 +79,7 @@ extension LoadingViewModel {
     }
 
     @MainActor
-    private func navigateToPlayerScreen() {
+    private func navigateToMainScreen() {
         navigator.navigate(to: .main, method: .cover)
     }
 
@@ -96,7 +96,7 @@ extension LoadingViewModel {
             type: .alert,
             actions: [
                 DialogAction(title: L10n.retry, type: .normal) { [unowned self] in Task { await fetchData() } },
-                DialogAction(title: L10n.continue, type: .normal) { [unowned self] in navigateToPlayerScreen() }
+                DialogAction(title: L10n.continue, type: .normal) { [unowned self] in navigateToMainScreen() }
             ]
         )
     }

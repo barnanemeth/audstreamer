@@ -20,10 +20,12 @@ final class MainViewModel: ViewModel {
     @ObservationIgnored @Injected private var audioPlayer: AudioPlayer
     @ObservationIgnored @Injected private var navigator: Navigator
     @ObservationIgnored @Injected private var episodeService: EpisodeService
+    @ObservationIgnored @Injected private var watchConnectivityService: WatchConnectivityService
 
     // MARK: Properties
 
     private(set) var isPlayerBottomWidgetVisible = false
+    private(set) var pendingTransfersCount: Int?
 }
 
 // MARK: - View model
@@ -34,6 +36,7 @@ extension MainViewModel {
             taskGroup.addTask { await self.startUpdating() }
             taskGroup.addTask { await self.startUpdating() }
             taskGroup.addTask { await self.updatePlayerBottomWidgetVisibility() }
+            taskGroup.addTask { await self.subscribeToPendingTransfers() }
         }
     }
 }
@@ -69,5 +72,17 @@ extension MainViewModel {
     @MainActor
     private func startUpdating() async {
         try? await episodeService.startUpdating().value
+    }
+
+    @MainActor
+    private func subscribeToPendingTransfers() async {
+        let publisher = watchConnectivityService.getAggregatedFileTransferProgress().map(\.numberOfItems).replaceError(with: .zero)
+        for await count in publisher.bufferedValues {
+            pendingTransfersCount = if count > .zero {
+                count
+            } else {
+                nil
+            }
+        }
     }
 }
