@@ -150,7 +150,7 @@ extension PlayerViewModel {
         let activeDevicePublisher = socket.getActiveDevice().replaceError(with: nil)
         let publisher = Publishers.CombineLatest(devicesPublisher, activeDevicePublisher)
 
-        for await (devices, activeDeviceID) in publisher.asAsyncStream() {
+        for await (devices, activeDeviceID) in publisher.bufferedValues {
             activeRemotePlayingDeviceText = getActiveRemotePlayingDeviceText(devices: devices, activeDeviceID: activeDeviceID)
             activeDevicesCount = getActiveDevicesCount(devices: devices)
         }
@@ -159,7 +159,7 @@ extension PlayerViewModel {
     @MainActor
     private func updateCurrentEpisode() async {
         let publisher = currentEpisode.replaceError(with: nil)
-        for await episode in publisher.asAsyncStream() {
+        for await episode in publisher.bufferedValues {
             self.episode = episode
         }
     }
@@ -167,7 +167,7 @@ extension PlayerViewModel {
     @MainActor
     private func updatePlayingState() async {
         let publisher = audioPlayer.isPlaying().replaceError(with: false)
-        for await isPlaying in publisher.asAsyncStream() {
+        for await isPlaying in publisher.bufferedValues {
             self.isPlaying = isPlaying
         }
     }
@@ -178,7 +178,7 @@ extension PlayerViewModel {
         let publisher = Publishers.Zip(isHighlighted, notHighlighted)
 
         do {
-            for await _ in publisher.asAsyncStream() {
+            for await _ in publisher.bufferedValues {
                 currentProgress = currentSliderValue
                 let secondDurationPair = try await currentSecondDurationPair.value
                 try await audioPlayer.seek(to: Double(currentSliderValue) * Double(secondDurationPair.duration)).value
@@ -192,7 +192,7 @@ extension PlayerViewModel {
     @MainActor
     private func updateProgress() async {
         do {
-            for try await secondDurationPair in currentSecondDurationPair.asAsyncStream() {
+            for try await secondDurationPair in currentSecondDurationPair.bufferedValues {
                 guard !isSliderHighlighted else { return }
                 let progress = getProgress(from: secondDurationPair)
                 currentProgress = progress
@@ -206,7 +206,7 @@ extension PlayerViewModel {
     @MainActor
     private func updateEnabledState() async {
         let publisher = audioPlayer.getCurrentPlayingAudioInfo().replaceError(with: nil)
-        for await audioInfo in publisher.asAsyncStream() {
+        for await audioInfo in publisher.bufferedValues {
             isEnabled = audioInfo?.id != nil
         }
     }
@@ -214,7 +214,7 @@ extension PlayerViewModel {
     @MainActor
     private func updateTimeTexts() async {
         let publisher = combinedCurrentSecondDurationPair.compactMap(\.self).replaceError(with: nil)
-        for await secondDurationPair in publisher.asAsyncStream() {
+        for await secondDurationPair in publisher.bufferedValues {
             let (elapsed, remaining): (String, String) = if let secondDurationPair {
                 (getProgressTimeText(from: secondDurationPair, type: .elapsed), getProgressTimeText(from: secondDurationPair, type: .remaining))
             } else {
@@ -229,7 +229,7 @@ extension PlayerViewModel {
     private func subscribeToDeviceList() async {
         let publisher = socket.getDeviceList().removeDuplicates().replaceError(with: [])
 
-        for await devices in publisher.asAsyncStream() {
+        for await devices in publisher.bufferedValues {
             self.devices = devices.sorted(by: { $0.connectionTime < $1.connectionTime })
         }
     }
@@ -238,7 +238,7 @@ extension PlayerViewModel {
     private func subscribeToActiveDevice() async {
         let publisher = socket.getActiveDevice().removeDuplicates().replaceError(with: nil)
 
-        for await activeDeviceID in publisher.asAsyncStream() {
+        for await activeDeviceID in publisher.bufferedValues {
             self.activeDeviceID = activeDeviceID
         }
     }

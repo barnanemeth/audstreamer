@@ -61,7 +61,7 @@ extension MainViewModel {
             .replaceError(with: nil)
             .map { $0 != nil }
             .removeDuplicates()
-        for await isVisible in publisher.asAsyncStream() {
+        for await isVisible in publisher.bufferedValues {
             isPlayerBottomWidgetVisible = isVisible
         }
     }

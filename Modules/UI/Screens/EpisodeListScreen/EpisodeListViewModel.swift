@@ -196,7 +196,7 @@ extension EpisodeListViewModel {
     @MainActor
     private func subscribeToFilterAttributes() async {
         let publisher = filterHelper.getAttributes().replaceError(with: [])
-        for await attributes in publisher.asAsyncStream() {
+        for await attributes in publisher.bufferedValues {
             filterAttributes = attributes
             isFilterActive = attributes.contains(where: { $0.isActive })
         }
@@ -216,7 +216,7 @@ extension EpisodeListViewModel {
 
         let publisher = Publishers.CombineLatest4(episodesPublisher, openedEpisodeIDPublisher, isWatchAvailable, currentlyPlayingID)
 
-        for await (episodes, openedEpisodeID, isWatchAvailable, currentlyPlayingID) in publisher.asAsyncStream() {
+        for await (episodes, openedEpisodeID, isWatchAvailable, currentlyPlayingID) in publisher.bufferedValues {
             sections = transformEpisodes(
                 from: episodes,
                 openedEpisodeID: openedEpisodeID,
@@ -333,7 +333,7 @@ extension EpisodeListViewModel {
 
     private func subscribeToShortcutEpisode() async {
         let publisher = shortcutHandler.getEpisodeID().replaceError(with: nil).unwrap()
-        for await episodeID in publisher.asAsyncStream() {
+        for await episodeID in publisher.bufferedValues {
             guard let episode = try? await episodeService.episode(id: episodeID).value else { continue }
             try? await audioPlayer.insert(episode, playImmediately: true).value
         }

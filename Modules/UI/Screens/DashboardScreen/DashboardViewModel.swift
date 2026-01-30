@@ -98,7 +98,7 @@ extension DashboardViewModel {
     @MainActor
     private func subscribeToLastPlayedEpisode() async {
         let publisher = episodeService.lastPlayedEpisode().replaceError(with: nil)
-        for await episode in publisher.asAsyncStream() {
+        for await episode in publisher.bufferedValues {
             lastPlayedEpisode = episode
         }
     }
@@ -108,7 +108,7 @@ extension DashboardViewModel {
         let publisher = episodeService.episodes(matching: nil)
             .map { Array($0.prefix(Constant.maximumLatestEpisodesToShow)) }
             .replaceError(with: [])
-        for await episodes in publisher.asAsyncStream() {
+        for await episodes in publisher.bufferedValues {
             latestEpisodes = episodes
         }
     }

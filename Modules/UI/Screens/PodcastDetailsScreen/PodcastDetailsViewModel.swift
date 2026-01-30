@@ -118,7 +118,7 @@ extension PodcastDetailsViewModel {
     @MainActor
     private func subscribeToPodcast(_ podcast: Podcast) async {
         let publisher = podcastService.podcast(id: podcast.id).replaceError(with: nil).unwrap()
-        for await podcast in publisher.asAsyncStream() {
+        for await podcast in publisher.bufferedValues {
             self.podcast = podcast
             descriptionAttributedString = attributedString(from: podcast.description ?? "")
         }
@@ -127,7 +127,7 @@ extension PodcastDetailsViewModel {
     @MainActor
     private func subscribeToEpisodes(_ podcast: Podcast) async {
         let publisher = episodeService.episodes(matching: EpisodeQueryAttributes(podcastID: podcast.id)).replaceError(with: []).removeDuplicates()
-        for await episodes in publisher.asAsyncStream() {
+        for await episodes in publisher.bufferedValues {
             if episodes.isEmpty {
                 allEpisodesInfo = nil
                 self.episodes = nil
@@ -146,7 +146,7 @@ extension PodcastDetailsViewModel {
                 episodes.allSatisfy { $0.isDownloaded }
             }
             .replaceError(with: false)
-        for await isDownloaded in publisher.asAsyncStream() {
+        for await isDownloaded in publisher.bufferedValues {
             self.isDownloaded = isDownloaded
         }
     }
@@ -158,7 +158,7 @@ extension PodcastDetailsViewModel {
 
     @MainActor
     private func subscribeCurrentlyPlayingIDPublisher() async {
-        for await id in currentlyPlayingIDPublisher.replaceError(with: nil).asAsyncStream() {
+        for await id in currentlyPlayingIDPublisher.replaceError(with: nil).bufferedValues {
             currentlyPlayingID = id
         }
     }

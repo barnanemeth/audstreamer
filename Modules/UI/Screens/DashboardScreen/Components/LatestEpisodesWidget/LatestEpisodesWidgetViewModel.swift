@@ -64,7 +64,7 @@ extension LatestEpisodesWidgetViewModel {
 extension LatestEpisodesWidgetViewModel {
     @MainActor
     private func subscribeCurrentlyPlayingIDPublisher() async {
-        for await id in currentlyPlayingIDPublisher.replaceError(with: nil).asAsyncStream() {
+        for await id in currentlyPlayingIDPublisher.replaceError(with: nil).bufferedValues {
             currentlyPlayingID = id
         }
     }

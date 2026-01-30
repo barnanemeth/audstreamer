@@ -117,7 +117,7 @@ extension LastPlayedEpisodeWidgetViewModel {
 extension LastPlayedEpisodeWidgetViewModel {
     @MainActor
     private func subscribeCurrentlyPlayingIDPublisher() async {
-        for await id in currentlyPlayingIDPublisher.replaceError(with: nil).asAsyncStream() {
+        for await id in currentlyPlayingIDPublisher.replaceError(with: nil).bufferedValues {
             currentlyPlayingID = id
         }
     }
@@ -125,7 +125,7 @@ extension LastPlayedEpisodeWidgetViewModel {
     @MainActor
     private func subscribeToWatchAvailability() async {
         @Injected var watchConnectivityService: WatchConnectivityService
-        for await isAvailable in watchConnectivityService.isAvailable().replaceError(with: false).asAsyncStream() {
+        for await isAvailable in watchConnectivityService.isAvailable().replaceError(with: false).bufferedValues {
             isWatchAvailable = isAvailable
         }
     }

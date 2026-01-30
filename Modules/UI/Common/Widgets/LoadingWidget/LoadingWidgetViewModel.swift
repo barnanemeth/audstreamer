@@ -95,7 +95,7 @@ extension LoadingWidgetViewModel {
 extension LoadingWidgetViewModel {
     @MainActor
     private func updateState() async {
-        for await state in statePublisher.removeDuplicates().asAsyncStream() {
+        for await state in statePublisher.removeDuplicates().bufferedValues {
             self.state = state ?? .indeterminate
         }
     }
@@ -112,7 +112,7 @@ extension LoadingWidgetViewModel {
             .removeDuplicates()
             .replaceError(with: false)
 
-        for await isVisible in publisher.asAsyncStream() {
+        for await isVisible in publisher.bufferedValues {
             if isVisible {
                 self.isVisible = true
             } else {
@@ -124,7 +124,7 @@ extension LoadingWidgetViewModel {
 
     @MainActor
     private func updateTitles() async {
-        for await state in statePublisher.asAsyncStream() {
+        for await state in statePublisher.bufferedValues {
             switch state {
             case let .inProgress(progress, itemCount):
                 title = defaultTitle

@@ -90,7 +90,7 @@ extension SearchViewModel {
             }
 
         do {
-            for try await podcasts in publisher.asAsyncStream() {
+            for try await podcasts in publisher.bufferedValues {
                 self.podcasts = podcasts
             }
         } catch {

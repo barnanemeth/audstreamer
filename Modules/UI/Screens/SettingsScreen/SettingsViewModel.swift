@@ -114,7 +114,7 @@ extension SettingsViewModel {
     @MainActor
     private func subscribeToDownloadSize() async {
         let publisher = episodeService.downloadsSize().replaceError(with: .zero)
-        for await downloadSize in publisher.asAsyncStream() {
+        for await downloadSize in publisher.bufferedValues {
             downloadSizeText = getDownloadSizeText(for: downloadSize)
             isDeleteDownloadsVisible = downloadSize > .zero
         }
@@ -126,7 +126,7 @@ extension SettingsViewModel {
             .map { !$0.items.isEmpty }
             .replaceError(with: false)
             .removeDuplicates()
-        for await hasPendingDownloads in publisher.asAsyncStream() {
+        for await hasPendingDownloads in publisher.bufferedValues {
             self.hasPendingDownloads = hasPendingDownloads
         }
     }
@@ -145,7 +145,7 @@ extension SettingsViewModel {
             }
             .replaceError(with: .notAvailable)
 
-        for await connectionStatus in publisher.asAsyncStream() {
+        for await connectionStatus in publisher.bufferedValues {
             let (text, color): (String, Color) = switch connectionStatus {
             case .notAvailable: (L10n.notAvailable, Asset.Colors.State.error.swiftUIColor)
             case .available: (L10n.available, Asset.Colors.State.warning.swiftUIColor)
@@ -160,7 +160,7 @@ extension SettingsViewModel {
     private func subscribeToPendingWatchTransfers() async {
         let publisher = watchConnectivityService.getAggregatedFileTransferProgress().removeDuplicates()
         do {
-            for try await progress in publisher.asAsyncStream() {
+            for try await progress in publisher.bufferedValues {
                 pendingWatchTransfersText = if !progress.isFinished, progress.numberOfItems > .zero {
                     try? AttributedString(markdown: L10n.transferringEpisodesCountPercentage(progress.numberOfItems, Int(progress.progress * 100)))
                 } else {
@@ -178,7 +178,7 @@ extension SettingsViewModel {
         let loginStatus = account.isLoggedIn().replaceError(with: false)
         let publisher = Publishers.CombineLatest(socketStatus, loginStatus)
 
-        for await (socketStatus, isLoggedIn) in publisher.asAsyncStream() {
+        for await (socketStatus, isLoggedIn) in publisher.bufferedValues {
             let (statusText, statusColor, actionText) = switch socketStatus {
             case .connected: (L10n.connected, Asset.Colors.State.success.swiftUIColor, L10n.disconnect)
             case .pending: (L10n.pending, Asset.Colors.State.warning.swiftUIColor, L10n.disconnect)
@@ -198,7 +198,7 @@ extension SettingsViewModel {
     private func subscribeToAccountStatus() async {
         let publisher = account.isLoggedIn().replaceError(with: false)
 
-        for await isLoggedIn in publisher.asAsyncStream() {
+        for await isLoggedIn in publisher.bufferedValues {
             let (text, color) = if isLoggedIn {
                 (L10n.logout, Asset.Colors.State.error.swiftUIColor)
             } else {
