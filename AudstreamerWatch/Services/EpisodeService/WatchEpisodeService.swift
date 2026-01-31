@@ -44,7 +44,7 @@ final class WatchEpisodeService: NSObject {
             .map { [unowned self] episodes in
                 episodes.map { episode in
                     var episode = episode
-                    episode.isDownloaded = isEpisodeDownloaded(episode)
+                    episode.isOnWatch = isEpisodeDownloaded(episode)
                     return episode
                 }
             }

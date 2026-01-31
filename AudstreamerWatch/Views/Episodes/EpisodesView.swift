@@ -27,7 +27,7 @@ struct EpisodesView: View {
                 } label: {
                     EpisodeRow(data: data)
                 }
-                .disabled(!data.episode.isDownloaded)
+                .disabled(!data.episode.isOnWatch)
             }
         }
         .navigationTitle(viewModel.title)

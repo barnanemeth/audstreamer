@@ -108,7 +108,6 @@ extension WatchAudioPlayer: AudioPlayer {
             guard playImmediately else { return }
             self.audioPlayer.play()
         })
-        .print("insert")
         .eraseToAnyPublisher()
     }
 

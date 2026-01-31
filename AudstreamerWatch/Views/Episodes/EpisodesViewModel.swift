@@ -51,7 +51,7 @@ extension EpisodesViewModel {
                 episode: episode,
                 isPlaying: episode.id == currentlyPlayingID,
                 transferringState: {
-                    if episode.isDownloaded {
+                    if episode.isOnWatch {
                         .finished
                     } else {
                         .inProgress

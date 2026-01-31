@@ -30,7 +30,9 @@ extension Episode: @retroactive Decodable {
             mediaURL: mediaURL,
             podcastTitle: podcastTitle,
             duration: duration,
-            lastPosition: lastPosition
+            lastPosition: lastPosition,
+            isDownloaded: false,
+            isOnWatch: false
         )
     }
 }
